@@ -7,7 +7,7 @@ object Application extends AbstractController{
   
   def index = Action {
     myService.go
-    Ok(views.html.index("Your new application is ready."))
+    Ok(views.html.index("Your new application is ready. "))
   }
   
 }
