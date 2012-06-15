@@ -17,7 +17,7 @@ object path{
       	val result: Promise[Response] = {
     			WS.url(x).post(y)
     	}
-      	val body = result.await(5000).get.json\ "picture_big"
+      	val body = result.value.get.json\ "picture_big"
       	body
   }
 }
