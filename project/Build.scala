@@ -12,6 +12,7 @@ object ApplicationBuild extends Build {
       "org.springframework"    %    "spring-core"       %    "3.0.7.RELEASE",
       "org.springframework"    %    "spring-beans"      %    "3.0.7.RELEASE",
       "net.databinder" % "dispatch-http_2.9.1" % "0.8.8",
+      "net.debasishg" % "sjson_2.9.1" % "0.17",
       "com.google.code" % "morphia" % "0.91"
     )
 
