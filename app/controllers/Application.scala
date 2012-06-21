@@ -5,10 +5,13 @@ import play.api.mvc.Controller
 import util.APIRequestUtils
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
+import javax.transaction.Transaction
+import javax.persistence.Persistence
+import models.Dao.MobionTestcaseDAO
 
 object Application extends AbstractController{
-  
   def index = Action {
+    
       var js: JsObject = JsObject(
 			  Seq(
 			      "email" -> JsString("ta2@yahoo.com"),
@@ -19,6 +22,7 @@ object Application extends AbstractController{
   }
   
   def getListAPI = Action {
+    
      Ok(myService.getListApi).as("text/plain")
   }
    
