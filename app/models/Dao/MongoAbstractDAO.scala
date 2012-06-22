@@ -1,8 +1,5 @@
 package models.Dao
 import com.mongodb.casbah.MongoConnection
-import models.Bean.MobionTestCase
-import models.Bean.MobionTestCase
-import com.mongodb.casbah.commons.MongoDBObject
 import com.mongodb.DBObject
 abstract class MongoAbstractDAO[T <: AnyRef](_host:String,_port:Int,_db:String,_user:String,_pass:String,_col:String){
 	var host = _host

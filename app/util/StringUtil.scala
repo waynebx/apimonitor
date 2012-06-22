@@ -8,7 +8,8 @@ object StringUtil{
     val QueryParamV2 = "QueryParamV2"
     val PostParamV1 = "PostParamV1"
     val PostParamV2 = "PostParamV2"
-      
-
+  }
+  def generateStringTimeStamp() = {
+    System.currentTimeMillis.toString()
   }
 }

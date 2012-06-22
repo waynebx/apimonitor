@@ -8,6 +8,8 @@ import play.api.libs.json.JsString
 import javax.transaction.Transaction
 import javax.persistence.Persistence
 import models.Dao.MobionTestcaseDAO
+import com.mongodb.casbah.MongoCollection
+import play.api.libs.json.JsObject
 
 object Application extends AbstractController{
   def index = Action {
@@ -27,6 +29,12 @@ object Application extends AbstractController{
   }
    
   def getListAPIInRest(rest:String) = Action {
+     Ok(myService.getListAPIInRes(rest)).as("text/plain")
+  }
+  
+    def addTestCase(rest:String) = Action(parse.json) {request =>
+
+     
      Ok(myService.getListAPIInRes(rest)).as("text/plain")
   }
 }
