@@ -8,6 +8,7 @@ import play.api.libs.json.JsString
 import play.api.libs.ws._
 import play.api.libs.concurrent.Promise
 import play.api.libs.ws.WS.WSRequestHolder
+import play.api.libs.json.JsValue
 
 
 
@@ -47,10 +48,11 @@ object APIRequestUtils {
     var res = ""
     val result = {
     		var request:WSRequestHolder = WS.url(path)
+    		request.withHeaders(("X-GNT-Auth-Token","a3633f30bb4a11e18887005056a70023"))
     		params.foreach { param: (String, String) => request.withQueryString((param._1, param._2)) }
     		request.get()
     	}
-    res = result.value.get.body
-    return res;
+    result.value.get.json.toString()
+    
   }
 }
