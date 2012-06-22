@@ -11,11 +11,11 @@ object ApplicationBuild extends Build {
       "org.springframework"    %    "spring-context"    %    "3.0.7.RELEASE",
       "org.springframework"    %    "spring-core"       %    "3.0.7.RELEASE",
       "org.springframework"    %    "spring-beans"      %    "3.0.7.RELEASE",
-      "net.databinder" 		   %    "dispatch-http_2.9.1" %  "0.8.8",
       "com.mongodb.casbah" %% "casbah" % "2.1.5-1",
+      "net.databinder" % "dispatch-http_2.9.1" % "0.8.8",
       "com.novus" %% "salat-core" % "0.0.8-SNAPSHOT",
       "mysql" % "mysql-connector-java" % "5.1.18",
-      "org.squeryl" %% "squeryl" % "0.9.5-2"
+      "net.debasishg" % "sjson_2.9.1" % "0.17"     
     )
 
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA).settings(
