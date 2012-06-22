@@ -1,0 +1,46 @@
+@(param : models.APIParameter) 
+@*
+@if(param.allowableValues){
+	<tr>
+		<td class='code'>@param.name</td>
+		<td><select a='@param.name'> {{each allowableValues}} {{if
+				$value == defaultValue }}
+				<option selected='selected' value='${$value}'>${$value}</option>
+				{{else}}
+				<option value='${$value}'>${$value}</option> {{/if}} {{/each}}
+		</select></td>
+		<td width='500'>@param.description</td>
+	</tr>
+}else{*@ 
+	@if(param.required){ 
+		@if(param.readOnly){
+			<tr>
+				<td class='code required'>@param.name</td>
+				<td>-</td>
+				<td width='500'>@param.description</td>
+			</tr>
+		}else{
+			<tr>
+				<td class='code required'>@param.name</td>
+				<td><input class='required' minlength='1' name='@param.name'
+					placeholder='(required)' type='text' value='' /></td>
+				<td width='500'><strong>@param.description</strong></td>
+			</tr>
+		}
+	}else{
+		@if(param.readOnly){
+			<tr>
+				<td class='code'>@param.name</td>
+				<td>-</td>
+				<td width='500'>@param.description</td>
+			</tr>
+		}else{
+			<tr>
+				<td class='code'>@param.name</td>
+				<td><input minlength='0' name='@param.name' placeholder='' type='text'
+					value='' /></td>
+				<td width='500'>@param.description</td>
+			</tr>
+		}
+	}
+@*}*@

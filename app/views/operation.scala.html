@@ -1,0 +1,59 @@
+@(apiName: String, path : String, operaion : models.APIOperation)
+<li class="@operaion.httpMethod.toLowerCase() operation" id="@apiName&#95@operaion.nickname&#95@operaion.httpMethod">
+      <div class='heading'>
+        <h3>
+          <span class='http_method'>
+            <a href="#!/@apiName/@operaion.nickname&#95@operaion.httpMethod" 
+            onclick="Docs.toggleOperationContent('@apiName&#95@operaion.nickname&#95@operaion.httpMethod&#95content');">@operaion.httpMethod</a>
+          </span>
+          <span class='path'>
+            <a href="#!/@apiName/@operaion.nickname&#95@operaion.httpMethod" 
+            onclick="Docs.toggleOperationContent('@apiName&#95@operaion.nickname&#95@operaion.httpMethod&#95content');">@path</a>
+          </span>
+        </h3>
+        <ul class='options'>
+          <li>
+            <a href="#!/@apiName/@operaion.nickname&#95@operaion.httpMethod" 
+            onclick="Docs.toggleOperationContent('@apiName&#95@operaion.nickname&#95@operaion.httpMethod&#95content);">@operaion.summary</a>
+          </li>
+        </ul>
+      </div>
+      <div class='content' id="@apiName&#95@operaion.nickname&#95@operaion.httpMethod&#95content" style='display:none'>
+        <h4>Implementation Notes</h4>
+        <p>@operaion.notes</p>
+        <form accept-charset='UTF-8' action='#' class='sandbox' id="@apiName&#95@operaion.nickname&#95@operaion.httpMethod&#95form" method='post'>
+          <div style='margin:0;padding:0;display:inline'></div>
+          <h4>Parameters</h4>
+          <table class='fullwidth'>
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th id="@apiName&#95@operaion.nickname&#95@operaion.httpMethod&#95value&#95header">Value</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody id="@apiName&#95@operaion.nickname&#95@operaion.httpMethod&#95params">
+            	@for(p <- operaion.parameters){
+            		@param(p)
+            	}
+            </tbody>
+          </table>
+          <div class='sandbox_header' id="@apiName&#95@operaion.nickname&#95@operaion.httpMethod'_content_sandbox_response_header">
+            <input class='submit' id="@apiName&#95@operaion.nickname&#95@operaion.httpMethod'_content_sandbox_response_button" name='commit' type='button' value='Try it out!' />
+            <a href='#' id="@apiName&#95@operaion.nickname&#95@operaion.httpMethod'_content_sandbox_response_hider" 
+            onclick="$(#@apiName&#95@operaion.nickname&#95@operaion.httpMethod'_content_sandbox_response').slideUp();$(this).fadeOut(); return false;" style='display:none'>Hide Response</a>
+            <img alt='Throbber' id="@apiName&#95@operaion.nickname&#95@operaion.httpMethod'_content_sandbox_response_throbber" src='http://swagger.wordnik.com/images/throbber.gif' style='display:none' />
+          </div>
+        </form>
+        <div class='response' id="@apiName&#95@operaion.nickname&#95@operaion.httpMethod'_content_sandbox_response" style='display:none'>
+          <h4>Request URL</h4>
+          <div class='block request_url'></div>
+          <h4>Response Body</h4>
+          <div class='block response_body'></div>
+          <h4>Response Code</h4>
+          <div class='block response_code'></div>
+          <h4>Response Headers</h4>
+          <div class='block response_headers'></div>
+        </div>
+      </div>
+    </li>

@@ -1,0 +1,31 @@
+@(res : models.APIResource)
+@defining(res.resourcePath.replaceAllLiterally("/","_")) { pathId =>
+<li class='resource' id='resource_@pathId'>
+	<div class='heading'>
+		<h2>
+			<a href='#!/@pathId'
+				onclick="Docs.toggleEndpointListForResource('@pathId');">@res.resourcePath</a>
+		</h2>
+		<ul class='options'>
+			<li><a href='#!/@pathId'
+				id='endpointListTogger_@pathId'
+				onclick="Docs.toggleEndpointListForResource('@pathId');">Show/Hide</a>
+			</li>
+			<li><a href='#'
+				onclick="Docs.collapseOperationsForResource('@pathId'); return false;">
+					List Operations </a></li>
+			<li><a href='#'
+				onclick="Docs.expandOperationsForResource('@pathId'); return false;">
+					Expand Operations </a></li>
+			<li><a href='${fetch_url}'>Raw</a></li>
+		</ul>
+	</div>
+	<ul class='endpoints' id="@pathId'_endpoint_list'"
+		style='display: none'>
+		@for(apiSpec <- res.apis){
+			@api(apiSpec)
+		}
+
+	</ul>
+</li>
+}
