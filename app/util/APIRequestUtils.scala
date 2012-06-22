@@ -8,6 +8,7 @@ import play.api.libs.json.JsString
 import play.api.libs.ws._
 import play.api.libs.concurrent.Promise
 import play.api.libs.ws.WS.WSRequestHolder
+import play.api.libs.json.JsValue
 
 
 
@@ -46,6 +47,7 @@ object APIRequestUtils {
   def getWS(path: String, params: Map[String,String]): String = {
     var res = ""
     val result = {
+
       var request: WSRequestHolder = WS.url(path)
       if(params != null){
     	  params.foreach { param: (String, String) => request.withQueryString((param._1, param._2)) }        
@@ -54,6 +56,7 @@ object APIRequestUtils {
     }
     res = result.value.get.body
     return res;
+
   }
   
   def getWSWithDefaultHost(path: String, params: Map[String,String]): String = {

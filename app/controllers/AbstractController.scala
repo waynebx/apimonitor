@@ -7,4 +7,5 @@ import service.MyService
 
 class AbstractController extends Controller{
   val myService = Spring.getBeanOfType(classOf[MyService])
+  
 }

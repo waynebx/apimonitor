@@ -1,0 +1,8 @@
+@(apiSpec : models.APISpec)
+<li class='endpoint'>
+	@defining(apiSpec.path.replaceAllLiterally("/","_")) { name =>
+		@operations_list(name, apiSpec.resPath + apiSpec.path, apiSpec.operations)
+		
+	}
+</li>
+

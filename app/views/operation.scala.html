@@ -1,0 +1,22 @@
+@(apiName: String, path : String, operation : models.APIOperation)
+<li class="@operation.httpMethod.toLowerCase() operation"
+	id="@apiName&#95@operation.nickname&#95@operation.httpMethod">
+	<div class='heading'>
+		<h3>
+			<span class='http_method'> <a
+				href="#!/@apiName/@operation.nickname&#95@operation.httpMethod"
+				onclick="Docs.toggleOperationContent('@apiName&#95@operation.nickname&#95@operation.httpMethod&#95content');">@operation.httpMethod</a>
+			</span> <span class='path'> <a
+				href="#!/@apiName/@operation.nickname&#95@operation.httpMethod"
+				onclick="Docs.toggleOperationContent('@apiName&#95@operation.nickname&#95@operation.httpMethod&#95content');">@path</a>
+			</span>
+		</h3>
+		<ul class='options'>
+			<li><a
+				href="#!/@apiName/@operation.nickname&#95@operation.httpMethod"
+				onclick="Docs.toggleOperationContent('@apiName&#95@operation.nickname&#95@operation.httpMethod&#95content);">@operation.summary</a>
+			</li>
+		</ul>
+	</div> 
+	@params_list(apiName, operation)
+</li>

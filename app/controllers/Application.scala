@@ -1,27 +1,40 @@
 package controllers
 
+import scala.annotation.target.field
+import scala.reflect.BeanInfo
+import models.Dao.MobionTestcaseDAO
+import models.APIResource
+import models.Res
+import models.ResList
+import play.api.libs.json.JsObject
+import play.api.libs.json.JsObject
 import play.api.mvc.Action
 import play.api.mvc.Controller
 import util.APIRequestUtils
-import play.api.libs.json.JsObject
-import play.api.libs.json.JsString
-import javax.transaction.Transaction
-import javax.persistence.Persistence
-import models.Dao.MobionTestcaseDAO
-import com.mongodb.casbah.MongoCollection
-import play.api.libs.json.JsObject
+import sjson.json.Serializer.SJSON
+import dispatch.json.Js
 
-object Application extends AbstractController{
+
+object Application extends AbstractController {
+
+
   def index = Action {
     
-      var js: JsObject = JsObject(
-			  Seq(
-			      "email" -> JsString("ta2@yahoo.com"),
-			      "password" -> JsString("123456")
-			      )
-			  )
-    Ok(APIRequestUtils.postWSWithDefaultHost("auth/login",Map("params" -> Seq(js.toString())))).as("text/plain")
+    val res = APIRequestUtils.getWS("http://api.sgcharo.com/mobion/resources.json", Map())
+    val apis: List[Res] = SJSON.in[ResList](Js(res)).apis
+
+    var list = List[APIResource]()
+    apis.foreach(api => {
+      val path = api.path
+      val res2 = APIRequestUtils.getWS("http://api.sgcharo.com/mobion" + path + "/list_api?api_key=a3633f30bb4a11e18887005056a70023", Map())
+      
+      list ::= SJSON.in[APIResource](Js(res2))
+    })
+
+    Ok(views.html.index(list))
+
   }
+
   
   def getListAPI = Action {
     
