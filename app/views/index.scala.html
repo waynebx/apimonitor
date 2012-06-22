@@ -36,12 +36,9 @@
 		<ul id='resources'></ul>
 	</div>
 	<div id='content_message'></div>
-	<ul id="resources">
-		@for(res <- resources) {
-			@resource(res)
-		}
-		
-	</ul>
+	
+	@resources_list(resources)
+	
 
 </body>
 </html>

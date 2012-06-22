@@ -27,11 +27,11 @@ object Application extends AbstractController {
     apis.foreach(api => {
       val path = api.path
       val res2 = APIRequestUtils.getWS("http://api.sgcharo.com/mobion" + path + "/list_api?api_key=a3633f30bb4a11e18887005056a70023", Map())
-
+      
       list ::= SJSON.in[APIResource](Js(res2))
     })
 
-    Ok(views.html.test("alo"))
+    Ok(views.html.index(list))
   }
 
 }

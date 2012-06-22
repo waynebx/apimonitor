@@ -1,11 +1,8 @@
 @(apiSpec : models.APISpec)
 <li class='endpoint'>
 	@defining(apiSpec.path.replaceAllLiterally("/","_")) { name =>
-		<ul class='operations' id="@name&#95endpoint&#95operations">
-			@for(op <- apiSpec.operations){
-				@operation(name, apiSpec.resPath + apiSpec.path,op)
-			}
-		</ul> 
+		@operations_list(name, apiSpec.resPath + apiSpec.path, apiSpec.operations)
+		
 	}
 </li>
 
