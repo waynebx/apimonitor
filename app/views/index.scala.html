@@ -16,6 +16,7 @@ href="@routes.Assets.at("stylesheets/screen.css")"
 rel="stylesheet" media="screen"/>
 
 <script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+<script src="@routes.Assets.at("javascripts/jquery.tmpl.js")"></script>
 <script src="@routes.Assets.at("javascripts/spine.js")"></script>
 <script src="@routes.Assets.at("javascripts/local.js")"></script>
 <script src="@routes.Assets.at("javascripts/main.js")"></script>
@@ -50,7 +51,7 @@ rel="stylesheet" media="screen"/>
 	
 	<script type="text/javascript">
 		 new Main({
-			el: $('#api_selector'),
+			el: $('body'),
 		}); 
 	</script>
 </body>

@@ -1,4 +1,4 @@
-@(apiName: String, path : String, operation : models.APIOperation)
+@(apiName: String, apiPath : String, operation : models.APIOperation)
 <li class="@operation.httpMethod.toLowerCase() operation"
 	id="@apiName&#95@operation.nickname&#95@operation.httpMethod">
 	<div class='heading'>
@@ -8,7 +8,7 @@
 				>@operation.httpMethod</a>
 			</span> <span class='path'> <a
 				href="#!/@apiName/@operation.nickname&#95@operation.httpMethod"
-				>@path</a>
+				>@apiPath</a>
 			</span>
 		</h3>
 		<ul class='options'>
@@ -24,7 +24,10 @@
 		 new Operation({
 			
 			el: $('#' + id),
-			id : id
+			id : id,
+			path : "@apiPath",
+			http_method: "@operation.httpMethod.toLowerCase()"
+			
 		}); 
 	</script>
 	@params_list(apiName, operation)

@@ -3,6 +3,7 @@ var Main = Spine.Controller.sub({
 		if (this.supportsLocalStorage()) {
 			var url = localStorage.getItem("com.mobion.url", url);
 			$("#input_baseUrl").val(url);
+			Main.base_url = url;
 		}
 	},
 	events : {
@@ -16,11 +17,12 @@ var Main = Spine.Controller.sub({
 		$("#resources_list").slideUp();
 		$("#content_message").slideDown();
 
+		var controller = this;
 		$('#resources_list').load('/getapi?url=' + encodeURIComponent(url), null,
 				function() {
 					$("#content_message").slideUp();
 					$("#resources_list").slideDown();
-					if (supportsLocalStorage) {
+					if (controller.supportsLocalStorage()) {
 						localStorage.setItem("com.mobion.url", url);
 					}
 				}
@@ -63,11 +65,153 @@ var Resource = Spine.Controller.sub({
 var Operation = Spine.Controller.sub({
 	tag : "li",
 	
-	events : {"click .heading" : "click"},
-
+	events : {
+		"click .heading" : "click",
+		"click .sandbox_header input.submit" : "call_api"
+	},
+	
 	click: function(){
 		Docs.toggleOperationContent(this.id + '_content');
 	},
+	
+	call_api: function() {
+	      var form = $("#" + this.id + "_form");
+	      var error_free = true;
+	      var missing_input = null;
+
+	      // Cycle through the form's required inputs
+	      form.find("input.required").each(function() {
+
+	        // Remove any existing error styles from the input
+	        $(this).removeClass('error');
+
+	        // Tack the error style on if the input is empty..
+	        if ($(this).val() == '') {
+	          if (missing_input == null)
+	          missing_input = $(this);
+	          $(this).addClass('error');
+	          $(this).wiggle();
+	          error_free = false;
+	        }
+
+	      });
+	      
+	      if (error_free) {
+	        var invocationUrl = this.invocationUrl(form.serializeArray());
+	        $(".request_url", "#" +this.id + "_content_sandbox_response").html("<pre>" + invocationUrl + "</pre>");
+	        
+	        if(this.http_method == "get"){
+	        	$.getJSON(invocationUrl, this.proxy(this.showResponse)).complete(this.proxy(this.showCompleteStatus)).error(this.proxy(this.showErrorStatus));
+	        }else{
+	        	var postParams = this.operation.invocationPostParam(form.serializeArray());
+	        	$.post(invocationUrl, $.parseJSON(postParams), this.showResponse).complete(this.showCompleteStatus).error(this.showErrorStatus);
+	        }
+	        
+	        
+	      }
+
+	    },
+	
+	showResponse: function(response, elementScope) {
+		// log(response);
+		var prettyJson = JSON.stringify(response, null, "\t").replace(/\n/g, "<br>");
+		// log(prettyJson);
+		$(".response_body", "#" +this.id + "_content_sandbox_response").html(prettyJson);
+
+		$("#" + this.id + "_content_sandbox_response").slideDown();
+	},
+
+	showErrorStatus: function(data,elementScope) {
+		// log("error " + data.status);
+		this.showStatus(data,elementScope);
+		$("#" +this.id + "_content_sandbox_response").slideDown();
+	},
+
+	showCompleteStatus: function(data,elementScope) {
+		// log("complete " + data.status);
+		this.showStatus(data,elementScope);
+	},
+
+	showStatus: function(data,elementScope) {
+		// log(data);
+		// log(data.getAllResponseHeaders());
+		var jsonData = JSON.parse(data.responseText);
+		var response_body = "<pre>" + JSON.stringify(jsonData, null, 2).replace(/\n/g, "<br>") + "</pre>";
+		if(jsonData.status == "success"){
+			$(".response_code", "#" +this.id + "_content_sandbox_response").html("<pre>" + "OK" + "</pre>");
+		}else{
+			$(".response_code", "#" +this.id + "_content_sandbox_response").html("<pre>" + jsonData.error_code + "</pre>");  
+		}
+		$(".response_body", "#" +this.id + "_content_sandbox_response").html(response_body);
+		$(".response_headers", "#" +this.id + "_content_sandbox_response").html("<pre>" + data.getAllResponseHeaders() + "</pre>");
+	},
+	
+	 invocationUrl: function(formValues) {
+	      var formValuesMap = new Object();
+	      for (var i = 0; i < formValues.length; i++) {
+	        var formValue = formValues[i];
+	        if (formValue.value && jQuery.trim(formValue.value).length > 0)
+	        formValuesMap[formValue.name] = formValue.value;
+	      }
+
+	      var urlTemplateText = this.path.split("{").join("${");
+	      // log("url template = " + urlTemplateText);
+	      var urlTemplate = $.template(null, urlTemplateText);
+	      var url = $.tmpl(urlTemplate, formValuesMap)[0].data;
+	      // log("url with path params = " + url);
+
+
+	      var queryParams = "";
+	      var apiKey = $("#input_apiKey").val();
+			if (apiKey) {
+			    apiKey = jQuery.trim(apiKey);
+			    if (apiKey.length > 0)
+			    	queryParams = "?api_key=" + apiKey;
+			}
+			
+//	      var names = Object.keys(formValuesMap);
+	      for(var name in formValuesMap){
+	    	  var value = formValuesMap[name];
+	        if (value.length > 0) {
+	          queryParams += queryParams.length > 0 ? "&": "?";
+	          queryParams += name;
+	          queryParams += "=";
+	          queryParams += value;
+	        }
+	      };
+	      
+	      
+	      url = Main.base_url + url + queryParams;
+	      // log("final url with query params and base url = " + url);
+
+	      return url;
+	    },
+	    
+	    invocationPostParam: function(formValues) {
+	        var formValuesMap = new Object();
+	        for (var i = 0; i < formValues.length; i++) {
+	          var formValue = formValues[i];
+	          if (formValue.value && jQuery.trim(formValue.value).length > 0)
+	          formValuesMap[formValue.name] = formValue.value;
+	        }
+
+	        var postParam = "";
+	        this.parameters.each(function(param) {
+	          var paramValue = jQuery.trim(formValuesMap[param.name]);
+	          if (param.paramType == "body" && paramValue.length > 0) {
+	        	 postParam = postParam.length > 0 ? postParam : "{";
+	        	 postParam += "\"" + param.name + "\"";
+	        	 postParam += ":";
+	        	 postParam += "\"" + formValuesMap[param.name] + "\",";
+	          }
+	        });
+	        
+	        if(postParam.length > 0){
+	        	postParam = postParam.substring(0, postParam.length - 1) + "}";
+	        }
+	        
+	        return postParam;
+	      }
 	 
 });
 
@@ -77,39 +221,7 @@ var Operation = Spine.Controller.sub({
 var Docs = {
 
 
-		showResponse: function(response, elementScope) {
-			// log(response);
-			var prettyJson = JSON.stringify(response, null, "\t").replace(/\n/g, "<br>");
-			// log(prettyJson);
-			$(".response_body", elementScope + "_content_sandbox_response").html(prettyJson);
-
-			$(elementScope + "_content_sandbox_response").slideDown();
-		},
-
-		showErrorStatus: function(data,elementScope) {
-			// log("error " + data.status);
-			this.showStatus(data,elementScope);
-			$(elementScope + "_content_sandbox_response").slideDown();
-		},
-
-		showCompleteStatus: function(data,elementScope) {
-			// log("complete " + data.status);
-			this.showStatus(data,elementScope);
-		},
-
-		showStatus: function(data,elementScope) {
-			// log(data);
-			// log(data.getAllResponseHeaders());
-			var jsonData = JSON.parse(data.responseText);
-			var response_body = "<pre>" + JSON.stringify(jsonData, null, 2).replace(/\n/g, "<br>") + "</pre>";
-			if(jsonData.status == "success"){
-				$(".response_code", elementScope + "_content_sandbox_response").html("<pre>" + "OK" + "</pre>");
-			}else{
-				$(".response_code", elementScope + "_content_sandbox_response").html("<pre>" + jsonData.error_code + "</pre>");  
-			}
-			$(".response_body", elementScope + "_content_sandbox_response").html(response_body);
-			$(".response_headers", elementScope + "_content_sandbox_response").html("<pre>" + data.getAllResponseHeaders() + "</pre>");
-		},
+		
 
 		shebang: function() {
 
