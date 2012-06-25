@@ -4,10 +4,30 @@ var Main = Spine.Controller.sub({
 			var url = localStorage.getItem("com.mobion.url", url);
 			$("#input_baseUrl").val(url);
 			Main.base_url = url;
+			this.getAPI();
 		}
 	},
+	
+	elements : {
+		"#testcase_list" : "testcase_list",
+		"#api_list" : "api_list",
+	},
+	
 	events : {
-		"click #explore" : "getAPI"
+		"click #explore" : "getAPI",
+		"click #apis"	: "show_api",
+		"click #testcase" : "show_testcase"
+	},
+	
+	show_api : function(){
+		this.api_list.show();
+		this.testcase_list.hide();
+	},
+	
+	show_testcase : function(){
+		this.api_list.hide();
+		this.testcase_list.show();
+		
 	},
 	
 	getAPI : function()
@@ -66,7 +86,7 @@ var Operation = Spine.Controller.sub({
 	tag : "li",
 	
 	events : {
-		"click .heading" : "click",
+		"click h3" : "click",
 		"click .sandbox_header input.submit" : "call_api"
 	},
 	

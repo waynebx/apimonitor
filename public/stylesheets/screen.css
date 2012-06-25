@@ -289,7 +289,18 @@ body {
     float: none;
     clear: both;
     overflow: hidden;
-    display: block; }
+    display: block;
+    
+	border: solid 1px #b4b4b4;
+
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0, .3);
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0, .3);
+	box-shadow: 0 1px 3px rgba(0,0,0, .3);
+	}
     body form#api_selector .input {
       display: block;
       clear: none;
@@ -355,7 +366,7 @@ body {
             color: #999999; }
             body ul#resources li.resource div.heading h2 a:hover {
               color: black; }
-        body ul#resources li.resource div.heading ul.options {
+        body ul#resources li.resource div.heading ul.options{
           float: none;
           clear: both;
           overflow: hidden;
@@ -945,3 +956,6 @@ body {
               font-size: 0.9em;
               max-height: 400px;
               overflow-y: auto; }
+
+              
+              
