@@ -13,6 +13,7 @@ import play.api.mvc.Controller
 import util.APIRequestUtils
 import sjson.json.Serializer.SJSON
 import dispatch.json.Js
+import play.api.libs.json.Json
 
 
 object Application extends AbstractController {
@@ -45,9 +46,19 @@ object Application extends AbstractController {
      Ok(myService.getListAPIInRes(rest)).as("text/plain")
   }
   
-    def addTestCase(rest:String) = Action(parse.json) {request =>
-
-     
-     Ok(myService.getListAPIInRes(rest)).as("text/plain")
+  def addTestCase = Action(parse.text) {request =>
+  	 var id =myService.addTestCase(request.body)
+     Ok(Json.toJson(
+      Map("status" -> "success","id" -> id)))
+  }
+  
+  def getListTestCaseDetail(id:String) = Action {request =>
+  	 var value = myService.getListTestCaseDetail(id)
+     Ok(value)
+  }
+  
+  def getListMobionTestCase(start:String,size:String) = Action {request =>
+  	 var value = myService.getListMobionTestCase(start,size)
+     Ok(value)
   }
 }

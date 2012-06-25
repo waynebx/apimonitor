@@ -11,6 +11,12 @@ class MongoSalatDAO[ObjectType <: AnyRef, ID <: Any](collectionName: String)(imp
   def findAll() = {
 	 find(MongoDBObject())
   }
+  def findByStringId(id:String) = {
+    findOne(MongoDBObject("_id" -> id))
+  }
+  def findLimit(start:Int,size:Int) = {
+    find(MongoDBObject()).skip(start).limit(size)
+  }
 }
 
 

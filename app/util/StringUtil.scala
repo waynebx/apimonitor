@@ -1,8 +1,14 @@
 package util
 
 object StringUtil{
-  var http = "http://" 
-  var slash = "/"
+  val http = "http://" 
+  val slash = "/"
+    
+  object WebMethod{
+	  val GET = "GET"
+	  val POST = "POST"
+  }
+  
   object ParamsType{
     val QueryParamV1 = "QueryParamV1"
     val QueryParamV2 = "QueryParamV2"
@@ -11,5 +17,16 @@ object StringUtil{
   }
   def generateStringTimeStamp() = {
     System.currentTimeMillis.toString()
+  }
+  
+  def isBlank(str:String):Boolean = {
+    if(str == null || str.equals("")){
+      return true
+    }
+    return false
+  }
+  
+  def isNotBlank(str:String):Boolean = {
+	return !isBlank(str)
   }
 }
