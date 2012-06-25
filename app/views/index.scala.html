@@ -12,43 +12,63 @@
 	href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/smoothness/jquery-ui.css'
 	media='screen' rel='stylesheet' type='text/css' />
 <link  
-href="@routes.Assets.at("stylesheets/screen.css")"
-rel="stylesheet" media="screen"/>
+	href="@routes.Assets.at("stylesheets/screen.css")"
+	rel="stylesheet" media="screen"/>
+<link  
+	href="@routes.Assets.at("stylesheets/thickbox.css")"
+	rel="stylesheet" media="screen"/>
+		
 
 <script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
 <script src="@routes.Assets.at("javascripts/jquery.tmpl.js")"></script>
 <script src="@routes.Assets.at("javascripts/spine.js")"></script>
 <script src="@routes.Assets.at("javascripts/local.js")"></script>
 <script src="@routes.Assets.at("javascripts/main.js")"></script>
+<script src="@routes.Assets.at("javascripts/thickbox.js")"></script>
 
 
 </head>
 
 
 <body>
-	<form id='api_selector'>
-		<div class='input'>
-			<input placeholder="http://api.sgcharo.com/mobion" id="input_baseUrl"
-				name="baseUrl" type="text" value= />
-		</div>
-		<div class='input'>
-			<input placeholder="token" id="input_apiKey" name="apiKey"
-				type="text" />
-		</div>
-		<div class='input'>
-			<input placeholder="api name" id="filter" name="filter" type="text" />
-		</div>
-		<div class='input'>
-			<a id="explore" href="#">Explore</a>
-		</div>
-	</form>
-	<div class='container' id='resources_container'>
-		<ul id='resources'></ul>
-	</div>
-	<div id="content_message"></div>
-	<div id="resources_list" style="display: none">
+	<div class="menu">
+		<ul>
+			<li id="apis"><a href="#">APIs</a></li>
+			<li id="testcase"><a href="#">Test Case</a></li>
+		</ul>
 	</div>
 	
+	<div id="testcase_list" style="display: none">
+		<input  class="thickbox" type="button" value="Add Api"  alt="#TB_inline?height=600&width=1040&inlineId=resources_list"/>
+		
+	</div>
+	<div id="api_list">
+		<form id='api_selector'>
+			<div class='input'>
+				<input placeholder="http://api.sgcharo.com/mobion"
+					id="input_baseUrl" name="baseUrl" type="text" value= />
+			</div>
+			<div class='input'>
+				<input placeholder="token" id="input_apiKey" name="apiKey"
+					type="text" />
+			</div>
+			<div class='input'>
+				<input placeholder="api name" id="filter" name="filter" type="text" />
+			</div>
+			<div class='input'>
+				<a id="explore" href="#">Explore</a>
+			</div>
+		</form>
+		
+		<div class='container' id='resources_container'>
+			<ul id='resources'></ul>
+		</div>
+		<div id="content_message"></div>
+
+
+		<div id="resources_list" style="display: none" />
+	</div>
+
 	<script type="text/javascript">
 		 new Main({
 			el: $('body'),
