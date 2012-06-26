@@ -9,6 +9,12 @@ object StringUtil{
 	  val POST = "POST"
   }
   
+  object TestCaseOperation{
+	  val ADD = 0
+	  val REMOVE = 1
+	  val EDIT = 2
+  }
+  
   object ParamsType{
     val QueryParamV1 = "QueryParamV1"
     val QueryParamV2 = "QueryParamV2"

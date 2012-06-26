@@ -3,12 +3,16 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
-GET     /get_apis_list              controllers.Application.getListAPI
-GET     /get_apis_from              controllers.Application.getListAPIInRest(rest:String)
-POST    /add_test_case              controllers.Application.addTestCase
-GET    /get_detail_of_test_case              controllers.Application.getListTestCaseDetail(id:String)
+GET    /                                      controllers.Application.index
+GET    /get_apis_list                         controllers.Application.getListAPI
+GET    /get_apis_from                         controllers.Application.getListAPIInRest(rest:String)
+POST   /add_test_case                         controllers.Application.addTestCase
+GET    /get_detail_of_test_case               controllers.Application.getListTestCaseDetail(id:String)
 GET    /get_list_mobion_test_case             controllers.Application.getListMobionTestCase(start:String,size:String)
+GET    /get_test_case_detail_by_id            controllers.Application.getTestCaseDetailById(id:String)
+POST   /add_function_to_test_case             controllers.Application.addFunctionInTestCase
+POST   /remove_function_from_test_case        controllers.Application.removeFunctionInTestCase
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
