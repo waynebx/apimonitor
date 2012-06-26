@@ -63,4 +63,27 @@ object Application extends AbstractController {
     var value = myService.getListMobionTestCase(start, size)
     Ok(value)
   }
+  
+  def removeTestCase = Action(parse.text) {request =>
+  	 myService.removeTestCase(request.body)
+     Ok(Json.toJson(
+      Map("status" -> "success")))
+  }
+  
+  def addFunctionInTestCase = Action(parse.text) {request =>
+  	 var id =myService.addFunctionInTestCase(request.body)
+     Ok(Json.toJson(
+      Map("status" -> "success")))
+  }
+  
+  def removeFunctionInTestCase = Action(parse.text) {request =>
+  	 var id =myService.removeFunctionInTestCase(request.body)
+     Ok(Json.toJson(
+      Map("status" -> "success")))
+  }
+
+  def getTestCaseDetailById(id: String) = Action { request =>
+    var value = myService.getTestCaseDetailById(id)
+    Ok(value)
+  }
 }

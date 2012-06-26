@@ -8,4 +8,8 @@ trait MyService {
 	def addTestCase(requestBody:String):String
 	def getListTestCaseDetail(idMobionTestCase:String):JsValue
 	def getListMobionTestCase(start:String,size:String):JsValue
+	def removeTestCase(id:String)
+	def addFunctionInTestCase(body: String)
+	def removeFunctionInTestCase(body: String)
+	def getTestCaseDetailById(id:String):JsValue
 }

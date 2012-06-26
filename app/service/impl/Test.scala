@@ -15,6 +15,14 @@ import models.FunctionJSON
 import sjson.json.Serializer
 import models.Bean.TestCaseDetail
 import models.Dao.TestCaseDetailDAO
+import scala.collection.mutable.HashMap
+
+class OptionalUserProfileInfo(
+	location: String = "",
+	age: Int= 0,
+	webSite: String = ""
+	  )
+
 
 object TestService {
 
@@ -34,8 +42,16 @@ object TestService {
 		abc.functions = list
 		var xyz = SJSON.toJSON(abc)
 		print(xyz)
-		
-//		myService.addTestCase(xyz)
 
+//		val jsonObject = Json.toJson(
+//		  Map("test_case_id" -> "1340608378882","function_id" ->"1340608378882")
+//		)
+//		
+//		print(jsonObject)
+//		myService.addFunctionInTestCase(jsonObject.toString())
+//		myService.removeFunctionInTestCase(jsonObject.toString())
+		var optionalUser = new OptionalUserProfileInfo(age = 19)
+		val intToStringMap2 = new HashMap[Integer, String]
+  
 	}
 }

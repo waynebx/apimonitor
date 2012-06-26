@@ -17,6 +17,16 @@ class MongoSalatDAO[ObjectType <: AnyRef, ID <: Any](collectionName: String)(imp
   def findLimit(start:Int,size:Int) = {
     find(MongoDBObject()).skip(start).limit(size)
   }
+  
+  def pushToField(id:String,field:String,value:String){
+    val push = $push(field -> value)
+    update(MongoDBObject("_id" -> id),push)
+  }
+  
+  def pullFromField(id:String,field:String,value:String){
+    val pull = $pull(field -> value)
+    update(MongoDBObject("_id" -> id),pull)
+  }
 }
 
 
