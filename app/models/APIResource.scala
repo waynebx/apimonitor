@@ -7,3 +7,7 @@ import scala.annotation.target.field
   def this() = { this(List(),"","","") }
   
 }
+
+object APIResource{
+  def getTableName = "APIResource"
+}

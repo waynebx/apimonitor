@@ -1,3 +1,16 @@
+function postJson(url,data,success) {
+	$.ajax({
+		  url:url,
+		  type:"POST",
+		  data: data,
+		  contentType:"application/json; charset=utf-8",
+		  dataType:"json",
+		  success: function(){
+			  alert("");
+		  }
+		})
+};
+
 var Main = Spine.Controller.sub({
 	init : function() {
 		if (this.supportsLocalStorage()) {
@@ -40,7 +53,7 @@ var Main = Spine.Controller.sub({
 		var controller = this;
 		this.testcase_list.empty();
 		this.testcase_list.load("/testcases", null, function() {
-			
+
 		});
 
 	},
@@ -68,6 +81,27 @@ var Main = Spine.Controller.sub({
 		} catch (e) {
 			return false;
 		}
+	}
+
+});
+
+Main.extend({
+
+	form2Json : function(form) {
+
+		var o = {};
+		var a = form.serializeArray();
+		$.each(a, function() {
+			if (o[this.name] !== undefined) {
+				if (!o[this.name].push) {
+					o[this.name] = [ o[this.name] ];
+				}
+				o[this.name].push(this.value || '');
+			} else {
+				o[this.name] = this.value || '';
+			}
+		});
+		return o;
 	}
 });
 

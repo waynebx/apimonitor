@@ -8,12 +8,15 @@ import play.api.libs.json.Json
 import play.api.mvc.Action
 import sjson.json.Serializer.SJSON
 import util.APIRequestUtils
+import exception.MyException
+import exception.MyException
 
 object Application extends AbstractController {
 
   def index = Action {
-
+	  
     filterResponse(Ok(views.html.index()))
+    
   }
   
   def getapi(url: String) = Action {
@@ -46,12 +49,6 @@ object Application extends AbstractController {
 
   def getListAPIInRest(rest: String) = Action {
     filterResponse(Ok(myService.getListAPIInRes(rest)).as("text/plain"))
-  }
-
-  def addTestCase = Action(parse.text) { request =>
-    var id = myService.addTestCase(request.body)
-    filterResponse(Ok(Json.toJson(
-      Map("status" -> "success", "id" -> id))))
   }
 
   def getListTestCaseDetail(id: String) = Action { request =>

@@ -1,9 +1,10 @@
 package service
-import play.api.libs.json.JsValue
+
 import models.testcase.TestCase
+import dispatch.json.JsValue
 
 trait TestCaseService {
 	def getTestCaseList(start:Int,size:Int) : List[TestCase]
 	
-	
+	def addTestCase(testCase : JsValue): TestCase
 }

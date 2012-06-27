@@ -283,7 +283,7 @@ body {
     margin: 10px 15px;
     font-style: italic;
     color: #999999; }
-  body form#api_selector {
+  body form#api_selector{
     background-color: #89bf04;
     padding: 15px;
     float: none;
