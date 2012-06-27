@@ -1,6 +1,7 @@
 package service
 import play.api.libs.json.JsValue
 import models.testcase.TestCase
+import models.APIResource
 
 trait MyService {
 	def go
@@ -13,7 +14,7 @@ trait MyService {
 	def addFunctionInTestCase(body: String)
 	def removeFunctionInTestCase(body: String)
 	def getTestCaseDetailById(id:String):JsValue
-	
+	def buildAPIAndParameter(apiResource:APIResource)
 	//Giang
 	def getTestCaseList(start:String,size:String) : List[TestCase]
 }
