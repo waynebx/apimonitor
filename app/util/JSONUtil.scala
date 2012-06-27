@@ -17,20 +17,20 @@ object JSONUtil {
 	  list
 	}
 	
-	def convertTestCaseDetail(testcaseDetail:APIConfig, apiRes:API) = {
+	def convertAPIConfig(testcaseDetail:APIConfig, api:API) = {
 	  var map = Map[String,String]()
 	  map += "id" -> testcaseDetail._id
 	  map += "params" -> testcaseDetail.params
-	  map += "path" -> apiRes.path
-	  map += "resource_path" -> apiRes.restPath
-	  map += "method" -> apiRes.method
+	  map += "path" -> api.path
+	  map += "resource_path" -> api.restPath
+	  map += "method" -> api.method
 	  Json.toJson(map)
 	}
 	
-	def convertMobionTestCase(mobionTestCase:TestCase) = {
+	def convertTestCase(testCase:TestCase) = {
 	  var map = Map[String,String]()
-	  map += "id" -> mobionTestCase._id
-	  map += "name" -> mobionTestCase.name
+	  map += "id" -> testCase._id
+	  map += "name" -> testCase.name
 	  Json.toJson(map)
 	}
 }

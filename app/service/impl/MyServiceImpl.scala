@@ -1,23 +1,25 @@
 package service.impl
 
 import scala.reflect.BeanInfo
+
 import com.mongodb.casbah.commons.MongoDBObject
+
 import dispatch.json.Js
+import models.Bean.API
+import models.Bean.APIConfig
+import models.Bean.TestCase
 import models.FunctionJSON
 import models.TestCaseJSON
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
+import service.AbstractService
 import service.MyService
 import sjson.json.Serializer.SJSON
 import util.APIRequestUtils
 import util.ConfigUtils
 import util.JSONUtil
 import util.StringUtil
-import service.AbstractService
-import models.Bean.APIConfig
-import models.Bean.API
-import models.Bean.TestCase
 
 class MyServiceImpl extends MyService with AbstractService{
   
@@ -33,35 +35,35 @@ class MyServiceImpl extends MyService with AbstractService{
   }
 
   def addTestCase(requestBody:String):String = {	
-	var testCase = SJSON.in[TestCaseJSON](Js(requestBody))
-	var TestCase = new TestCase
+	var testCaseJSON = SJSON.in[TestCaseJSON](Js(requestBody))
+	var testCase = new TestCase
 	if(StringUtil.isNotBlank(testCase.name)){
-	  TestCase.name =  testCase.name
+	  testCase.name =  testCaseJSON.name
 	}else{
-	   TestCase.name = ""
+	   testCase.name = ""
 	}
 	var listIdDetail = List[String]()
-	if(testCase.functions != null && testCase.functions.length > 0){
-	  testCase.functions.foreach(function => {
-	  	listIdDetail::=saveTestCaseDetail("",function,StringUtil.TestCaseOperation.ADD)
+	if(testCaseJSON.functions != null && testCaseJSON.functions.length > 0){
+	  testCaseJSON.functions.foreach(function => {
+	  	listIdDetail::=saveAPIConfig("",function,StringUtil.TestCaseOperation.ADD)
 	  })	  
 	}
-	TestCase.functions = listIdDetail
-	testCaseDAO.save(TestCase)
-    TestCase._id
+	testCase.functions = listIdDetail
+	testCaseDAO.save(testCase)
+    testCase._id
   }
   
   def getListTestCaseDetail(idMobionTestCase:String) = {
-    var TestCase = testCaseDAO.findByStringId(idMobionTestCase)
+    var testCase = testCaseDAO.findByStringId(idMobionTestCase)
     var set = Set[JsValue]()
-    if (TestCase != None) {
-      var functions = TestCase.functions
+    if (testCase != None) {
+      var functions = testCase.functions
       functions.foreach(id => {
         var function = apiConfigDAO.findByStringId(id)
         if (function != None) {
-          var apiRes = apiDAO.findByStringId(function.idAPIRes)
-          if(apiRes != None){
-        	  set += JSONUtil.convertTestCaseDetail(function,apiRes)            
+          var api = apiDAO.findByStringId(function.apiId)
+          if(api != None){
+        	  set += JSONUtil.convertAPIConfig(function,api)            
           }
         }
       })
@@ -69,8 +71,8 @@ class MyServiceImpl extends MyService with AbstractService{
     Json.toJson(set)
   }
   
-  def callOneAPI(testCaseDetail:APIConfig,apiRes:API){
-    var fullPath = StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH + apiRes.restPath + apiRes.path
+  def callOneAPI(testCaseDetail:APIConfig,api:API){
+    var fullPath = StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH + api.restPath + api.path
     val json: JsValue = Json.parse(testCaseDetail.params)
     val jsonObj  = (json \ "params").asInstanceOf[JsObject]
     var map = Map[String,String]()
@@ -80,10 +82,10 @@ class MyServiceImpl extends MyService with AbstractService{
            map += key -> (jsonObj \key).as[String]
       })
     }
-    if(StringUtil.WebMethod.GET.equals(apiRes.method)){
+    if(StringUtil.WebMethod.GET.equals(api.method)){
       APIRequestUtils.getWS(fullPath,map)
     }
-    if(StringUtil.WebMethod.POST.equals(apiRes.method)){
+    if(StringUtil.WebMethod.POST.equals(api.method)){
       APIRequestUtils.post(fullPath,map)
     }
   }
@@ -95,7 +97,7 @@ class MyServiceImpl extends MyService with AbstractService{
     var set = Set[JsValue]()
     list.foreach(item =>
       {
-        set += JSONUtil.convertMobionTestCase(item)
+        set += JSONUtil.convertTestCase(item)
       })
     Json.toJson(set)
   }
@@ -109,9 +111,9 @@ class MyServiceImpl extends MyService with AbstractService{
   def removeTestCase(body: String) {
     val json = Json.parse(body)
     val id = (json \ "id").as[String]
-    var TestCase = testCaseDAO.findByStringId(id)
-    if (TestCase != None) {
-      testCaseDAO.remove(TestCase)
+    var testCase = testCaseDAO.findByStringId(id)
+    if (testCase != None) {
+      testCaseDAO.remove(testCase)
     }
   }
   
@@ -126,11 +128,11 @@ class MyServiceImpl extends MyService with AbstractService{
     apiDAO.save(apiResNew)
   }
   
-  private def saveTestCaseDetail(testCaseId:String,function:FunctionJSON,operartion:Int) = {
+  private def saveAPIConfig(testCaseId:String,function:FunctionJSON,operartion:Int) = {
     var idAPI: String = function.id
     var param: String = function.param
     var testCaseDetail = new APIConfig
-    testCaseDetail.idAPIRes = idAPI
+    testCaseDetail.apiId = idAPI
     testCaseDetail.params = param
     if(StringUtil.TestCaseOperation.REMOVE.equals(operartion)){
         testCaseDAO.pullFromField(testCaseId, "functions", testCaseDetail._id)
@@ -138,8 +140,8 @@ class MyServiceImpl extends MyService with AbstractService{
     if(StringUtil.TestCaseOperation.EDIT.equals(operartion)){
         testCaseDAO.pushToField(testCaseId, "functions", testCaseDetail._id)
     }
-    var apiRes = apiDAO.findOne(MongoDBObject("_id" -> idAPI))
-    if (apiRes.isEmpty) {
+    var api = apiDAO.findOne(MongoDBObject("_id" -> idAPI))
+    if (api.isEmpty) {
       saveAPIRes(idAPI)
     }
     apiConfigDAO.save(testCaseDetail)
@@ -147,19 +149,19 @@ class MyServiceImpl extends MyService with AbstractService{
   }
   
   def removeFunctionInTestCase(body: String) {
-	var testCase = SJSON.in[TestCaseJSON](Js(body))
-	val testCaseId = testCase.id
+	var testCaseJSON = SJSON.in[TestCaseJSON](Js(body))
+	val testCaseId = testCaseJSON.id
 	if(StringUtil.isBlank(testCaseId)){
 	  return
 	}
-	var TestCase = testCaseDAO.findByStringId(testCaseId)
-	if(TestCase == None){
+	var testCase = testCaseDAO.findByStringId(testCaseId)
+	if(testCase == None){
 	  return
 	}
     
 	if(testCase.functions != null && testCase.functions.length > 0){
-	  testCase.functions.foreach(function => {
-		  saveTestCaseDetail(testCaseId,function,StringUtil.TestCaseOperation.REMOVE)
+	  testCaseJSON.functions.foreach(function => {
+		  saveAPIConfig(testCaseId,function,StringUtil.TestCaseOperation.REMOVE)
 	  })	  
 	}
   }
@@ -168,8 +170,8 @@ class MyServiceImpl extends MyService with AbstractService{
     val json = Json.parse(body)
     val testCaseId = (json \ "test_case_id").as[String]
     val functionId = (json \ "function_id").as[String]
-    var TestCase = testCaseDAO.findByStringId(testCaseId)
-    if (TestCase != None) {
+    var testCase = testCaseDAO.findByStringId(testCaseId)
+    if (testCase != None) {
       testCaseDAO.pushToField(testCaseId,"functions",functionId)
     }
   }
@@ -178,9 +180,9 @@ class MyServiceImpl extends MyService with AbstractService{
     var function = apiConfigDAO.findByStringId(id)
     var jsonObj = Json.toJson("")
     if (function != None) {
-      var apiRes = apiDAO.findByStringId(function.idAPIRes)
-      if (apiRes != None) {
-         jsonObj = JSONUtil.convertTestCaseDetail(function, apiRes)
+      var api = apiDAO.findByStringId(function.apiId)
+      if (api != None) {
+         jsonObj = JSONUtil.convertAPIConfig(function, api)
       }
     }
     jsonObj
