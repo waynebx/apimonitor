@@ -1,4 +1,4 @@
-package models.Bean
+package models.testcase
 import scala.reflect.BeanProperty
 import com.novus.salat.annotations.raw.Key
 import util.StringUtil

@@ -1,4 +1,4 @@
-package models.Bean
+package models.testcase
 import scala.reflect.BeanProperty
 import util.StringUtil
 case class APIConfig(_id:String,var apiId:String,var status:String="",var response:String="",var params:String="") extends BaseBean(_id){	
@@ -8,5 +8,5 @@ case class APIConfig(_id:String,var apiId:String,var status:String="",var respon
 }
 
 object APIConfig{
-  def getTableName = "TestCaseDetail"
+  def getTableName = "APIConfig"
 }

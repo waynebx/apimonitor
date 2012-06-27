@@ -1,4 +1,4 @@
-package models.Bean
+package models.testcase
 
 import scala.reflect.BeanProperty
 import play.api.libs.json.JsObject

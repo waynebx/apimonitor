@@ -1,6 +1,6 @@
 package service
 import play.api.libs.json.JsValue
-import models.Bean.TestCase
+import models.testcase.TestCase
 
 trait MyService {
 	def go

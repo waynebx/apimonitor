@@ -1,9 +1,9 @@
 package util
 import play.api.libs.json.JsObject
-import models.Bean.APIConfig
-import models.Bean.API
+import models.testcase.APIConfig
+import models.testcase.API
 import play.api.libs.json.Json
-import models.Bean.TestCase
+import models.testcase.TestCase
 
 
 object JSONUtil {
