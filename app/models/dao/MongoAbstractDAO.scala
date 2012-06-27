@@ -1,4 +1,4 @@
-package models.Dao
+package models.dao
 import com.mongodb.casbah.MongoConnection
 import com.mongodb.DBObject
 abstract class MongoAbstractDAO[T <: AnyRef](_host:String,_port:Int,_db:String,_user:String,_pass:String,_col:String){

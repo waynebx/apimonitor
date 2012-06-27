@@ -1,9 +1,9 @@
 package util
 import play.api.libs.json.JsObject
-import models.Bean.TestCaseDetail
-import models.Bean.APIRes
+import models.Bean.APIConfig
+import models.Bean.API
 import play.api.libs.json.Json
-import models.Bean.MobionTestCase
+import models.Bean.TestCase
 
 
 object JSONUtil {
@@ -17,7 +17,7 @@ object JSONUtil {
 	  list
 	}
 	
-	def convertTestCaseDetail(testcaseDetail:TestCaseDetail, apiRes:APIRes) = {
+	def convertTestCaseDetail(testcaseDetail:APIConfig, apiRes:API) = {
 	  var map = Map[String,String]()
 	  map += "id" -> testcaseDetail._id
 	  map += "params" -> testcaseDetail.params
@@ -27,7 +27,7 @@ object JSONUtil {
 	  Json.toJson(map)
 	}
 	
-	def convertMobionTestCase(mobionTestCase:MobionTestCase) = {
+	def convertMobionTestCase(mobionTestCase:TestCase) = {
 	  var map = Map[String,String]()
 	  map += "id" -> mobionTestCase._id
 	  map += "name" -> mobionTestCase.name

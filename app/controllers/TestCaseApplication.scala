@@ -12,10 +12,17 @@ import views.html.testcase_list
 
 object TestCaseApplication extends AbstractController {
 
+  //return list test case with id and name
   def getTestcases(start: Int, size: Int) = Action {
-	 var list = testCaseService.getTestCaseList(start, size);
+    var list = testCaseService.getTestCaseList(start, size);
     println(list);
-	 Ok(views.html.testcase_list(list))
+    Ok(views.html.testcase_list(list))
   }
   
+  //get test case detail (with apis)
+  def getTestCase(id: String) = Action { request =>
+    var value = myService.getTestCaseDetailById(id)
+    Ok(value)
+  }
+
 }

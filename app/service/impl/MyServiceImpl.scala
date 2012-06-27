@@ -3,12 +3,6 @@ package service.impl
 import scala.reflect.BeanInfo
 import com.mongodb.casbah.commons.MongoDBObject
 import dispatch.json.Js
-import models.Bean.APIRes
-import models.Bean.MobionTestCase
-import models.Bean.TestCaseDetail
-import models.Dao.APIResDAO
-import models.Dao.MobionTestcaseDAO
-import models.Dao.TestCaseDetailDAO
 import models.FunctionJSON
 import models.TestCaseJSON
 import play.api.libs.json.JsObject
@@ -20,11 +14,13 @@ import util.APIRequestUtils
 import util.ConfigUtils
 import util.JSONUtil
 import util.StringUtil
+import service.AbstractService
+import models.Bean.APIConfig
+import models.Bean.API
+import models.Bean.TestCase
 
-class MyServiceImpl extends MyService {
-  var mobionTestCaseDao = new MobionTestcaseDAO
-  var testCaseDetailDao = new TestCaseDetailDAO
-  var apiRestDao        = new APIResDAO
+class MyServiceImpl extends MyService with AbstractService{
+  
   def go {
     println("==== GO GO GO ====")
   }
@@ -38,11 +34,11 @@ class MyServiceImpl extends MyService {
 
   def addTestCase(requestBody:String):String = {	
 	var testCase = SJSON.in[TestCaseJSON](Js(requestBody))
-	var mobionTestCase = new MobionTestCase
+	var TestCase = new TestCase
 	if(StringUtil.isNotBlank(testCase.name)){
-	  mobionTestCase.name =  testCase.name
+	  TestCase.name =  testCase.name
 	}else{
-	   mobionTestCase.name = ""
+	   TestCase.name = ""
 	}
 	var listIdDetail = List[String]()
 	if(testCase.functions != null && testCase.functions.length > 0){
@@ -50,22 +46,22 @@ class MyServiceImpl extends MyService {
 	  	listIdDetail::=saveTestCaseDetail("",function,StringUtil.TestCaseOperation.ADD)
 	  })	  
 	}
-	mobionTestCase.functions = listIdDetail
-	mobionTestCaseDao.save(mobionTestCase)
-    mobionTestCase._id
+	TestCase.functions = listIdDetail
+	testCaseDAO.save(TestCase)
+    TestCase._id
   }
   
   def getListTestCaseDetail(idMobionTestCase:String) = {
-    var mobionTestCase = mobionTestCaseDao.findByStringId(idMobionTestCase)
+    var TestCase = testCaseDAO.findByStringId(idMobionTestCase)
     var set = Set[JsValue]()
-    if (mobionTestCase != None) {
-      var functions = mobionTestCase.get.functions
+    if (TestCase != None) {
+      var functions = TestCase.functions
       functions.foreach(id => {
-        var function = testCaseDetailDao.findByStringId(id)
+        var function = apiConfigDAO.findByStringId(id)
         if (function != None) {
-          var apiRes = apiRestDao.findByStringId(function.get.idAPIRes)
+          var apiRes = apiDAO.findByStringId(function.idAPIRes)
           if(apiRes != None){
-        	  set += JSONUtil.convertTestCaseDetail(function.get,apiRes.get)            
+        	  set += JSONUtil.convertTestCaseDetail(function,apiRes)            
           }
         }
       })
@@ -73,7 +69,7 @@ class MyServiceImpl extends MyService {
     Json.toJson(set)
   }
   
-  def callOneAPI(testCaseDetail:TestCaseDetail,apiRes:APIRes){
+  def callOneAPI(testCaseDetail:APIConfig,apiRes:API){
     var fullPath = StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH + apiRes.restPath + apiRes.path
     val json: JsValue = Json.parse(testCaseDetail.params)
     val jsonObj  = (json \ "params").asInstanceOf[JsObject]
@@ -95,7 +91,7 @@ class MyServiceImpl extends MyService {
   def getListMobionTestCase(start:String,size:String) = {
     var istart: Int = start.toInt
     var isize: Int = size.toInt
-    var list = mobionTestCaseDao.findLimit(istart, isize)
+    var list = testCaseDAO.findLimit(istart, isize)
     var set = Set[JsValue]()
     list.foreach(item =>
       {
@@ -104,18 +100,18 @@ class MyServiceImpl extends MyService {
     Json.toJson(set)
   }
   
-  def getTestCaseList(start:String,size:String) : List[MobionTestCase]= {
+  def getTestCaseList(start:String,size:String) : List[TestCase]= {
     var istart: Int = start.toInt
     var isize: Int = size.toInt
-    return mobionTestCaseDao.findLimit(istart, isize)
+    return testCaseDAO.findLimit(istart, isize)
   }
 
   def removeTestCase(body: String) {
     val json = Json.parse(body)
     val id = (json \ "id").as[String]
-    var mobionTestCase = mobionTestCaseDao.findByStringId(id)
-    if (mobionTestCase != None) {
-      mobionTestCaseDao.remove(mobionTestCase.get)
+    var TestCase = testCaseDAO.findByStringId(id)
+    if (TestCase != None) {
+      testCaseDAO.remove(TestCase)
     }
   }
   
@@ -126,27 +122,27 @@ class MyServiceImpl extends MyService {
     var indexMethod = pathMethod.lastIndexOf("__")
     var path = pathMethod.substring(0, indexMethod)
     var method = pathMethod.substring(indexMethod + 2)
-    var apiResNew = new APIRes(idAPI, path, restPath, method, "")
-    apiRestDao.save(apiResNew)
+    var apiResNew = new API(idAPI, path, restPath, method, "")
+    apiDAO.save(apiResNew)
   }
   
   private def saveTestCaseDetail(testCaseId:String,function:FunctionJSON,operartion:Int) = {
     var idAPI: String = function.id
     var param: String = function.param
-    var testCaseDetail = new TestCaseDetail
+    var testCaseDetail = new APIConfig
     testCaseDetail.idAPIRes = idAPI
     testCaseDetail.params = param
     if(StringUtil.TestCaseOperation.REMOVE.equals(operartion)){
-        mobionTestCaseDao.pullFromField(testCaseId, "functions", testCaseDetail._id)
+        testCaseDAO.pullFromField(testCaseId, "functions", testCaseDetail._id)
     }
     if(StringUtil.TestCaseOperation.EDIT.equals(operartion)){
-        mobionTestCaseDao.pushToField(testCaseId, "functions", testCaseDetail._id)
+        testCaseDAO.pushToField(testCaseId, "functions", testCaseDetail._id)
     }
-    var apiRes = apiRestDao.findOne(MongoDBObject("_id" -> idAPI))
+    var apiRes = apiDAO.findOne(MongoDBObject("_id" -> idAPI))
     if (apiRes.isEmpty) {
       saveAPIRes(idAPI)
     }
-    testCaseDetailDao.save(testCaseDetail)
+    apiConfigDAO.save(testCaseDetail)
     testCaseDetail._id
   }
   
@@ -156,8 +152,8 @@ class MyServiceImpl extends MyService {
 	if(StringUtil.isBlank(testCaseId)){
 	  return
 	}
-	var mobionTestCase = mobionTestCaseDao.findByStringId(testCaseId)
-	if(mobionTestCase == None){
+	var TestCase = testCaseDAO.findByStringId(testCaseId)
+	if(TestCase == None){
 	  return
 	}
     
@@ -172,19 +168,19 @@ class MyServiceImpl extends MyService {
     val json = Json.parse(body)
     val testCaseId = (json \ "test_case_id").as[String]
     val functionId = (json \ "function_id").as[String]
-    var mobionTestCase = mobionTestCaseDao.findByStringId(testCaseId)
-    if (mobionTestCase != None) {
-      mobionTestCaseDao.pushToField(testCaseId,"functions",functionId)
+    var TestCase = testCaseDAO.findByStringId(testCaseId)
+    if (TestCase != None) {
+      testCaseDAO.pushToField(testCaseId,"functions",functionId)
     }
   }
   
   def getTestCaseDetailById(id:String) = {
-    var function = testCaseDetailDao.findByStringId(id)
+    var function = apiConfigDAO.findByStringId(id)
     var jsonObj = Json.toJson("")
     if (function != None) {
-      var apiRes = apiRestDao.findByStringId(function.get.idAPIRes)
+      var apiRes = apiDAO.findByStringId(function.idAPIRes)
       if (apiRes != None) {
-         jsonObj = JSONUtil.convertTestCaseDetail(function.get, apiRes.get)
+         jsonObj = JSONUtil.convertTestCaseDetail(function, apiRes)
       }
     }
     jsonObj

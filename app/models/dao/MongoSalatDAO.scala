@@ -1,4 +1,4 @@
-package models.Dao
+package models.dao
 import com.mongodb.casbah.commons.MongoDBObject
 import com.mongodb.casbah.query.FluidQueryBarewordOps
 import com.mongodb.casbah.MongoConnection
@@ -12,7 +12,8 @@ class MongoSalatDAO[ObjectType <: AnyRef, ID <: Any](collectionName: String)(imp
 	 find(MongoDBObject())
   }
   def findByStringId(id:String) = {
-    findOne(MongoDBObject("_id" -> id))
+    findOne(MongoDBObject("_id" -> id)).get
+    
   }
   def findLimit(start:Int,size:Int) : List[ObjectType] = {
     var c = find(MongoDBObject()).skip(start).limit(size)
