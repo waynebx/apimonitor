@@ -1,9 +1,7 @@
 package service.impl
 
 import scala.reflect.BeanInfo
-
 import com.mongodb.casbah.commons.MongoDBObject
-
 import dispatch.json.Js
 import models.testcase.API
 import models.testcase.APIConfig
@@ -20,40 +18,42 @@ import util.APIRequestUtils
 import util.ConfigUtils
 import util.JSONUtil
 import util.StringUtil
+import models.APIResource
 
-class MyServiceImpl extends MyService with AbstractService{
-  
+class MyServiceImpl extends MyService with AbstractService {
+	
+  def parameterService = new ParameterServiceImpl
   def go {
     println("==== GO GO GO ====")
   }
-  def getListApi:String = {
-	 return APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH +  StringUtil.slash + "resources.json",null);
-  }
-  
-  def getListAPIInRes(rest:String):String = {
-	 return APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH + StringUtil.slash + rest + StringUtil.slash + "list_api",null);
+  def getListApi: String = {
+    return APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH + StringUtil.slash + "resources.json", null);
   }
 
-  def addTestCase(requestBody:String):String = {	
-	var testCaseJSON = SJSON.in[TestCaseJSON](Js(requestBody))
-	var testCase = new TestCase
-	if(StringUtil.isNotBlank(testCase.name)){
-	  testCase.name =  testCaseJSON.name
-	}else{
-	   testCase.name = ""
-	}
-	var listIdDetail = List[String]()
-	if(testCaseJSON.functions != null && testCaseJSON.functions.length > 0){
-	  testCaseJSON.functions.foreach(function => {
-	  	listIdDetail::=saveAPIConfig("",function,StringUtil.TestCaseOperation.ADD)
-	  })	  
-	}
-	testCase.apiConfigIds = listIdDetail
-	testCaseDAO.save(testCase)
+  def getListAPIInRes(rest: String): String = {
+    return APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH + StringUtil.slash + rest + StringUtil.slash + "list_api", null);
+  }
+
+  def addTestCase(requestBody: String): String = {
+    var testCaseJSON = SJSON.in[TestCaseJSON](Js(requestBody))
+    var testCase = new TestCase
+    if (StringUtil.isNotBlank(testCase.name)) {
+      testCase.name = testCaseJSON.name
+    } else {
+      testCase.name = ""
+    }
+    var listIdDetail = List[String]()
+    if (testCaseJSON.functions != null && testCaseJSON.functions.length > 0) {
+      testCaseJSON.functions.foreach(function => {
+        listIdDetail ::= saveAPIConfig("", function, StringUtil.TestCaseOperation.ADD)
+      })
+    }
+    testCase.apiConfigIds = listIdDetail
+    testCaseDAO.save(testCase)
     testCase._id
   }
-  
-  def getListTestCaseDetail(idMobionTestCase:String) = {
+
+  def getListTestCaseDetail(idMobionTestCase: String) = {
     var testCase = testCaseDAO.findById(idMobionTestCase)
     var set = Set[JsValue]()
     if (testCase != None) {
@@ -62,35 +62,35 @@ class MyServiceImpl extends MyService with AbstractService{
         var function = apiConfigDAO.findById(id)
         if (function != None) {
           var api = apiDAO.findById(function.apiId)
-          if(api != None){
-        	  set += JSONUtil.convertAPIConfig(function,api)            
+          if (api != None) {
+            set += JSONUtil.convertAPIConfig(function, api)
           }
         }
       })
     }
     Json.toJson(set)
   }
-  
-  def callOneAPI(testCaseDetail:APIConfig,api:API){
+
+  def callOneAPI(testCaseDetail: APIConfig, api: API) {
     var fullPath = StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH + api.restPath + api.path
     val json: JsValue = Json.parse(testCaseDetail.params)
-    val jsonObj  = (json \ "params").asInstanceOf[JsObject]
-    var map = Map[String,String]()
-    if(jsonObj != null && jsonObj.keys != null){
+    val jsonObj = (json \ "params").asInstanceOf[JsObject]
+    var map = Map[String, String]()
+    if (jsonObj != null && jsonObj.keys != null) {
       jsonObj.keys.foreach(key =>
-      {
-           map += key -> (jsonObj \key).as[String]
-      })
+        {
+          map += key -> (jsonObj \ key).as[String]
+        })
     }
-    if(StringUtil.WebMethod.GET.equals(api.method)){
-      APIRequestUtils.getWS(fullPath,map)
+    if (StringUtil.WebMethod.GET.equals(api.method)) {
+      APIRequestUtils.getWS(fullPath, map)
     }
-    if(StringUtil.WebMethod.POST.equals(api.method)){
-      APIRequestUtils.post(fullPath,map)
+    if (StringUtil.WebMethod.POST.equals(api.method)) {
+      APIRequestUtils.post(fullPath, map)
     }
   }
-  
-  def getListMobionTestCase(start:String,size:String) = {
+
+  def getListMobionTestCase(start: String, size: String) = {
     var istart: Int = start.toInt
     var isize: Int = size.toInt
     var list = testCaseDAO.findLimit(istart, isize)
@@ -101,8 +101,8 @@ class MyServiceImpl extends MyService with AbstractService{
       })
     Json.toJson(set)
   }
-  
-  def getTestCaseList(start:String,size:String) : List[TestCase]= {
+
+  def getTestCaseList(start: String, size: String): List[TestCase] = {
     var istart: Int = start.toInt
     var isize: Int = size.toInt
     return testCaseDAO.findLimit(istart, isize)
@@ -116,8 +116,8 @@ class MyServiceImpl extends MyService with AbstractService{
       testCaseDAO.remove(testCase)
     }
   }
-  
-  private def saveAPIRes(idAPI:String){
+
+  private def saveAPIRes(idAPI: String) {
     var index = idAPI.lastIndexOf("/")
     var pathMethod: String = idAPI.substring(index)
     var restPath = idAPI.substring(0, index)
@@ -127,18 +127,18 @@ class MyServiceImpl extends MyService with AbstractService{
     var apiResNew = new API(idAPI, path, restPath, method, "")
     apiDAO.save(apiResNew)
   }
-  
-  private def saveAPIConfig(testCaseId:String,function:FunctionJSON,operartion:Int) = {
+
+  private def saveAPIConfig(testCaseId: String, function: FunctionJSON, operartion: Int) = {
     var idAPI: String = function.id
     var param: String = function.param
     var testCaseDetail = new APIConfig
     testCaseDetail.apiId = idAPI
     testCaseDetail.params = param
-    if(StringUtil.TestCaseOperation.REMOVE.equals(operartion)){
-        testCaseDAO.pullFromField(testCaseId, "functions", testCaseDetail._id)
+    if (StringUtil.TestCaseOperation.REMOVE.equals(operartion)) {
+      testCaseDAO.pullFromField(testCaseId, "functions", testCaseDetail._id)
     }
-    if(StringUtil.TestCaseOperation.EDIT.equals(operartion)){
-        testCaseDAO.pushToField(testCaseId, "functions", testCaseDetail._id)
+    if (StringUtil.TestCaseOperation.EDIT.equals(operartion)) {
+      testCaseDAO.pushToField(testCaseId, "functions", testCaseDetail._id)
     }
     var api = apiDAO.findOne(MongoDBObject("_id" -> idAPI))
     if (api.isEmpty) {
@@ -147,45 +147,60 @@ class MyServiceImpl extends MyService with AbstractService{
     apiConfigDAO.save(testCaseDetail)
     testCaseDetail._id
   }
-  
+
   def removeFunctionInTestCase(body: String) {
-	var testCaseJSON = SJSON.in[TestCaseJSON](Js(body))
-	val testCaseId = testCaseJSON.id
-	if(StringUtil.isBlank(testCaseId)){
-	  return
-	}
-	var testCase = testCaseDAO.findById(testCaseId)
-	if(testCase == None){
-	  return
-	}
-    
-	if(testCase.apiConfigIds != null && testCase.apiConfigIds.length > 0){
-	  testCaseJSON.functions.foreach(function => {
-		  saveAPIConfig(testCaseId,function,StringUtil.TestCaseOperation.REMOVE)
-	  })	  
-	}
+    var testCaseJSON = SJSON.in[TestCaseJSON](Js(body))
+    val testCaseId = testCaseJSON.id
+    if (StringUtil.isBlank(testCaseId)) {
+      return
+    }
+    var testCase = testCaseDAO.findById(testCaseId)
+    if (testCase == None) {
+      return
+    }
+
+    if (testCase.apiConfigIds != null && testCase.apiConfigIds.length > 0) {
+      testCaseJSON.functions.foreach(function => {
+        saveAPIConfig(testCaseId, function, StringUtil.TestCaseOperation.REMOVE)
+      })
+    }
   }
-  
+
   def addFunctionInTestCase(body: String) {
     val json = Json.parse(body)
     val testCaseId = (json \ "test_case_id").as[String]
     val functionId = (json \ "function_id").as[String]
     var testCase = testCaseDAO.findById(testCaseId)
     if (testCase != None) {
-      testCaseDAO.pushToField(testCaseId,"functions",functionId)
+      testCaseDAO.pushToField(testCaseId, "functions", functionId)
     }
   }
-  
-  def getTestCaseDetailById(id:String) = {
+
+  def getTestCaseDetailById(id: String) = {
     var function = apiConfigDAO.findById(id)
     var jsonObj = Json.toJson("")
     if (function != None) {
       var api = apiDAO.findById(function.apiId)
       if (api != None) {
-         jsonObj = JSONUtil.convertAPIConfig(function, api)
+        jsonObj = JSONUtil.convertAPIConfig(function, api)
       }
     }
     jsonObj
   }
   
+  def buildAPIAndParameter(apiResource:APIResource){
+	  if(apiResource.apis != None){
+	    apiResource.apis.foreach(api =>{
+	      if(api.operations != None){
+	        api.operations.foreach(operation =>{
+	          if(operation.parameters != None){
+	            operation.parameters.foreach(param =>{
+	              	parameterService.saveParameterObj(param,operation._id)
+	            })
+	          }
+	        })
+	      }
+	    })
+	  }
+  }
 }

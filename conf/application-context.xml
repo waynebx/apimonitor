@@ -16,5 +16,7 @@
     <bean id="testCaseDAO" class="models.dao.TestCaseDAO"/>
     <bean id="apiDAO" class="models.dao.APIDAO"/>
     <bean id="apiConfigDAO" class="models.dao.APIConfigDAO"/>
+    <bean id="apiParameterDAO" class="models.dao.APIParameterDAO"/>
+    
 
 </beans>

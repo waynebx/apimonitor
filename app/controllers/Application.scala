@@ -45,45 +45,45 @@ object Application extends AbstractController {
   }
 
   def getListAPIInRest(rest: String) = Action {
-    Ok(myService.getListAPIInRes(rest)).as("text/plain")
+    filterResponse(Ok(myService.getListAPIInRes(rest)).as("text/plain"))
   }
 
   def addTestCase = Action(parse.text) { request =>
     var id = myService.addTestCase(request.body)
-    Ok(Json.toJson(
-      Map("status" -> "success", "id" -> id)))
+    filterResponse(Ok(Json.toJson(
+      Map("status" -> "success", "id" -> id))))
   }
 
   def getListTestCaseDetail(id: String) = Action { request =>
     var value = myService.getListTestCaseDetail(id)
-    Ok(value)
+    filterResponse(Ok(value))
   }
 
   def getListMobionTestCase(start: String, size: String) = Action { request =>
     var value = myService.getListMobionTestCase(start, size)
-    Ok(value)
+    filterResponse(Ok(value))
   }
   
   def removeTestCase = Action(parse.text) {request =>
   	 myService.removeTestCase(request.body)
-     Ok(Json.toJson(
-      Map("status" -> "success")))
+     filterResponse(Ok(Json.toJson(
+      Map("status" -> "success"))))
   }
   
   def addFunctionInTestCase = Action(parse.text) {request =>
   	 var id =myService.addFunctionInTestCase(request.body)
-     Ok(Json.toJson(
-      Map("status" -> "success")))
+     filterResponse(Ok(Json.toJson(
+      Map("status" -> "success"))))
   }
   
   def removeFunctionInTestCase = Action(parse.text) {request =>
   	 var id =myService.removeFunctionInTestCase(request.body)
-     Ok(Json.toJson(
-      Map("status" -> "success")))
+     filterResponse(Ok(Json.toJson(
+      Map("status" -> "success"))))
   }
 
   def getTestCaseDetailById(id: String) = Action { request =>
     var value = myService.getTestCaseDetailById(id)
-    Ok(value)
+    filterResponse(Ok(value))
   }
 }

@@ -1,15 +1,17 @@
 package models
 import scala.reflect.BeanInfo
+import models.testcase.BaseBean
+import util.StringUtil
 
-@BeanInfo case class APIParameter(
+@BeanInfo case class APIParameter(_id:String=StringUtil.generateStringTimeStamp(),
     name: String, description : String, required : Boolean,
     dataType: String, allowMultiple : Boolean, paramType : String,
-    readOnly: Boolean) {
+    readOnly: Boolean,var apiId:String) extends BaseBean(_id){
   
   def this() = {
-    this("","",false,"",false,"", false);
+    this(StringUtil.generateStringTimeStamp(),"","",false,"",false,"", false,"");
   }
-  
-  
-
+}
+object APIParameter{
+  def getTableName = "Parameter"
 }
