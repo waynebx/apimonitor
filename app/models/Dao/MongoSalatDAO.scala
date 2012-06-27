@@ -14,8 +14,10 @@ class MongoSalatDAO[ObjectType <: AnyRef, ID <: Any](collectionName: String)(imp
   def findByStringId(id:String) = {
     findOne(MongoDBObject("_id" -> id))
   }
-  def findLimit(start:Int,size:Int) = {
-    find(MongoDBObject()).skip(start).limit(size)
+  def findLimit(start:Int,size:Int) : List[ObjectType] = {
+    var c = find(MongoDBObject()).skip(start).limit(size)
+
+    return c.toList
   }
   
   def pushToField(id:String,field:String,value:String){

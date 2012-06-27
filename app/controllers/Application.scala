@@ -13,7 +13,7 @@ object Application extends AbstractController {
 
   def index = Action {
 
-    Ok(views.html.index())
+    filterResponse(Ok(views.html.index()))
   }
   
   def getapi(url: String) = Action {
@@ -41,7 +41,7 @@ object Application extends AbstractController {
 
   def getListAPI = Action {
 
-    Ok(myService.getListApi).as("text/plain")
+    filterResponse(Ok(myService.getListApi).as("text/plain"))
   }
 
   def getListAPIInRest(rest: String) = Action {

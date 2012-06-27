@@ -103,6 +103,12 @@ class MyServiceImpl extends MyService {
       })
     Json.toJson(set)
   }
+  
+  def getTestCaseList(start:String,size:String) : List[MobionTestCase]= {
+    var istart: Int = start.toInt
+    var isize: Int = size.toInt
+    return mobionTestCaseDao.findLimit(istart, isize)
+  }
 
   def removeTestCase(body: String) {
     val json = Json.parse(body)

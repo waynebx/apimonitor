@@ -11,5 +11,6 @@
 
     <!-- A simple bean, with a simple name -->
     <bean id="myService" class="service.impl.MyServiceImpl"/>
+    <bean id="testCaseService" class="service.impl.TestCaseServiceImpl"/>
 
 </beans>

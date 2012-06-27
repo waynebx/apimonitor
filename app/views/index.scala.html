@@ -31,38 +31,33 @@
 
 
 <body>
+	<form id='api_selector'>
+		<div class='input'>
+			<input placeholder="http://api.sgcharo.com/mobion" id="input_baseUrl"
+				name="baseUrl" type="text" value= />
+		</div>
+		<div class='input'>
+			<input placeholder="token" id="input_apiKey" name="apiKey"
+				type="text" />
+		</div>
+		<div class='input'>
+			<input placeholder="api name" id="filter" name="filter" type="text" />
+		</div>
+		<div class='input'>
+			<a id="explore" href="#">Explore</a>
+		</div>
+	</form>
 	<div class="menu">
 		<ul>
-			<li id="apis"><a href="#">APIs</a></li>
-			<li id="testcase"><a href="#">Test Case</a></li>
+			<li id="api_bt"><a href="#">APIs</a></li>
+			<li id="testcase_bt"><a href="#">Test Case</a></li>
 		</ul>
 	</div>
-	
-	<div id="testcase_list" style="display: none">
-		<input  class="thickbox" type="button" value="Add Api"  alt="#TB_inline?height=600&width=1040&inlineId=resources_list"/>
-		
+	<div id="testcase_tab" style="display: none">
+		<div id="testcase_list"></div>
+		<input class="thickbox" type="button" value="Add Api" alt="#TB_inline?height=600&width=1040&inlineId=resources_list" />
 	</div>
-	<div id="api_list">
-		<form id='api_selector'>
-			<div class='input'>
-				<input placeholder="http://api.sgcharo.com/mobion"
-					id="input_baseUrl" name="baseUrl" type="text" value= />
-			</div>
-			<div class='input'>
-				<input placeholder="token" id="input_apiKey" name="apiKey"
-					type="text" />
-			</div>
-			<div class='input'>
-				<input placeholder="api name" id="filter" name="filter" type="text" />
-			</div>
-			<div class='input'>
-				<a id="explore" href="#">Explore</a>
-			</div>
-		</form>
-		
-		<div class='container' id='resources_container'>
-			<ul id='resources'></ul>
-		</div>
+	<div id="api_tab">	
 		<div id="content_message"></div>
 
 

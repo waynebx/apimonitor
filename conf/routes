@@ -5,6 +5,8 @@
 # Home page
 
 GET    /                                      controllers.Application.index
+GET    /getapi                                controllers.Application.getapi(url : String)
+
 GET    /get_apis_list                         controllers.Application.getListAPI
 GET    /get_apis_from                         controllers.Application.getListAPIInRest(rest:String)
 POST   /add_test_case                         controllers.Application.addTestCase
@@ -13,6 +15,8 @@ GET    /get_list_mobion_test_case             controllers.Application.getListMob
 GET    /get_test_case_detail_by_id            controllers.Application.getTestCaseDetailById(id:String)
 POST   /add_function_to_test_case             controllers.Application.addFunctionInTestCase
 POST   /remove_function_from_test_case        controllers.Application.removeFunctionInTestCase
+
+GET		/testcases							controllers.TestCaseApplication.getTestcases(start: Int = 0, size: Int = 10)
 
 
 

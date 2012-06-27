@@ -1,0 +1,4 @@
+@(resources : List[models.APIResource])
+<ul id="resources">
+	@for(res <- resources) { @resource(res) }
+</ul>

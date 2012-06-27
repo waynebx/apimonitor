@@ -958,4 +958,7 @@ body {
               overflow-y: auto; }
 
               
-              
+ .menu ul li{
+ 	display: inline-block;
+ 	padding: 10px;
+ }
