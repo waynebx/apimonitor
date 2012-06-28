@@ -42,7 +42,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     testCaseDAO.removeById(id,WriteConcern.SAFE)
   }
   
-/*  def addAPIConfigs2TestCase(testCaseId: String, apiConfig: APIConfig, operartion: Int) = {
+ def addAPIConfigs2TestCase(testCaseId: String, apiConfig: APIConfig, operartion: Int) = {
     var api = apiDAO.findById(apiConfig.apiId);
     if (api) {
       "Error" // Throw Error Code
@@ -59,7 +59,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     apiConfigDAO.save(apiConfig)
     
     apiConfig.id
-  }*/
+  }
 
   def getAPIConfigs(testCaseId: String): List[API] = {
     var testCase = testCaseDAO.findById(testCaseId)
