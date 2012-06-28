@@ -12,6 +12,7 @@ import service.TestCaseService
 import sjson.json.Serializer.SJSON
 import util.StringUtil
 import dispatch.json.JsValue
+import models.APIOperation
 
 class TestCaseServiceImpl extends TestCaseService with AbstractService {
 
@@ -32,7 +33,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     }
     
     testCase.apiConfigIds = apiConfigIds.toList
-    //testCaseDAO.save(testCase)
+    testCaseDAO.save(testCase)
     return testCase
   }
 
@@ -45,19 +46,19 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     }
   }
 
-  def getAPIConfigs(testCaseId: String): List[API] = {
+  def getAPIConfigs(testCaseId: String): List[APIOperation] = {
     var testCase = testCaseDAO.findById(testCaseId)
-    var list = new ListBuffer[API]();
+    var list = new ListBuffer[APIOperation]();
 
     if (testCase != null) {
       var apiConfigIds = testCase.apiConfigIds
-
+    		  
       apiConfigIds.foreach(id => {
         var apiConfig = apiConfigDAO.findById(id)
         if (apiConfig != null) {
-          var api = apiDAO.findById(apiConfig.apiId)
+          var api = apiOperationDAO.findById(apiConfig.apiId)
           if (api != null) {
-            list += api;
+            list += api
           }
         }
       })
@@ -65,20 +66,9 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
 
     return list.toList;
   }
-
-  private def saveAPIRes(idAPI: String) {
-    var index = idAPI.lastIndexOf("/")
-    var pathMethod: String = idAPI.substring(index)
-    var restPath = idAPI.substring(0, index)
-    var indexMethod = pathMethod.lastIndexOf("__")
-    var path = pathMethod.substring(0, indexMethod)
-    var method = pathMethod.substring(indexMethod + 2)
-    var apiResNew = new API(idAPI, path, restPath, method, "")
-    apiDAO.save(apiResNew)
-  }
   
   private def saveAPIConfig(testCaseId: String, apiConfig: APIConfig, operartion: Int) = {
-    var api = apiDAO.findOne(MongoDBObject("_id" -> apiConfig.apiId))
+    var api = apiOperationDAO.findOne(MongoDBObject("_id" -> apiConfig.apiId))
     if (api.isEmpty) {
       "Error" // Throw Error Code
       //      saveAPIRes(apiId)

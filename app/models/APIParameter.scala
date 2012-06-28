@@ -7,10 +7,10 @@ import com.novus.salat.annotations._
 @BeanInfo case class APIParameter(@Key("_id") var id:String,
     name: String, description : String, required : Boolean,
     dataType: String, allowMultiple : Boolean, paramType : String,
-    readOnly: Boolean,var apiId:String){
+    readOnly: Boolean,var apiId:String,@Ignore var value:String){
   
   def this() = {
-    this(StringUtil.generateStringTimeStamp(),"","",false,"",false,"", false,"");
+    this(StringUtil.generateStringTimeStamp(),"","",false,"",false,"", false,"","");
   }
 }
 object APIParameter{

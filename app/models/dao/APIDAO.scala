@@ -5,4 +5,4 @@ import com.novus.salat.global._
 import play.api.libs.json.JsObject
 import models.testcase.API
 
-class APIDAO extends MongoSalatDAO[API,String](API.getTableName)
+//class APIDAO extends MongoSalatDAO[API,String](API.getTableName)

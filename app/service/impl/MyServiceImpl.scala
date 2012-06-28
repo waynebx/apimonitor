@@ -61,7 +61,7 @@ class MyServiceImpl extends MyService with AbstractService {
       functions.foreach(id => {
         var function = apiConfigDAO.findById(id)
         if (function != None) {
-          var api = apiDAO.findById(function.apiId)
+          var api = apiOperationDAO.findById(function.apiId)
           if (api != None) {
             set += JSONUtil.convertAPIConfig(function, api)
           }
@@ -117,17 +117,6 @@ class MyServiceImpl extends MyService with AbstractService {
     }
   }
 
-  private def saveAPIRes(idAPI: String) {
-    var index = idAPI.lastIndexOf("/")
-    var pathMethod: String = idAPI.substring(index)
-    var restPath = idAPI.substring(0, index)
-    var indexMethod = pathMethod.lastIndexOf("__")
-    var path = pathMethod.substring(0, indexMethod)
-    var method = pathMethod.substring(indexMethod + 2)
-    var apiResNew = new API(idAPI, path, restPath, method, "")
-    apiDAO.save(apiResNew)
-  }
-
   private def saveAPIConfig(testCaseId: String, function: FunctionJSON, operartion: Int) = {
     var idAPI: String = function.id
     var param: String = function.param
@@ -140,10 +129,10 @@ class MyServiceImpl extends MyService with AbstractService {
     if (StringUtil.TestCaseOperation.EDIT.equals(operartion)) {
       testCaseDAO.pushToField(testCaseId, "functions", testCaseDetail.id)
     }
-    var api = apiDAO.findOne(MongoDBObject("_id" -> idAPI))
+/*    var api = apiDAO.findOne(MongoDBObject("_id" -> idAPI))
     if (api.isEmpty) {
       saveAPIRes(idAPI)
-    }
+    }*/
     apiConfigDAO.save(testCaseDetail)
     testCaseDetail.id
   }
@@ -180,7 +169,7 @@ class MyServiceImpl extends MyService with AbstractService {
     var function = apiConfigDAO.findById(id)
     var jsonObj = Json.toJson("")
     if (function != None) {
-      var api = apiDAO.findById(function.apiId)
+      var api = apiOperationDAO.findById(function.apiId)
       if (api != None) {
         jsonObj = JSONUtil.convertAPIConfig(function, api)
       }

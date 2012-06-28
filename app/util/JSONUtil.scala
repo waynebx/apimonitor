@@ -4,6 +4,7 @@ import models.testcase.APIConfig
 import models.testcase.API
 import play.api.libs.json.Json
 import models.testcase.TestCase
+import models.APIOperation
 
 
 object JSONUtil {
@@ -17,13 +18,13 @@ object JSONUtil {
 	  list
 	}
 	
-	def convertAPIConfig(testcaseDetail:APIConfig, api:API) = {
+	def convertAPIConfig(testcaseDetail:APIConfig, api:APIOperation) = {
 	  var map = Map[String,String]()
 	  map += "id" -> testcaseDetail.id
 	  map += "params" -> testcaseDetail.params
 	  map += "path" -> api.path
-	  map += "resource_path" -> api.restPath
-	  map += "method" -> api.method
+	  map += "resource_path" -> api.resPath
+	  map += "method" -> api.httpMethod
 	  Json.toJson(map)
 	}
 	
