@@ -5,6 +5,7 @@ import models.testcase.API
 import play.api.libs.json.Json
 import models.testcase.TestCase
 import models.APIOperation
+import play.api.libs.json.JsValue
 
 
 object JSONUtil {
@@ -33,5 +34,22 @@ object JSONUtil {
 	  map += "id" -> testCase.id
 	  map += "name" -> testCase.name
 	  Json.toJson(map)
+	}
+	
+		
+	def parseParamInApiConfig(params:String) = {
+	  var map = Map[String,String]()
+	  if(StringUtil.isBlank(params)){
+	    map
+	  }
+	  var paramObject = Json.parse(params).as[JsObject]
+	  var listKey = getListKeyOfJsonObject(paramObject);
+	  if(listKey.isEmpty){
+	    map
+	  }
+	  listKey.foreach(key =>{
+	    map += key -> (paramObject \ key).as[String]
+	  })
+	  map
 	}
 }

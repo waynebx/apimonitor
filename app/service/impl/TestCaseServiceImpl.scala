@@ -63,26 +63,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     apiConfig.id
   }*/
 
-  def getAPIConfigs(testCaseId: String): List[APIOperation] = {
-    var testCase = testCaseDAO.findById(testCaseId)
-    var list = new ListBuffer[APIOperation]();
 
-    if (testCase != null) {
-      var apiConfigIds = testCase.apiConfigIds
-    		  
-      apiConfigIds.foreach(id => {
-        var apiConfig = apiConfigDAO.findById(id)
-        if (apiConfig != null) {
-          var api = apiOperationDAO.findById(apiConfig.apiId)
-          if (api != null) {
-            list += api
-          }
-        }
-      })
-    }
-
-    return list.toList;
-  }
   
   private def saveAPIConfig(testCaseId: String, apiConfig: APIConfig, operartion: Int) = {
     var api = apiOperationDAO.findOne(MongoDBObject("_id" -> apiConfig.apiId))
