@@ -20,8 +20,20 @@ object TestCaseApplication extends AbstractController {
 
   def addTestCase = Action(parse.json) { request =>
     var testCase = testCaseService.addTestCase(Js(request.body.toString()))
-    Ok(views.html.template1(testCase.id,testCase.name,"testcase",null))
-  }
+    
+    Ok(views.html.testcase(testCase.id,testCase.name))
 
+  }
+  
+  def deleteTestCase(id : String) = Action {
+    testCaseService.deleteTestCase(id);
+    Ok("OK");
+    
+  }
+  
+/*  def addAPI2TestCase = Action(parse.json){request =>
+    
+  }
+*/
 }
 
