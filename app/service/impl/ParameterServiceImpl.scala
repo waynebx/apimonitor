@@ -23,6 +23,7 @@ import models.APIParameter
 
 class ParameterServiceImpl extends ParameterService with AbstractService {
   def saveParameterObj(param:APIParameter,apiId:String){
+    param.id = apiId + "__" + param.name
     param.apiId = apiId
     apiParameterDAO.save(param)
   }
