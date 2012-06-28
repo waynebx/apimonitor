@@ -4,8 +4,8 @@ _type = resource
 _type = testcase	
 **@
 
-@(id : String, name : String,_type : String)
-<li class='@_type' id="@_type'_'@id">
+@(id : String, name : String,_type : String, res : models.APIResource)
+<li class='resource' id="@_type&#95@id">
 	<div class='heading'>
 		<h2>
 			<a href='#!/@id'>@name</a>
@@ -24,14 +24,14 @@ _type = testcase
 				id : "@id"
 			}); 
 		</script> 
-	
 	}else{
-		<!-- 		<script type="text/javascript">
-			 new Resource({
-			el : $('#resource_' + '@id'),
-			id : "@id"
-		}); 
-	</script> -->
-			
+		@apis_list(id, res.apis) 
+		<script type="text/javascript">
+			new Resource({
+				el : $('#resource_' + '@id'),
+				id : "@id"
+			});
+		</script>
+		
 	}
 </li>

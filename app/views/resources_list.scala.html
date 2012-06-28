@@ -1,4 +1,10 @@
 @(resources : List[models.APIResource])
 <ul id="resources">
-	@for(res <- resources) { @resource(res) }
+	@for(res <- resources) { 
+		@template1(res.resourcePath.replaceAllLiterally("/","_"), res.resourcePath, "resource",res)
+		
+	}
+	
+	
+	
 </ul>

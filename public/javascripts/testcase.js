@@ -6,7 +6,8 @@ var TestCaseMain = Spine.Controller.sub({
 	elements : {
 		"#add_testcase_bt" : "add_testcase_bt",
 		"#add_testcase_form" : "add_testcase_form",
-		"#testcase_list" : "testcase_list",
+		"#testcase_list #resources" : "testcase_list",
+		
 	},
 
 	events : {
@@ -35,7 +36,7 @@ var TestCaseMain = Spine.Controller.sub({
 			  headers: { "Content-Type": "application/json", "Accept": "application/json, text/plain" },
 			  dataType:"json",
 			  complete: function(res) {
-				  controller.testcase_list.append(res.responseText)
+				  $('#testcase_list #resources').append(res.responseText)
 			  }
 			});
 			

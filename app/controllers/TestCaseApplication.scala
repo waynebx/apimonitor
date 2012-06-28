@@ -24,7 +24,7 @@ object TestCaseApplication extends AbstractController {
     var testCase = testCaseService.addTestCase(Js(request.body.toString()))
     
     
-    Ok(views.html.template1(testCase._id,testCase.name,"testcase"))
+    Ok(views.html.template1(testCase._id,testCase.name,"testcase",null))
     
     
   }
