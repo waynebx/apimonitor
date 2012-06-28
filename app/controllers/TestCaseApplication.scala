@@ -3,6 +3,8 @@ package controllers
 import play.api.libs.json.Json
 import play.api.mvc.Action
 import dispatch.json.Js
+import sjson.json.Serializer.SJSON
+import models.testcase.TestCase
 
 object TestCaseApplication extends AbstractController {
 
@@ -19,7 +21,9 @@ object TestCaseApplication extends AbstractController {
   }
 
   def addTestCase = Action(parse.json) { request =>
-    var testCase = testCaseService.addTestCase(Js(request.body.toString()))
+    
+    var testCase = SJSON.in[TestCase](Js(request.body.toString()))
+    testCase = testCaseService.addTestCase(testCase)
     
     Ok(views.html.testcase(testCase.id,testCase.name))
 
