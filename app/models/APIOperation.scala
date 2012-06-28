@@ -5,7 +5,7 @@ import scala.annotation.target.field
 import models.testcase.BaseBean
 import com.novus.salat.annotations._
 
-@BeanInfo case class APIOperation(@Key("_id") var id:String, @(JSONTypeHint @field)(value = classOf[APIParameter])@Ignore parameters : List[APIParameter] = null,
+@BeanInfo case class APIOperation(@Key("_id") var id:String, @(JSONTypeHint @field)(value = classOf[APIParameter])@Ignore var parameters : List[APIParameter] = null,
     apiParameterIds : List[String] = null,
     httpMethod: String, summary : String, nickname : String, path : String,
     notes: String, responseTypeInternal : String, responseClass : String, apiName : String,resPath:String) extends BaseBean(id){

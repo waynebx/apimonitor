@@ -9,7 +9,7 @@ case class APIConfig(@Key("_id") id:String,var apiId:String="",var status:String
   	def this() ={
   	  this(StringUtil.generateStringTimeStamp(),"","","","")
   	}
-  	 def parseParamToMap(){
+  	 def parseParamToMap() = {
   	      JSONUtil.parseParamInApiConfig(this.params)
   	 }
 }
