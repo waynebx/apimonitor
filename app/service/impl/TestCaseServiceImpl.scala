@@ -21,8 +21,8 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     return testCaseDAO.findLimit(start, size)
   }
 
-  def addTestCase(testCaseJSON : JsValue): TestCase = {
-    var testCase = SJSON.in[TestCase](testCaseJSON)
+  def addTestCase(testCase : TestCase): TestCase = {
+    
     println(testCase.name);
     var apiConfigIds = new ListBuffer[String]
     
@@ -42,7 +42,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     testCaseDAO.removeById(id,WriteConcern.SAFE)
   }
   
- /*def addAPIConfigs2TestCase(testCaseId: String, apiConfig: APIConfig, operartion: Int) = {
+ /*def addAPIConfigs2TestCase(testCaseId: String, apiConfigs: APIConfig, operartion: Int) = {
     var api = apiDAO.findById(apiConfig.apiId);
     if (api) {
       "Error" // Throw Error Code
