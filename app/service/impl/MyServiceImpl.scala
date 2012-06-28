@@ -196,7 +196,6 @@ class MyServiceImpl extends MyService with AbstractService {
 	          if(operation.parameters != None){
 	            apiOperationDAO.save(operation)
 	            operation.parameters.foreach(param =>{
-	                println(param)
 	              	parameterService.saveParameterObj(param,operation.id)
 	            })
 	          }
