@@ -3,11 +3,12 @@ import scala.reflect.BeanInfo
 import sjson.json.JSONTypeHint
 import scala.annotation.target.field
 import models.testcase.BaseBean
+import com.novus.salat.annotations._
 
-@BeanInfo case class APIOperation(_id:String, @(JSONTypeHint @field)(value = classOf[APIParameter]) parameters : List[APIParameter] = null,
+@BeanInfo case class APIOperation(@Key("_id") id:String, @(JSONTypeHint @field)(value = classOf[APIParameter])@Ignore parameters : List[APIParameter] = null,
     apiParameterIds : List[String] = null,
     httpMethod: String, summary : String, nickname : String, path : String,
-    notes: String, responseTypeInternal : String, responseClass : String, apiName : String) extends BaseBean(_id){
+    notes: String, responseTypeInternal : String, responseClass : String, apiName : String) extends BaseBean(id){
   
   def this() = {
     this("",null,null,"","","","","","","","");
@@ -15,5 +16,5 @@ import models.testcase.BaseBean
 }
 
 object APIOperation{
-  def getTableName = "API"
+  def getTableName = "Operation"
 }

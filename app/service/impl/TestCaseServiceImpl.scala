@@ -29,7 +29,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     if(testCase.apiConfigs != null && !testCase.apiConfigs.isEmpty){
     	testCase.apiConfigs.foreach(apiConfig => {
     	  apiConfigDAO.save(apiConfig);
-    	  apiConfigIds += apiConfig._id;
+    	  apiConfigIds += apiConfig.id;
     	})
     }
     
@@ -42,7 +42,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     testCaseDAO.removeById(id,WriteConcern.SAFE)
   }
   
-  def addAPIConfigs2TestCase(testCaseId: String, apiConfig: APIConfig, operartion: Int) = {
+/*  def addAPIConfigs2TestCase(testCaseId: String, apiConfig: APIConfig, operartion: Int) = {
     var api = apiDAO.findById(apiConfig.apiId);
     if (api) {
       "Error" // Throw Error Code
@@ -51,15 +51,15 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
 
     
     if (StringUtil.TestCaseOperation.REMOVE.equals(operartion)) {
-      testCaseDAO.pullFromField(testCaseId, "functions", apiConfig._id)
+      testCaseDAO.pullFromField(testCaseId, "functions", apiConfig.id)
     }
     if (StringUtil.TestCaseOperation.EDIT.equals(operartion)) {
-      testCaseDAO.pushToField(testCaseId, "functions", apiConfig._id)
+      testCaseDAO.pushToField(testCaseId, "functions", apiConfig.id)
     }
     apiConfigDAO.save(apiConfig)
     
-    apiConfig._id
-  }
+    apiConfig.id
+  }*/
 
   def getAPIConfigs(testCaseId: String): List[API] = {
     var testCase = testCaseDAO.findById(testCaseId)
@@ -102,14 +102,14 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
 
     
     if (StringUtil.TestCaseOperation.REMOVE.equals(operartion)) {
-      testCaseDAO.pullFromField(testCaseId, "functions", apiConfig._id)
+      testCaseDAO.pullFromField(testCaseId, "functions", apiConfig.id)
     }
     if (StringUtil.TestCaseOperation.EDIT.equals(operartion)) {
-      testCaseDAO.pushToField(testCaseId, "functions", apiConfig._id)
+      testCaseDAO.pushToField(testCaseId, "functions", apiConfig.id)
     }
     apiConfigDAO.save(apiConfig)
     
-    apiConfig._id
+    apiConfig.id
   }
 
 }

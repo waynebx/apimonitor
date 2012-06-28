@@ -6,10 +6,11 @@ import scala.annotation.target.field
 import com.novus.salat.annotations._
 
 case class TestCase(
-    _id:String,
+    @Key("_id") id:String,
     var name:String="", 
     var apiConfigIds:List[String]=null, 
-    @(JSONTypeHint @field())(value = classOf[APIConfig]) @Ignore var apiConfigs:List[APIConfig] = null) extends BaseBean(_id){
+    @Ignore @(JSONTypeHint @field)(value = classOf[APIConfig]) var apiConfigs:List[APIConfig]) extends BaseBean(id){
+
   
   def this(){
   	  this(StringUtil.generateStringTimeStamp(),"",null,null)

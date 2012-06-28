@@ -19,14 +19,10 @@ object TestCaseApplication extends AbstractController {
   }
 
   def addTestCase = Action(parse.json) { request =>
-    
-    println("---------" + request.body)
     var testCase = testCaseService.addTestCase(Js(request.body.toString()))
     
-    
-    Ok(views.html.testcase(testCase._id,testCase.name))
-    
-    
+    Ok(views.html.testcase(testCase.id,testCase.name))
+
   }
   
   def deleteTestCase(id : String) = Action {
