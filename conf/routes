@@ -17,8 +17,10 @@ POST   /add_function_to_test_case             controllers.Application.addFunctio
 POST   /remove_function_from_test_case        controllers.Application.removeFunctionInTestCase
 
 #Testcase controller
-GET		/testcases								controllers.TestCaseApplication.getTestcases(start: Int = 0, size: Int = 10)
+GET		/testcases								controllers.TestCaseApplication.getTestcases(start: Int = 0, size: Int = 100)
 POST	/add_test_case                         	controllers.TestCaseApplication.addTestCase
+POST	/delete_test_case/:id                         	controllers.TestCaseApplication.deleteTestCase(id : String)
+
 
 
 # Map static resources from the /public folder to the /assets URL path

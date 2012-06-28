@@ -62,11 +62,7 @@
 		</form>
 		<div id="testcase_list"></div>
 		<!-- <input class="thickbox" type="button" id="add_testcase_bt" value="Add" alt="#TB_inline?height=600&width=1040&inlineId=resources_list" /> -->
-		<script type="text/javascript">
-		 new TestCaseMain({
-			el: $('#testcase_tab'),
-		}); 
-	</script>
+		
 	</div>
 	<div id="api_tab">	
 		<div id="content_message"></div>
@@ -78,7 +74,11 @@
 	<script type="text/javascript">
 		 new Main({
 			el: $('body'),
-		}); 
+		});
+		 
+		 new TestCaseMain({
+				el: $('#testcase_tab'),
+			}); 
 	</script>
 </body>
 </html>

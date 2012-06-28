@@ -12,6 +12,7 @@ import service.TestCaseService
 import sjson.json.Serializer.SJSON
 import util.StringUtil
 import dispatch.json.JsValue
+import com.mongodb.WriteConcern
 
 class TestCaseServiceImpl extends TestCaseService with AbstractService {
 
@@ -27,22 +28,37 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     
     if(testCase.apiConfigs != null && !testCase.apiConfigs.isEmpty){
     	testCase.apiConfigs.foreach(apiConfig => {
-    	  apiConfigIds += saveAPIConfig("", apiConfig, StringUtil.TestCaseOperation.ADD)
+    	  apiConfigDAO.save(apiConfig);
+    	  apiConfigIds += apiConfig._id;
     	})
     }
     
     testCase.apiConfigIds = apiConfigIds.toList
-    //testCaseDAO.save(testCase)
+    testCaseDAO.save(testCase)
     return testCase
   }
 
-  def removeTestCase(body: String) {
-    val json = Json.parse(body)
-    val id = (json \ "id").as[String]
-    var testCase = testCaseDAO.findById(id)
-    if (testCase != None) {
-      testCaseDAO.remove(testCase)
+  def deleteTestCase(id: String) {
+    testCaseDAO.removeById(id,WriteConcern.SAFE)
+  }
+  
+  def addAPIConfigs2TestCase(testCaseId: String, apiConfig: APIConfig, operartion: Int) = {
+    var api = apiDAO.findById(apiConfig.apiId);
+    if (api) {
+      "Error" // Throw Error Code
+      //      saveAPIRes(apiId)
     }
+
+    
+    if (StringUtil.TestCaseOperation.REMOVE.equals(operartion)) {
+      testCaseDAO.pullFromField(testCaseId, "functions", apiConfig._id)
+    }
+    if (StringUtil.TestCaseOperation.EDIT.equals(operartion)) {
+      testCaseDAO.pushToField(testCaseId, "functions", apiConfig._id)
+    }
+    apiConfigDAO.save(apiConfig)
+    
+    apiConfig._id
   }
 
   def getAPIConfigs(testCaseId: String): List[API] = {

@@ -3,11 +3,12 @@ function postJson(url,data,success) {
 		  url:url,
 		  type:"POST",
 		  data: data,
-		  contentType:"application/json; charset=utf-8",
+		  headers : {
+				"Content-Type" : "application/json",
+				"Accept" : "application/json, text/plain"
+			},
 		  dataType:"json",
-		  success: function(){
-			  alert("");
-		  }
+		  complete: success
 		})
 };
 
@@ -18,6 +19,7 @@ var Main = Spine.Controller.sub({
 			$("#input_baseUrl").val(url);
 			Main.base_url = url;
 			this.getAPI();
+			this.getTestcase();
 		}
 	},
 
@@ -30,20 +32,23 @@ var Main = Spine.Controller.sub({
 	events : {
 		"click #explore" : "getAPI",
 		"click #api_bt" : "show_api",
-		"click #testcase_bt" : "show_testcase"
+		"dblclick #api_bt" : "getAPI",
+		
+		"click #testcase_bt" : "show_testcase",
+		"dblclick #testcase_bt" : "getTestcase",
 	},
 
 	show_api : function() {
 		this.api_tab.show();
 		this.testcase_tab.hide();
-		this.getAPI();
+//		this.getAPI();
 
 	},
 
 	show_testcase : function() {
 		this.api_tab.hide();
 		this.testcase_tab.show();
-		this.getTestcase();
+//		this.getTestcase();
 
 	},
 

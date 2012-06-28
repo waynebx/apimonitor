@@ -1,4 +1,4 @@
 @(testcases : List[models.testcase.TestCase])
 <ul id="resources">
-	@for(testcase <- testcases) { @template1(testcase._id, testcase.name, "testcase", null) }
+	@for(tc <- testcases) { @testcase(tc._id, tc.name) }
 </ul>
