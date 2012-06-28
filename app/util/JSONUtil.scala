@@ -19,7 +19,7 @@ object JSONUtil {
 	
 	def convertAPIConfig(testcaseDetail:APIConfig, api:API) = {
 	  var map = Map[String,String]()
-	  map += "id" -> testcaseDetail._id
+	  map += "id" -> testcaseDetail.id
 	  map += "params" -> testcaseDetail.params
 	  map += "path" -> api.path
 	  map += "resource_path" -> api.restPath
@@ -29,7 +29,7 @@ object JSONUtil {
 	
 	def convertTestCase(testCase:TestCase) = {
 	  var map = Map[String,String]()
-	  map += "id" -> testCase._id
+	  map += "id" -> testCase.id
 	  map += "name" -> testCase.name
 	  Json.toJson(map)
 	}

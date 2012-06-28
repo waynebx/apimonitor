@@ -1,8 +1,8 @@
 package models.testcase
 import scala.reflect.BeanProperty
-import com.novus.salat.annotations.raw.Key
 import util.StringUtil
-abstract class BaseBean(@Key("_id") _id:String) extends Serializable{
+import com.novus.salat.annotations._
+abstract class BaseBean(@Key("_id") id:String) extends Serializable{
 	
 }
 

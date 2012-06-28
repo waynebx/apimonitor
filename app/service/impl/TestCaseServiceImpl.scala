@@ -86,14 +86,14 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
 
     
     if (StringUtil.TestCaseOperation.REMOVE.equals(operartion)) {
-      testCaseDAO.pullFromField(testCaseId, "functions", apiConfig._id)
+      testCaseDAO.pullFromField(testCaseId, "functions", apiConfig.id)
     }
     if (StringUtil.TestCaseOperation.EDIT.equals(operartion)) {
-      testCaseDAO.pushToField(testCaseId, "functions", apiConfig._id)
+      testCaseDAO.pushToField(testCaseId, "functions", apiConfig.id)
     }
     apiConfigDAO.save(apiConfig)
     
-    apiConfig._id
+    apiConfig.id
   }
 
 }

@@ -50,7 +50,7 @@ class MyServiceImpl extends MyService with AbstractService {
     }
     testCase.apiConfigIds = listIdDetail
     testCaseDAO.save(testCase)
-    testCase._id
+    testCase.id
   }
 
   def getListTestCaseDetail(idMobionTestCase: String) = {
@@ -135,17 +135,17 @@ class MyServiceImpl extends MyService with AbstractService {
     testCaseDetail.apiId = idAPI
     testCaseDetail.params = param
     if (StringUtil.TestCaseOperation.REMOVE.equals(operartion)) {
-      testCaseDAO.pullFromField(testCaseId, "functions", testCaseDetail._id)
+      testCaseDAO.pullFromField(testCaseId, "functions", testCaseDetail.id)
     }
     if (StringUtil.TestCaseOperation.EDIT.equals(operartion)) {
-      testCaseDAO.pushToField(testCaseId, "functions", testCaseDetail._id)
+      testCaseDAO.pushToField(testCaseId, "functions", testCaseDetail.id)
     }
     var api = apiDAO.findOne(MongoDBObject("_id" -> idAPI))
     if (api.isEmpty) {
       saveAPIRes(idAPI)
     }
     apiConfigDAO.save(testCaseDetail)
-    testCaseDetail._id
+    testCaseDetail.id
   }
 
   def removeFunctionInTestCase(body: String) {
@@ -194,8 +194,10 @@ class MyServiceImpl extends MyService with AbstractService {
 	      if(api.operations != None){
 	        api.operations.foreach(operation =>{
 	          if(operation.parameters != None){
+	            apiOperationDAO.save(operation)
 	            operation.parameters.foreach(param =>{
-	              	parameterService.saveParameterObj(param,operation._id)
+	                println(param)
+	              	parameterService.saveParameterObj(param,operation.id)
 	            })
 	          }
 	        })
