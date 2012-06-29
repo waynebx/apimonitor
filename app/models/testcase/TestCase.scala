@@ -9,7 +9,7 @@ case class TestCase(
     @Key("_id") id:String,
     var name:String="", 
     var apiConfigIds:List[String]=null, 
-    @Ignore @(JSONTypeHint @field)(value = classOf[APIConfig]) var apiConfigs:List[APIConfig]) extends BaseBean(id){
+    @Ignore @(JSONTypeHint @field)(value = classOf[APIConfig]) var apiConfigs:List[APIConfig] = null) extends BaseBean(id){
 
   
   def this(){

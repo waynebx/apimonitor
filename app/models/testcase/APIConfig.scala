@@ -5,9 +5,11 @@ import util.JSONUtil
 import com.novus.salat.annotations._
 
 
-case class APIConfig(@Key("_id") id:String,var apiId:String="",var status:String="",var response:String="",var params:String="") extends BaseBean(id){	
+case class APIConfig(@Key("_id") id:String,var apiId:String="",
+    var status:String="",var response:String="",var params:String="",
+    @Ignore var api : API) extends BaseBean(id){	
   	def this() ={
-  	  this(StringUtil.generateStringTimeStamp(),"","","","")
+  	  this(StringUtil.generateStringTimeStamp(),"","","","",null)
   	}
   	 def parseParamToMap() = {
   	      JSONUtil.parseParamInApiConfig(this.params)
