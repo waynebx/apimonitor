@@ -18,7 +18,7 @@ var Main = Spine.Controller.sub({
 			var url = localStorage.getItem("com.mobion.url", url);
 			$("#input_baseUrl").val(url);
 			Main.base_url = url;
-			this.getAPI();
+//			this.getAPI();
 			this.getTestcase();
 		}
 	},

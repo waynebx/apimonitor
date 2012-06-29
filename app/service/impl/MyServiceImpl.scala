@@ -19,11 +19,14 @@ import util.ConfigUtils
 import util.JSONUtil
 import util.StringUtil
 import models.APIResource
+import models.APIOperation
 
 class MyServiceImpl extends MyService with AbstractService {
 	
   def parameterService = new ParameterServiceImpl
   def go {
+    var op : APIOperation = null;
+    
     println("==== GO GO GO ====")
   }
   def getListApi: String = {

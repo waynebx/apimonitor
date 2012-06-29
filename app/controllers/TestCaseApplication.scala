@@ -20,21 +20,38 @@ object TestCaseApplication extends AbstractController {
     Ok(views.html.testcase_list(list))
   }
 
+
+  def getAPIsinTestCase(id: String) = Action { request =>
+
+    Ok(views.html.apis_list_in_testcase(id, testCaseService.getAPIsinTestCase(id)))
+
+  }
+
   def addTestCase = Action(parse.json) { request =>
-    
+
     var testCase = SJSON.in[TestCase](Js(request.body.toString()))
     testCase = testCaseService.addTestCase(testCase)
-    
-    Ok(views.html.testcase(testCase.id,testCase.name))
+
+    Ok(views.html.testcase(testCase.id, testCase.name))
 
   }
-  
-  def deleteTestCase(id : String) = Action {
+
+  def addAPI2TestCase = Action(parse.json) { request =>
+
+    println("add api to test case : " + request.body.toString())
+    var testCase = SJSON.in[TestCase](Js(request.body.toString()))
+
+    Ok(views.html.apis_list_in_testcase(testCase.id, testCaseService.addAPI2TestCase(testCase)))
+
+  }
+
+  def deleteTestCase(id: String) = Action {
     testCaseService.deleteTestCase(id);
     Ok("OK");
-    
+
   }
 
+/*
   def removeFunctionInTestCase = Action(parse.text) { request =>
     var testCase = SJSON.in[TestCase](Js(request.body.toString()))
     testCaseService.removeFunctionInTestCase(testCase)
@@ -55,7 +72,7 @@ object TestCaseApplication extends AbstractController {
     filterResponse(Ok(Json.toJson(
       Map("status" -> "success"))))
   }
-
+*/
     
   def buildAPIDatabase = Action {
     println(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH  + "/resources.json")
@@ -78,5 +95,6 @@ object TestCaseApplication extends AbstractController {
     filterResponse(Ok("OK"))
   }
   
+
 }
 
