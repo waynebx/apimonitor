@@ -15,29 +15,35 @@ object TestCaseApplication extends AbstractController {
   }
 
   //get test case detail (with apis)
-  def getTestCase(id: String) = Action { request =>
-    var value = myService.getTestCaseDetailById(id)
-    Ok(value)
+  def getAPIsinTestCase(id: String) = Action { request =>
+
+    Ok(views.html.apis_list_in_testcase(id, testCaseService.getAPIsinTestCase(id)))
+
   }
 
   def addTestCase = Action(parse.json) { request =>
-    
+
     var testCase = SJSON.in[TestCase](Js(request.body.toString()))
     testCase = testCaseService.addTestCase(testCase)
-    
-    Ok(views.html.testcase(testCase.id,testCase.name))
+
+    Ok(views.html.testcase(testCase.id, testCase.name))
 
   }
-  
-  def deleteTestCase(id : String) = Action {
+
+  def addAPI2TestCase = Action(parse.json) { request =>
+
+    println("add api to test case : " + request.body.toString())
+    var testCase = SJSON.in[TestCase](Js(request.body.toString()))
+
+    Ok(views.html.apis_list_in_testcase(testCase.id, testCaseService.addAPI2TestCase(testCase)))
+
+  }
+
+  def deleteTestCase(id: String) = Action {
     testCaseService.deleteTestCase(id);
     Ok("OK");
-    
+
   }
-  
-/*  def addAPI2TestCase = Action(parse.json){request =>
-    
-  }
-*/
+
 }
 
