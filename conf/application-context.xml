@@ -13,6 +13,7 @@
     <bean id="myService" class="service.impl.MyServiceImpl"/>
     <bean id="testCaseService" class="service.impl.TestCaseServiceImpl"/>
     <bean id="parameterService" class="service.impl.ParameterServiceImpl"/>
+    <bean id="apiConfigService" class="service.impl.APIConfigServiceImpl"/>
     
     
     <bean id="testCaseDAO" class="models.dao.TestCaseDAO"/>

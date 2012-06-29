@@ -34,25 +34,6 @@ class MyServiceImpl extends MyService with AbstractService {
     return APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH + StringUtil.slash + rest + StringUtil.slash + "list_api", null);
   }
 
-  def addTestCase(requestBody: String): String = {
-    var testCaseJSON = SJSON.in[TestCaseJSON](Js(requestBody))
-    var testCase = new TestCase
-    if (StringUtil.isNotBlank(testCase.name)) {
-      testCase.name = testCaseJSON.name
-    } else {
-      testCase.name = ""
-    }
-    var listIdDetail = List[String]()
-    if (testCaseJSON.functions != null && testCaseJSON.functions.length > 0) {
-      testCaseJSON.functions.foreach(function => {
-        listIdDetail ::= saveAPIConfig("", function, StringUtil.TestCaseOperation.ADD)
-      })
-    }
-    testCase.apiConfigIds = listIdDetail
-    testCaseDAO.save(testCase)
-    testCase.id
-  }
-
   def getListTestCaseDetail(idMobionTestCase: String) = {
     var testCase = testCaseDAO.findById(idMobionTestCase)
     var set = Set[JsValue]()
@@ -108,14 +89,6 @@ class MyServiceImpl extends MyService with AbstractService {
     return testCaseDAO.findLimit(istart, isize)
   }
 
-  def removeTestCase(body: String) {
-    val json = Json.parse(body)
-    val id = (json \ "id").as[String]
-    var testCase = testCaseDAO.findById(id)
-    if (testCase != None) {
-      testCaseDAO.remove(testCase)
-    }
-  }
 
   private def saveAPIConfig(testCaseId: String, function: FunctionJSON, operartion: Int) = {
     var idAPI: String = function.id

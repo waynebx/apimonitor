@@ -4,14 +4,9 @@ import dispatch.json.Js
 import models.APIResource
 import models.Res
 import models.ResList
-import play.api.libs.json.Json
 import play.api.mvc.Action
 import sjson.json.Serializer.SJSON
 import util.APIRequestUtils
-import exception.MyException
-import exception.MyException
-import util.StringUtil
-import util.ConfigUtils
 
 object Application extends AbstractController {
 
@@ -61,12 +56,6 @@ object Application extends AbstractController {
   def getListMobionTestCase(start: String, size: String) = Action { request =>
     var value = myService.getListMobionTestCase(start, size)
     filterResponse(Ok(value))
-  }
-  
-  def removeTestCase = Action(parse.text) {request =>
-  	 myService.removeTestCase(request.body)
-     filterResponse(Ok(Json.toJson(
-      Map("status" -> "success"))))
   }
   
   def getTestCaseDetailById(id: String) = Action { request =>
