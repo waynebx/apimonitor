@@ -14,6 +14,7 @@ import util.StringUtil
 import dispatch.json.JsValue
 import models.APIOperation
 import com.mongodb.WriteConcern
+import dispatch.json.Js
 
 
 class TestCaseServiceImpl extends TestCaseService with AbstractService {
@@ -24,8 +25,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
   }
 
   def addTestCase(testCase : TestCase): TestCase = {
-    
-    println(testCase.name);
+
     var apiConfigIds = new ListBuffer[String]
     
     if(testCase.apiConfigs != null && !testCase.apiConfigs.isEmpty){
@@ -71,7 +71,6 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
       "Error" // Throw Error Code
       //      saveAPIRes(apiId)
     }
-
     
     if (StringUtil.TestCaseOperation.REMOVE.equals(operartion)) {
       testCaseDAO.pullFromField(testCaseId, "functions", apiConfig.id)
@@ -82,6 +81,31 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     apiConfigDAO.save(apiConfig)
     
     apiConfig.id
+  }
+  
+   def removeFunctionInTestCase(testCase: TestCase) {
+    if (testCase.apiConfigIds != null && testCase.apiConfigIds.length > 0) {
+      testCase.apiConfigIds.foreach(apiConfigId => {
+        var function = apiConfigDAO.findById(apiConfigId)
+        saveAPIConfig(testCase.id, function, StringUtil.TestCaseOperation.REMOVE)
+      })
+    }
+  }
+
+  def addFunctionInTestCase(testCase: TestCase) {
+    if (testCase.apiConfigIds != null && testCase.apiConfigIds.length > 0) {
+      testCase.apiConfigs.foreach(apiConfig => {
+        saveAPIConfig(testCase.id, apiConfig, StringUtil.TestCaseOperation.ADD)
+      })
+    }
+  }
+  
+  def editFunctionInTestCase(testCase: TestCase) {
+    if (testCase.apiConfigIds != null && testCase.apiConfigIds.length > 0) {
+      testCase.apiConfigs.foreach(apiConfig => {
+        apiConfigDAO.save(apiConfig)
+      })
+    }
   }
 
 }

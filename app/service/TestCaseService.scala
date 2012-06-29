@@ -8,4 +8,10 @@ trait TestCaseService {
 	def addTestCase(testCase : TestCase): TestCase
 	
 	def deleteTestCase(id: String)
+	
+	def removeFunctionInTestCase(testCase: TestCase)
+	
+	def addFunctionInTestCase(testCase: TestCase)
+	
+    def editFunctionInTestCase(testCase: TestCase)
 }

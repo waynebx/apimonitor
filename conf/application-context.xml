@@ -12,6 +12,8 @@
     <!-- A simple bean, with a simple name -->
     <bean id="myService" class="service.impl.MyServiceImpl"/>
     <bean id="testCaseService" class="service.impl.TestCaseServiceImpl"/>
+    <bean id="parameterService" class="service.impl.ParameterServiceImpl"/>
+    
     
     <bean id="testCaseDAO" class="models.dao.TestCaseDAO"/>
     <bean id="apiDAO" class="models.dao.APIDAO"/>

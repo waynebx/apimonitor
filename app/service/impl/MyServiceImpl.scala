@@ -137,34 +137,6 @@ class MyServiceImpl extends MyService with AbstractService {
     testCaseDetail.id
   }
 
-  def removeFunctionInTestCase(body: String) {
-    var testCaseJSON = SJSON.in[TestCaseJSON](Js(body))
-    val testCaseId = testCaseJSON.id
-    if (StringUtil.isBlank(testCaseId)) {
-      return
-    }
-    var testCase = testCaseDAO.findById(testCaseId)
-    if (testCase == None) {
-      return
-    }
-
-    if (testCase.apiConfigIds != null && testCase.apiConfigIds.length > 0) {
-      testCaseJSON.functions.foreach(function => {
-        saveAPIConfig(testCaseId, function, StringUtil.TestCaseOperation.REMOVE)
-      })
-    }
-  }
-
-  def addFunctionInTestCase(body: String) {
-    val json = Json.parse(body)
-    val testCaseId = (json \ "test_case_id").as[String]
-    val functionId = (json \ "function_id").as[String]
-    var testCase = testCaseDAO.findById(testCaseId)
-    if (testCase != None) {
-      testCaseDAO.pushToField(testCaseId, "functions", functionId)
-    }
-  }
-
   def getTestCaseDetailById(id: String) = {
     var function = apiConfigDAO.findById(id)
     var jsonObj = Json.toJson("")
@@ -176,21 +148,5 @@ class MyServiceImpl extends MyService with AbstractService {
     }
     jsonObj
   }
-  
-  def buildAPIAndParameter(apiResource:APIResource){
-	  if(apiResource.apis != None){
-	    apiResource.apis.foreach(api =>{
-	      if(api.operations != None){
-	        api.operations.foreach(operation =>{
-	          if(operation.parameters != None){
-	            apiOperationDAO.save(operation)
-	            operation.parameters.foreach(param =>{
-	              	parameterService.saveParameterObj(param,operation.id)
-	            })
-	          }
-	        })
-	      }
-	    })
-	  }
-  }
+
 }

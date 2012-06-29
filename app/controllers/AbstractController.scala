@@ -8,11 +8,12 @@ import service.TestCaseService
 import play.api.mvc.Result
 import play.api.mvc.PlainResult
 import play.api.mvc.SimpleResult
+import service.ParameterService
 
 class AbstractController extends Controller {
   val myService = Spring.getBeanOfType(classOf[MyService])
   val testCaseService = Spring.getBeanOfType(classOf[TestCaseService])
-
+  val parameterService = Spring.getBeanOfType(classOf[ParameterService])
   def filterResponse[T](ret: SimpleResult[T]): Result = {
     ret.withHeaders("Access-Control-Allow-Origin" -> "*")
   }
