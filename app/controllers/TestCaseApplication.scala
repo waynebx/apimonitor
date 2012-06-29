@@ -8,6 +8,13 @@ import models.testcase.TestCase
 
 object TestCaseApplication extends AbstractController {
 
+  def index = Action {
+	  
+    filterResponse(Ok(views.html.testcase_index()))
+    
+  }
+  
+  
   //return list test case with id and name
   def getTestcases(start: Int, size: Int) = Action {
     var list = testCaseService.getTestCaseList(start, size);

@@ -33,34 +33,52 @@
 
 
 <body>
-	<form id='api_selector'>
-		<div class='input'>
-			<input placeholder="http://api.sgcharo.com/mobion" id="input_baseUrl"
-				name="baseUrl" type="text" value= />
-		</div>
-		<div class='input'>
-			<input placeholder="token" id="input_apiKey" name="apiKey"
-				type="text" />
-		</div>
-		<div class='input'>
-			<input placeholder="api name" id="filter" name="filter" type="text" />
-		</div>
-		<div class='input'>
-			<a id="explore" href="#">Explore</a>
-		</div>
-	</form>
+  <div style="margin-bottom: 120px;">
+	<form id='add_testcase_form'>
+			<input id="name" name="name" type="text" /> 
+			<a id="add_testcase_bt"	href="javascript:void(0)">Add</a>
+		</form>
+		<div id="testcase_list"></div>
+   </div>
+	<input class="thickbox" style="display:block" type="button"  value="Add List Function" alt="#TB_inline?height=600&width=1240&inlineId=apiThickbox" />
+	<div id="apiThickbox" style="display:none">
+		<form id='api_selector'>
+			<div class='input'>
+				<input placeholder="http://api.sgcharo.com/mobion" id="input_baseUrl"
+					name="baseUrl" type="text" value="http://api.sgcharo.com/mobion" />
+			</div>
+			
+			<div class='input'>
+				<input placeholder="token" id="input_apiKey" name="apiKey"
+					type="text" />
+			</div>
+			
+			<div class='input'>
+				<input placeholder="api name" id="filter" name="filter" type="text" />
+			</div>
+			<div class='input'>
+				<a id="explore" href="#">Explore</a>
+			</div>
+	   </form>
 
 		<div id="content_message"></div>
 
 
 		<div id="resources_list" style="display: none" />
+		
+		
+	</div>
+		
+	
+
 
 	<script type="text/javascript">
-		 new Main({
+	 	new Main({
 			el: $('body'),
 		});
-		 
-	
+		 new TestCaseMain({
+				el: $('body'),
+			}); 
 	</script>
 </body>
 </html>

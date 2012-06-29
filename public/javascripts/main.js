@@ -12,14 +12,23 @@ function postJson(url,data,success) {
 		})
 };
 
+
+function supportsLocalStorage(){
+	try {
+		return 'localStorage' in window && window['localStorage'] !== null;
+	} catch (e) {
+		return false;
+	}
+}
+
 var Main = Spine.Controller.sub({
 	init : function() {
-		if (this.supportsLocalStorage()) {
+		if (supportsLocalStorage()) {
 			var url = localStorage.getItem("com.mobion.url", url);
 			$("#input_baseUrl").val(url);
 			Main.base_url = url;
 			this.getAPI();
-			this.getTestcase();
+//			this.getTestcase();
 		}
 	},
 
@@ -35,7 +44,7 @@ var Main = Spine.Controller.sub({
 		"dblclick #api_bt" : "getAPI",
 		
 		"click #testcase_bt" : "show_testcase",
-		"dblclick #testcase_bt" : "getTestcase",
+		
 	},
 
 	show_api : function() {
@@ -52,16 +61,16 @@ var Main = Spine.Controller.sub({
 
 	},
 
-	getTestcase : function() {
-		var url = $("#input_baseUrl").val().trim();
-
-		var controller = this;
-		this.testcase_list.empty();
-		this.testcase_list.load("/testcases", null, function() {
-
-		});
-
-	},
+//	getTestcase : function() {
+//		var url = $("#input_baseUrl").val().trim();
+//
+//		var controller = this;
+//		this.testcase_list.empty();
+//		this.testcase_list.load("/testcases", null, function() {
+//
+//		});
+//
+//	},
 
 	getAPI : function() {
 		var url = $("#input_baseUrl").val().trim();
@@ -74,19 +83,13 @@ var Main = Spine.Controller.sub({
 				null, function() {
 					$("#content_message").slideUp();
 					$("#resources_list").slideDown();
-					if (controller.supportsLocalStorage()) {
+					if (supportsLocalStorage()) {
 						localStorage.setItem("com.mobion.url", url);
 					}
 				});
 	},
 
-	supportsLocalStorage : function() {
-		try {
-			return 'localStorage' in window && window['localStorage'] !== null;
-		} catch (e) {
-			return false;
-		}
-	}
+	
 
 });
 
