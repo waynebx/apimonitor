@@ -108,5 +108,12 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
       })
     }
   }
+  
+  def getListMobionTestCase(start: String, size: String):List[TestCase] = {
+    var istart: Int = start.toInt
+    var isize: Int = size.toInt
+    var list = testCaseDAO.findLimit(istart, isize)
+    list
+  }
 
 }

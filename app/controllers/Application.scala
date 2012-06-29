@@ -52,14 +52,5 @@ object Application extends AbstractController {
     var value = myService.getListTestCaseDetail(id)
     filterResponse(Ok(value))
   }
-
-  def getListMobionTestCase(start: String, size: String) = Action { request =>
-    var value = myService.getListMobionTestCase(start, size)
-    filterResponse(Ok(value))
-  }
   
-  def getTestCaseDetailById(id: String) = Action { request =>
-    var value = myService.getTestCaseDetailById(id)
-    filterResponse(Ok(value))
-  }
 }

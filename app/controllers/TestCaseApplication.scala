@@ -20,12 +20,6 @@ object TestCaseApplication extends AbstractController {
     Ok(views.html.testcase_list(list))
   }
 
-  //get test case detail (with apis)
-  def getTestCase(id: String) = Action { request =>
-    var value = myService.getTestCaseDetailById(id)
-    Ok(value)
-  }
-
   def addTestCase = Action(parse.json) { request =>
     
     var testCase = SJSON.in[TestCase](Js(request.body.toString()))
@@ -73,10 +67,15 @@ object TestCaseApplication extends AbstractController {
       println(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH +  path  + "/list_api?api_key=a3633f30bb4a11e18887005056a70023")
       val res2 = APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH  + path + "/list_api?api_key=a3633f30bb4a11e18887005056a70023", Map())
       list ::= SJSON.in[APIResource](Js(res2))
-            parameterService.buildAPIAndParameter(SJSON.in[APIResource](Js(res2)))
+      parameterService.buildAPIAndParameter(SJSON.in[APIResource](Js(res2)))
     })
     filterResponse(Ok(Json.toJson(
       Map("status" -> "success"))))
+  }
+  
+  def getListMobionTestCase(start: String, size: String) = Action { request =>
+    var value = testCaseService.getListMobionTestCase(start, size)
+    filterResponse(Ok("OK"))
   }
   
 }

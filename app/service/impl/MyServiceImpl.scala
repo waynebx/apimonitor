@@ -71,55 +71,9 @@ class MyServiceImpl extends MyService with AbstractService {
     }
   }
 
-  def getListMobionTestCase(start: String, size: String) = {
-    var istart: Int = start.toInt
-    var isize: Int = size.toInt
-    var list = testCaseDAO.findLimit(istart, isize)
-    var set = Set[JsValue]()
-    list.foreach(item =>
-      {
-        set += JSONUtil.convertTestCase(item)
-      })
-    Json.toJson(set)
-  }
-
   def getTestCaseList(start: String, size: String): List[TestCase] = {
     var istart: Int = start.toInt
     var isize: Int = size.toInt
     return testCaseDAO.findLimit(istart, isize)
   }
-
-
-  private def saveAPIConfig(testCaseId: String, function: FunctionJSON, operartion: Int) = {
-    var idAPI: String = function.id
-    var param: String = function.param
-    var testCaseDetail = new APIConfig
-    testCaseDetail.apiId = idAPI
-    testCaseDetail.params = param
-    if (StringUtil.TestCaseOperation.REMOVE.equals(operartion)) {
-      testCaseDAO.pullFromField(testCaseId, "functions", testCaseDetail.id)
-    }
-    if (StringUtil.TestCaseOperation.EDIT.equals(operartion)) {
-      testCaseDAO.pushToField(testCaseId, "functions", testCaseDetail.id)
-    }
-/*    var api = apiDAO.findOne(MongoDBObject("_id" -> idAPI))
-    if (api.isEmpty) {
-      saveAPIRes(idAPI)
-    }*/
-    apiConfigDAO.save(testCaseDetail)
-    testCaseDetail.id
-  }
-
-  def getTestCaseDetailById(id: String) = {
-    var function = apiConfigDAO.findById(id)
-    var jsonObj = Json.toJson("")
-    if (function != None) {
-      var api = apiOperationDAO.findById(function.apiId)
-      if (api != None) {
-        jsonObj = JSONUtil.convertAPIConfig(function, api)
-      }
-    }
-    jsonObj
-  }
-
 }

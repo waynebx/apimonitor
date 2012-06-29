@@ -8,8 +8,6 @@ trait MyService {
 	def getListApi:String
 	def getListAPIInRes(rest:String):String
 	def getListTestCaseDetail(idMobionTestCase:String):JsValue
-	def getListMobionTestCase(start:String,size:String):JsValue
-	def getTestCaseDetailById(id:String):JsValue
 	//Giang
 	def getTestCaseList(start:String,size:String) : List[TestCase]
 }

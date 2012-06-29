@@ -43,4 +43,10 @@ class APIConfigServiceImpl extends  APIConfigService with AbstractService {
 
     return list.toList;
   }
+  
+  def getAPIConfigById(id: String):APIOperation = {
+    var function = apiConfigDAO.findById(id)
+    var api = apiOperationDAO.findById(function.apiId)
+	api
+  }
 }

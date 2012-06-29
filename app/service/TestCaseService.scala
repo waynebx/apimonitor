@@ -14,4 +14,6 @@ trait TestCaseService {
 	def addFunctionInTestCase(testCase: TestCase)
 	
     def editFunctionInTestCase(testCase: TestCase)
+	
+	def getListMobionTestCase(start: String, size: String):List[TestCase]
 }
