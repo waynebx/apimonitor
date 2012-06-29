@@ -49,7 +49,30 @@
 			<a id="explore" href="#">Explore</a>
 		</div>
 	</form>
-
+	<div class="menu">
+		<ul>
+			<li id="api_bt"><a href="#">APIs</a></li>
+			<li id="testcase_bt"><a href="#">Test Case</a></li>
+		</ul>
+	</div>
+	<div id="testcase_tab" style="display: none">
+		<form id='add_testcase_form'>
+			
+			<input id="name" name="name" type="text" />
+			<input id="id" name="id" value="1340965467520" type="hidden" />
+			<div style="display: none">
+				<input name="apiConfigs[0].params" value = "{}"/>
+				<input name="apiConfigs[0].apiId" value = "/v2/account/check_access_token__GET"/>
+			</div>
+			
+			<a id="add_testcase_bt"	href="#">Add</a>			
+		</form>
+		
+		<div id="testcase_list"></div>
+		<!-- <input class="thickbox" type="button" id="add_testcase_bt" value="Add" alt="#TB_inline?height=600&width=1040&inlineId=resources_list" /> -->
+		
+	</div>
+	<div id="api_tab">	
 		<div id="content_message"></div>
 
 

@@ -1,8 +1,0 @@
-package service
-
-
-trait APIService {
-
-	
-	
-}
