@@ -1,13 +1,13 @@
 package service.impl
 
 import scala.collection.mutable.ListBuffer
-import scala.reflect.BeanInfo
-import models.APIOperation
-import service.APIService
-import service.AbstractService
-import models.APIParameter
 
-class APIServiceImpl extends APIService with AbstractService {
+import models.APIOperation
+import models.APIParameter
+import service.APIConfigService
+import service.AbstractService
+
+class APIConfigServiceImpl extends  APIConfigService with AbstractService {
   def getAPIConfigs(testCaseId: String): List[APIOperation] = {
     var testCase = testCaseDAO.findById(testCaseId)
     var list = new ListBuffer[APIOperation]();
@@ -42,5 +42,11 @@ class APIServiceImpl extends APIService with AbstractService {
     }
 
     return list.toList;
+  }
+  
+  def getAPIConfigById(id: String):APIOperation = {
+    var function = apiConfigDAO.findById(id)
+    var api = apiOperationDAO.findById(function.apiId)
+	api
   }
 }

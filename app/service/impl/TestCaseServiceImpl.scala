@@ -1,20 +1,18 @@
 package service.impl
 
 import scala.collection.mutable.ListBuffer
-import com.mongodb.casbah.commons.MongoDBObject
-import models.testcase.API
-import models.testcase.APIConfig
+import scala.reflect.BeanInfo
+
+  import com.mongodb.WriteConcern
+
+  import models.testcase.APIConfig
 import models.testcase.TestCase
-import models.FunctionJSON
-import play.api.libs.json.Json
+import models.APIOperation
+import models.APIParameter
 import service.AbstractService
 import service.TestCaseService
-import sjson.json.Serializer.SJSON
 import util.StringUtil
-import dispatch.json.JsValue
-import models.APIOperation
-import com.mongodb.WriteConcern
-import models.APIParameter
+
 
 
   object TestCaseOperation{
@@ -31,8 +29,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
   }
 
   def addTestCase(testCase : TestCase): TestCase = {
-    
-    println(testCase.name);
+
     var apiConfigIds = new ListBuffer[String]
     
     if(testCase.apiConfigs != null && !testCase.apiConfigs.isEmpty){
@@ -129,6 +126,38 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     }
     
     
+  }
+  
+   def removeFunctionInTestCase(testCase: TestCase) {
+    if (testCase.apiConfigIds != null && testCase.apiConfigIds.length > 0) {
+      testCase.apiConfigIds.foreach(apiConfigId => {
+        var function = apiConfigDAO.findById(apiConfigId)
+        saveAPIConfig(testCase.id, function, StringUtil.TestCaseOperation.REMOVE)
+      })
+    }
+  }
+
+  def addFunctionInTestCase(testCase: TestCase) {
+    if (testCase.apiConfigIds != null && testCase.apiConfigIds.length > 0) {
+      testCase.apiConfigs.foreach(apiConfig => {
+        saveAPIConfig(testCase.id, apiConfig, StringUtil.TestCaseOperation.ADD)
+      })
+    }
+  }
+  
+  def editFunctionInTestCase(testCase: TestCase) {
+    if (testCase.apiConfigIds != null && testCase.apiConfigIds.length > 0) {
+      testCase.apiConfigs.foreach(apiConfig => {
+        apiConfigDAO.save(apiConfig)
+      })
+    }
+  }
+  
+  def getListMobionTestCase(start: String, size: String):List[TestCase] = {
+    var istart: Int = start.toInt
+    var isize: Int = size.toInt
+    var list = testCaseDAO.findLimit(istart, isize)
+    list
   }
 
 }
