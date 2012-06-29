@@ -17,6 +17,12 @@ import com.mongodb.WriteConcern
 import dispatch.json.Js
 
 
+  object TestCaseOperation{
+	val NEW = 0;  
+	val ADD_APICONFIG = 1
+	val REMOVE_APICONFIGS = 2
+  }
+
 class TestCaseServiceImpl extends TestCaseService with AbstractService {
 
   def getTestCaseList(start: Int, size: Int): List[TestCase] = {
@@ -30,7 +36,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     
     if(testCase.apiConfigs != null && !testCase.apiConfigs.isEmpty){
     	testCase.apiConfigs.foreach(apiConfig => {
-    	  apiConfigDAO.save(apiConfig);
+    	  saveAPIConfig(testCase.id, apiConfig, TestCaseOperation.NEW);
     	  apiConfigIds += apiConfig.id;
     	})
     }
@@ -39,48 +45,43 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     testCaseDAO.save(testCase)
     return testCase
   }
+  
+  def addAPI2TestCase(testCase : TestCase): TestCase = {
+    
+    var apiConfigIds = new ListBuffer[String]
+    if(testCase.apiConfigs != null && !testCase.apiConfigs.isEmpty){
+    	testCase.apiConfigs.foreach(apiConfig => {
+    	  saveAPIConfig(testCase.id, apiConfig, TestCaseOperation.ADD_APICONFIG);
+    	})
+    }
+   
+    null;
+  }
 
   def deleteTestCase(id: String) {
     testCaseDAO.removeById(id,WriteConcern.SAFE)
   }
   
- /*def addAPIConfigs2TestCase(testCaseId: String, apiConfigs: APIConfig, operartion: Int) = {
-    var api = apiDAO.findById(apiConfig.apiId);
-    if (api) {
-      "Error" // Throw Error Code
-      //      saveAPIRes(apiId)
-    }
-
-    
-    if (StringUtil.TestCaseOperation.REMOVE.equals(operartion)) {
-      testCaseDAO.pullFromField(testCaseId, "functions", apiConfig.id)
-    }
-    if (StringUtil.TestCaseOperation.EDIT.equals(operartion)) {
-      testCaseDAO.pushToField(testCaseId, "functions", apiConfig.id)
-    }
-    apiConfigDAO.save(apiConfig)
-    
-    apiConfig.id
-  }*/
-
-
-  
   private def saveAPIConfig(testCaseId: String, apiConfig: APIConfig, operartion: Int) = {
-    var api = apiOperationDAO.findOne(MongoDBObject("_id" -> apiConfig.apiId))
-    if (api.isEmpty) {
-      "Error" // Throw Error Code
-      //      saveAPIRes(apiId)
+    var api = apiOperationDAO.findById(apiConfig.apiId)
+    if (api == null) {
+      
     }
     
-    if (StringUtil.TestCaseOperation.REMOVE.equals(operartion)) {
-      testCaseDAO.pullFromField(testCaseId, "functions", apiConfig.id)
+    operartion match {
+    	case TestCaseOperation.NEW => {
+    		apiConfigDAO.save(apiConfig)
+    	}
+ 
+    	case TestCaseOperation.ADD_APICONFIG => {
+    		testCaseDAO.pushToField(testCaseId, "apiConfigIds", apiConfig.id)
+    		apiConfigDAO.save(apiConfig)
+    	}
+    	
+    	case TestCaseOperation.REMOVE_APICONFIGS => {
+    		testCaseDAO.pullFromField(testCaseId, "apiConfigIds", apiConfig.id)
+    	}
     }
-    if (StringUtil.TestCaseOperation.EDIT.equals(operartion)) {
-      testCaseDAO.pushToField(testCaseId, "functions", apiConfig.id)
-    }
-    apiConfigDAO.save(apiConfig)
-    
-    apiConfig.id
   }
   
    def removeFunctionInTestCase(testCase: TestCase) {
