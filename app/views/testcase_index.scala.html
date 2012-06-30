@@ -33,6 +33,46 @@
 
 
 <body>
+
+
+<input class="thickbox" style="display:none" type="button"  value="Add List Function" alt="#TB_inline?height=600&width=1240&inlineId=apiThickbox" />
+
+<div id="apiThickbox" style="display:none">
+		
+
+		<form id='api_selector'>
+			<div class='input'>
+				<input placeholder="http://api.sgcharo.com/mobion" id="input_baseUrl" name="baseUrl" type="text" value="http://api.sgcharo.com/mobion" />
+			</div>
+			
+			<div class='input'>
+				<input placeholder="token" id="input_apiKey" name="apiKey"	type="text" />
+			</div>
+			
+			<div class='input'>
+				<input placeholder="api name" id="filter" name="filter" type="text" />
+			</div>
+			<div class='input'>
+				<a id="explore" href="javascript:void(0)">Explore</a>
+			</div>
+	   </form>
+		
+		
+		<form id="add_api_2_testcase_form" style="display:none">
+		
+		</form>
+		<input type="button" value="Save" class="save_list_function"/>
+		<div id="content_message"></div>
+
+
+		<div id="resources_list" style="display: none" ></div>
+		
+		
+</div>
+		
+
+
+
   <div style="margin-bottom: 120px;">
 	<form id='add_testcase_form'>
 			<input id="name" name="name" type="text" /> 
@@ -40,45 +80,21 @@
 		</form>
 		<div id="testcase_list"></div>
    </div>
-	<input class="thickbox" style="display:block" type="button"  value="Add List Function" alt="#TB_inline?height=600&width=1240&inlineId=apiThickbox" />
-	<div id="apiThickbox" style="display:none">
-		<form id='api_selector'>
-			<div class='input'>
-				<input placeholder="http://api.sgcharo.com/mobion" id="input_baseUrl"
-					name="baseUrl" type="text" value="http://api.sgcharo.com/mobion" />
-			</div>
-			
-			<div class='input'>
-				<input placeholder="token" id="input_apiKey" name="apiKey"
-					type="text" />
-			</div>
-			
-			<div class='input'>
-				<input placeholder="api name" id="filter" name="filter" type="text" />
-			</div>
-			<div class='input'>
-				<a id="explore" href="#">Explore</a>
-			</div>
-	   </form>
-
-		<div id="content_message"></div>
-
-
-		<div id="resources_list" style="display: none" />
-		
-		
-	</div>
-		
+	
+	
 	
 
 
+</body>
+</html>
+
+
 	<script type="text/javascript">
+	
 	 	new Main({
 			el: $('body'),
 		});
 		 new TestCaseMain({
-				el: $('body'),
+				el: $('body')
 			}); 
 	</script>
-</body>
-</html>
