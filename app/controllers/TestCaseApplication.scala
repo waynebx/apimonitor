@@ -1,16 +1,18 @@
 package controllers
 
-import play.api.libs.json.Json
-import play.api.mvc.Action
+import scala.reflect.BeanInfo
+
 import dispatch.json.Js
-import sjson.json.Serializer.SJSON
 import models.testcase.TestCase
-import util.StringUtil
-import util.ConfigUtils
-import util.APIRequestUtils
+import models.APIResource
 import models.Res
 import models.ResList
-import models.APIResource
+import play.api.libs.json.Json
+import play.api.mvc.Action
+import sjson.json.Serializer.SJSON
+import util.APIRequestUtils
+import util.ConfigUtils
+import util.StringUtil
 
 object TestCaseApplication extends AbstractController {
 

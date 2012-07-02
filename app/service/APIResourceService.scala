@@ -1,0 +1,3 @@
+package service
+trait APIResourceService {	
+}

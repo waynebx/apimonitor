@@ -3,7 +3,8 @@ package util
 object StringUtil{
   val http = "http://" 
   val slash = "/"
-    
+  val separation = "__"
+  val basePath = StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH;
   object WebMethod{
 	  val GET = "GET"
 	  val POST = "POST"

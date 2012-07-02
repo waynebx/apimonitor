@@ -14,10 +14,13 @@
     <bean id="testCaseService" class="service.impl.TestCaseServiceImpl"/>
     <bean id="parameterService" class="service.impl.ParameterServiceImpl"/>
     <bean id="apiConfigService" class="service.impl.APIConfigServiceImpl"/>
+    <bean id="apiResourceService" class="service.impl.APIResourceServiceImpl"/>
     
     
     <bean id="testCaseDAO" class="models.dao.TestCaseDAO"/>
     <bean id="apiConfigDAO" class="models.dao.APIConfigDAO"/>
     <bean id="apiParameterDAO" class="models.dao.APIParameterDAO"/>
     <bean id="apiOperationDAO" class="models.dao.APIOperationDAO"/>
+    <bean id="apiResourceDAO" class="models.dao.APIResourceDAO"/>
+    <bean id="apiSpecDAO" class="models.dao.APISpecDAO"/>
 </beans>
