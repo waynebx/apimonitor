@@ -5,4 +5,8 @@ import com.novus.salat.global._
 import play.api.libs.json.JsObject
 import models.APIParameter
 
-class APIParameterDAO extends MongoSalatDAO[APIParameter,String](APIParameter.getTableName)
+class APIParameterDAO extends MongoSalatDAO[APIParameter,String](APIParameter.getTableName){
+  def getByAPIId(apiId : String) = {
+    findbyProperty("apiId", apiId)
+  }
+}
