@@ -1,25 +1,34 @@
-function postJson(url,data,success) {
+function postJson(url, data, success) {
 	$.ajax({
-		  url:url,
-		  type:"POST",
-		  data: data,
-		  headers : {
-				"Content-Type" : "application/json",
-				"Accept" : "application/json, text/plain"
-			},
-		  dataType:"json",
-		  complete: success
-		})
+		url : url,
+		type : "POST",
+		data : data,
+		headers : {
+			"Content-Type" : "application/json",
+			"Accept" : "application/json, text/plain"
+		},
+		dataType : "json",
+		complete : success
+	})
 };
+
+function supportsLocalStorage() {
+	try {
+		return 'localStorage' in window && window['localStorage'] !== null;
+	} catch (e) {
+		return false;
+	}
+}
 
 var Main = Spine.Controller.sub({
 	init : function() {
-		if (this.supportsLocalStorage()) {
+		if (supportsLocalStorage()) {
 			var url = localStorage.getItem("com.mobion.url", url);
 			$("#input_baseUrl").val(url);
 			Main.base_url = url;
-//			this.getAPI();
-			this.getTestcase();
+			// this.getAPI();
+//			this.getTestcase();
+
 		}
 	},
 
@@ -33,35 +42,35 @@ var Main = Spine.Controller.sub({
 		"click #explore" : "getAPI",
 		"click #api_bt" : "show_api",
 		"dblclick #api_bt" : "getAPI",
-		
+
 		"click #testcase_bt" : "show_testcase",
-		"dblclick #testcase_bt" : "getTestcase",
+
 	},
 
 	show_api : function() {
 		this.api_tab.show();
 		this.testcase_tab.hide();
-//		this.getAPI();
+		// this.getAPI();
 
 	},
 
 	show_testcase : function() {
 		this.api_tab.hide();
 		this.testcase_tab.show();
-//		this.getTestcase();
+		// this.getTestcase();
 
 	},
 
-	getTestcase : function() {
-		var url = $("#input_baseUrl").val().trim();
-
-		var controller = this;
-		this.testcase_list.empty();
-		this.testcase_list.load("/testcases", null, function() {
-
-		});
-
-	},
+	// getTestcase : function() {
+	// var url = $("#input_baseUrl").val().trim();
+	//
+	// var controller = this;
+	// this.testcase_list.empty();
+	// this.testcase_list.load("/testcases", null, function() {
+	//
+	// });
+	//
+	// },
 
 	getAPI : function() {
 		var url = $("#input_baseUrl").val().trim();
@@ -74,19 +83,11 @@ var Main = Spine.Controller.sub({
 				null, function() {
 					$("#content_message").slideUp();
 					$("#resources_list").slideDown();
-					if (controller.supportsLocalStorage()) {
+					if (supportsLocalStorage()) {
 						localStorage.setItem("com.mobion.url", url);
 					}
 				});
 	},
-
-	supportsLocalStorage : function() {
-		try {
-			return 'localStorage' in window && window['localStorage'] !== null;
-		} catch (e) {
-			return false;
-		}
-	}
 
 });
 

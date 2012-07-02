@@ -33,57 +33,68 @@
 
 
 <body>
-	<form id='api_selector'>
-		<div class='input'>
-			<input placeholder="http://api.sgcharo.com/mobion" id="input_baseUrl"
-				name="baseUrl" type="text" value= />
-		</div>
-		<div class='input'>
-			<input placeholder="token" id="input_apiKey" name="apiKey"
-				type="text" />
-		</div>
-		<div class='input'>
-			<input placeholder="api name" id="filter" name="filter" type="text" />
-		</div>
-		<div class='input'>
-			<a id="explore" href="#">Explore</a>
-		</div>
-	</form>
-	<div class="menu">
-		<ul>
-			<li id="api_bt"><a href="#">APIs</a></li>
-			<li id="testcase_bt"><a href="#">Test Case</a></li>
-		</ul>
-	</div>
-	<div id="testcase_tab" style="display: none">
-		<form id='add_testcase_form'>
-			
-			<input id="name" name="name" type="text" />
-			<input id="id" name="id" value="1340965467520" type="hidden" />
-			<div style="display: none">
-				<input name="apiConfigs[0].params" value = '{"access_token" : "giangvo"}'/>
-				<input name="apiConfigs[0].apiId" value = "/v2/account/check_access_token__GET"/>
+
+
+<input class="thickbox" style="display:none" type="button"  value="Add List Function" alt="#TB_inline?height=600&width=1240&inlineId=apiThickbox" />
+
+<div id="apiThickbox" style="display:none">
+		
+
+		<form id='api_selector'>
+			<div class='input'>
+				<input placeholder="http://api.sgcharo.com/mobion" id="input_baseUrl" name="baseUrl" type="text" value="http://api.sgcharo.com/mobion" />
 			</div>
 			
-			<a id="add_testcase_bt"	href="#">Add</a>			
+			<div class='input'>
+				<input placeholder="token" id="input_apiKey" name="apiKey"	type="text" />
+			</div>
+			
+			<div class='input'>
+				<input placeholder="api name" id="filter" name="filter" type="text" />
+			</div>
+			<div class='input'>
+				<a id="explore" href="javascript:void(0)">Explore</a>
+			</div>
+	   </form>
+		
+		
+		<form id="add_api_2_testcase_form" style="display:none">
+		
 		</form>
-		
-		<div id="testcase_list"></div>
-		<!-- <input class="thickbox" type="button" id="add_testcase_bt" value="Add" alt="#TB_inline?height=600&width=1040&inlineId=resources_list" /> -->
-		
-	</div>
-	<div id="api_tab">	
+		<input type="button" value="Save" class="save_list_function"/>
 		<div id="content_message"></div>
 
 
-		<div id="resources_list" style="display: none" />
+		<div id="resources_list" style="display: none" ></div>
+		
+		
+</div>
+		
 
-	<script type="text/javascript">
-		 new Main({
-			el: $('body'),
-		});
-		 
+
+
+  <div style="margin-bottom: 120px;">
+	<form id='add_testcase_form'>
+			<input id="name" name="name" type="text" /> 
+			<a id="add_testcase_bt"	href="javascript:void(0)">Add</a>
+		</form>
+		<div id="testcase_list"></div>
+   </div>
 	
-	</script>
+	
+	
+
+
 </body>
 </html>
+
+
+	<script type="text/javascript">
+	
+	 	new Main({
+			el: $('body'),
+		});
+		 new TestCaseMain({
+				el: $('body')
+			}); 
+	</script>
