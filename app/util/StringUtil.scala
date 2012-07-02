@@ -1,4 +1,5 @@
 package util
+import java.util.UUID
 
 object StringUtil{
   val http = "http://" 
@@ -22,7 +23,10 @@ object StringUtil{
     val PostParamV2 = "PostParamV2"
   }
   def generateStringTimeStamp() = {
-    System.currentTimeMillis.toString()
+    
+    val x = UUID.randomUUID().toString()
+    println("=========================================")
+    x
   }
   
   def isBlank(str:String):Boolean = {

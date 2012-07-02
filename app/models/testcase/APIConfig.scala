@@ -5,7 +5,7 @@ import util.JSONUtil
 import com.novus.salat.annotations._
 
 case class APIConfig(
-  @Key("_id") id: String,
+  @Key("_id") id: String = StringUtil.generateStringTimeStamp(),
   var apiId: String = "",
   var status: String = "",
   var response: String = "",

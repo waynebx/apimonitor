@@ -59,7 +59,9 @@
 		
 		
 		<form id="add_api_2_testcase_form" style="display:none">
-		
+			<input type="hidden" name="id" id="testcase_id" value=""></input>
+			<dl>
+			</dl>
 		</form>
 		<input type="button" value="Save" class="save_list_function"/>
 		<div id="content_message"></div>
@@ -80,10 +82,6 @@
 		</form>
 		<div id="testcase_list"></div>
    </div>
-	
-	
-	
-
 
 </body>
 </html>
@@ -98,3 +96,10 @@
 				el: $('body')
 			}); 
 	</script>
+	
+	<script id="apiConfigs_template" type="text/x-jquery-tmpl">
+		<dd class="new_added_apis" id="new_added_api_${id}">
+			<input name="apiConfigs[${index}].params" value = '${params}' type="hidden"/>		
+			<input name="apiConfigs[${index}].apiId" value = "${apiId}" type="hidden"/>
+		</dd>
+    </script>
