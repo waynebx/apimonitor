@@ -6,11 +6,16 @@ import com.novus.salat.dao.SalatDAO
 import com.novus.salat.Context
 
 class MongoSalatDAO[ObjectType <: AnyRef, ID <: AnyRef](collectionName: String)(implicit mot: Manifest[ObjectType], mid: Manifest[ID], ctx: Context) extends 
-	SalatDAO[ObjectType, ID](collection = MongoConnection("mongo01",27017)("mobion")(collectionName))(mot, mid, ctx) with FluidQueryBarewordOps{
+	SalatDAO[ObjectType, ID](collection = MongoConnection("127.0.0.1",27017)("mobion")(collectionName))(mot, mid, ctx) with FluidQueryBarewordOps{
   collection.getDB().authenticate("mobion","mobion!life")
   
   def findAll() = {
 	 find(MongoDBObject())
+  }
+  
+  def findbyProperty(key : String, value : AnyRef) = {
+    var c = find(MongoDBObject(key -> value));
+    c.toList
   }
   def findById(id:String) = {
     findOne(MongoDBObject("_id" -> id)).get
