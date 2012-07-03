@@ -127,11 +127,25 @@ var TestCase = Spine.Controller.sub({
 	},
 	
 	getDetails : function() {
-		var controller = this;
-		controller.endpoints.empty();
-		$.get("/api_in_testcase/" + this.id, null, function(res){
-			controller.endpoints.append(res);
-		});
+		if($(".endpoints .endpoint").size() == 0){
+			var controller = this;
+			$.get("/api_in_testcase/" + this.id, null, function(res){
+				controller.endpoints.empty();
+				controller.endpoints.append(res);
+				controller.toggleEndpoints();
+				
+			});
+		}else{
+			this.toggleEndpoints();
+		}
+	},
+	
+	toggleEndpoints : function(){
+		if(this.endpoints.is(":visible")){
+			this.endpoints.hide();
+		}else{
+			this.endpoints.show();
+		}
 	}
 
 });
