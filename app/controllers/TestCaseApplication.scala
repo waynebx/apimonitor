@@ -104,6 +104,18 @@ object TestCaseApplication extends AbstractController {
     filterResponse(Ok("OK"))
   }
   
+  def getResources(start:String,size:String,rest:String) = Action {
+    var iStart = 0
+    var iSize = 10
+    if(StringUtil.isNotBlank(start)){
+      iStart = start.toInt
+    }
+    if(StringUtil.isNotBlank(size)){
+      iSize = size.toInt
+    }
+    var result = apiResourceService.getAPIResources(iStart,iSize,rest)
+    filterResponse(Ok(SJSON.toJSON(result)))
+  }
 
 }
 

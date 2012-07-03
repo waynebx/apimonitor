@@ -8,7 +8,7 @@ import com.novus.salat.annotations._
 @BeanInfo case class APIOperation(
   @Key("_id") var id: String,
   @(JSONTypeHint @field)(value = classOf[APIParameter])@Ignore var parameters: List[APIParameter] = List[APIParameter](),
-  apiParameterIds: List[String] = List[String](),
+  var apiParameterIds: List[String] = List[String](),
   httpMethod: String = null,
   summary: String = null,
   nickname: String = null,

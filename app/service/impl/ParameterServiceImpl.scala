@@ -8,10 +8,11 @@ import service.ParameterService
 import util.StringUtil
 
 class ParameterServiceImpl extends ParameterService with AbstractService {
-  def saveParameterObj(param:APIParameter,apiId:String){
+  def saveParameterObj(param:APIParameter,apiId:String) = {
     param.id = apiId + StringUtil.separation + param.name
     param.apiId = apiId
     apiParameterDAO.save(param)
+    param.id
   }
   
   def buildAPIAndParameter(apiResource:APIResource){
@@ -26,10 +27,13 @@ class ParameterServiceImpl extends ParameterService with AbstractService {
 	        api.operations.foreach(operation =>{
 	          listOperation::= operation.id
 	          if(operation.parameters != None){
-	            apiOperationDAO.save(operation)
+	            var listParams = List[String]()
 	            operation.parameters.foreach(param =>{
-	              	this.saveParameterObj(param,operation.id)
+	              	val paramId = this.saveParameterObj(param,operation.id)
+	              	listParams::=paramId
 	            })
+	            operation.apiParameterIds = listParams
+	            apiOperationDAO.save(operation)
 	          }
 	        })
 	        api.operationsId = listOperation

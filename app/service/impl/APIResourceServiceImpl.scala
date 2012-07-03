@@ -9,7 +9,7 @@ import models.APISpec
 import models.APIOperation
 import models.APIParameter
 class APIResourceServiceImpl extends APIResourceService with AbstractService {
-	def getAPIResources(start:Int,end:Int,path:String) = {
+	def getAPIResources(start:Int,end:Int,path:String):List[APIResource] = {
 	  val id = StringUtil.basePath + path
 	  var resources = List[APIResource]()
 	  val result = apiResourceDAO.findLimit(start,end)
@@ -21,7 +21,7 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
 	      }
 	    })
 	  }
-	  resources
+	  return resources
 	}
 	
 	private def getAPIResource(apiResource:APIResource) = {
