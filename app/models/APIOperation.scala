@@ -6,9 +6,10 @@ import models.testcase.BaseBean
 import com.novus.salat.annotations._
 
 @BeanInfo case class APIOperation(
-  @Key("_id") var id: String,
+  @Key("_id") var versionId:BaseKey,
+  var id: String,
   @(JSONTypeHint @field)(value = classOf[APIParameter])@Ignore var parameters: List[APIParameter] = List[APIParameter](),
-  var apiParameterIds: List[String] = List[String](),
+  var apiParameterIds: List[BaseKey] = List[BaseKey](),
   httpMethod: String = null,
   summary: String = null,
   nickname: String = null,
@@ -17,10 +18,10 @@ import com.novus.salat.annotations._
   responseTypeInternal: String = null,
   responseClass: String = null,
   apiName: String = null,
-  resPath: String = null) extends BaseBean(id) {
+  resPath: String = null) {
 
   def this() = {
-    this("", null, null, "", "", "", "", "", "", "", "", "");
+    this(new BaseKey("",""),"", null, null, "", "", "", "", "", "", "", "", "");
   }
 }
 

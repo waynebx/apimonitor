@@ -84,17 +84,7 @@ object TestCaseApplication extends AbstractController {
 */
     
   def buildAPIDatabase = Action {
-    println(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH  + "/resources.json")
-    val res = APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH  + "/resources.json", Map())
-    val apis: List[Res] = SJSON.in[ResList](Js(res)).apis
-    var list = List[APIResource]()
-    apis.foreach(api => {
-      val path = api.path
-      println(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH +  path  + "/list_api?api_key=a3633f30bb4a11e18887005056a70023")
-      val res2 = APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH  + path + "/list_api?api_key=a3633f30bb4a11e18887005056a70023", Map())
-      list ::= SJSON.in[APIResource](Js(res2))
-      parameterService.buildAPIAndParameter(SJSON.in[APIResource](Js(res2)))
-    })
+    versionTrackingService.buildAPIVersion()
     filterResponse(Ok(Json.toJson(
       Map("status" -> "success"))))
   }

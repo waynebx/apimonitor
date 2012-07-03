@@ -1,20 +1,31 @@
 package service.impl
 
 import scala.reflect.BeanInfo
-import models.APIParameter
 import models.APIResource
-import service.AbstractService
-import service.ParameterService
-import util.StringUtil
-import util.DateUtil
 import models.BaseKey
+import service.AbstractService
+import service.VersionTrackingService
+import util.DateUtil
+import util.StringUtil
+import util.APIRequestUtils
+import util.ConfigUtils
+import models.Res
+import sjson.json.Serializer.SJSON
+import models.ResList
+import dispatch.json.Js
+import models.VersionTracking
 
 
-class ParameterServiceImpl extends ParameterService with AbstractService {
+class VersionTrackingServiceImpl extends VersionTrackingService with AbstractService {
+  def getLastedVersion() = {
+    var lastItem = apiVersionTrackingDAO.findAndOrder(StringUtil.Order.DESC, 0, StringUtil.MAXINT)
+    if (lastItem != null) {
+      lastItem(0).id
+    }
+    null
+  }
 
-  
-  def buildAPIAndParameter(apiResource:APIResource){
-    val now = DateUtil.getNow()
+  def buildAPIAndParameter(apiResource: APIResource,now:String) {
     if (apiResource.apis != None) {
       var listAPI = List[BaseKey]()
       apiResource.id = new BaseKey(apiResource.apiVersion + StringUtil.separation + apiResource.resourcePath, now)
@@ -46,4 +57,21 @@ class ParameterServiceImpl extends ParameterService with AbstractService {
       apiResourceDAO.save(apiResource)
     }
   }
+
+  def buildAPIVersion() {
+    val now = DateUtil.getNow()
+    var version = new VersionTracking
+    version.id = now
+    val res = APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH + "/resources.json", Map())
+    val apis: List[Res] = SJSON.in[ResList](Js(res)).apis
+    var pathList = List[String]()
+    apis.foreach(api => {
+      val path = api.path
+      val res2 = APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH  + path + "/list_api?api_key=a3633f30bb4a11e18887005056a70023", Map())
+      this.buildAPIAndParameter(SJSON.in[APIResource](Js(res2)),now)
+      pathList::=path
+    })
+    version.paths = pathList
+  }
+
 }

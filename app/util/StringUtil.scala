@@ -6,6 +6,12 @@ object StringUtil{
   val slash = "/"
   val separation = "__"
   val basePath = StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH;
+  val MAXINT = 2000000000
+  object Order{
+	  val ASC = 1
+	  val DESC = -1
+  }
+  
   object WebMethod{
 	  val GET = "GET"
 	  val POST = "POST"
