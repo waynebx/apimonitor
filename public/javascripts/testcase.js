@@ -1,6 +1,7 @@
 var TestCaseMain = Spine.Controller.sub({
 	init : function() {
 		this.getListTestCase();
+		
 
 	},
 
@@ -24,24 +25,25 @@ var TestCaseMain = Spine.Controller.sub({
 	removeOpeItem : function(e){
 		$(e.target).html("Add").css("color","#0F6AB4").removeClass().addClass("add_ope_item");
 		
-		var id = "#api_" + $(e.target).attr("id");
-		$(id).remove();
+		var id = e.target.id.split("id_")[1].split('/').join('_');
+		$("#new_added_api_" + id).remove();
 	},
 	
 	addOpeItem : function(e){
-		var apiId = "apiId";
-		$(e.target).html("Added").css("color","red").removeClass().addClass("remove_ope_item").attr("id",apiId);
-		var countApiConfigs = $('#add_api_2_testcase_form  .api_configs').size();
 		
-		var renderString = "<dd class='api_configs' id='api_" + apiId + "'>";
-		renderString += "<input type='text' value='" + apiId + "'  name='apiConfigs[" + countApiConfigs + "].apiId'  />";
-		$(e.target).parents('.operations').find(".content table tbody tr").each(function(){
-			var paramName = $(this).find('.code').html();
-			var paramValue = $(this).find('input').val();
-			renderString += "<input type='text' name='apiConfigs[" +countApiConfigs + "].params." + paramName + "' value='"+ paramValue +"'  />";
-			
-		});
-		$('#add_api_2_testcase_form').append(renderString + "</dd>");
+		$(e.target).html("Added").css("color","red").removeClass().addClass("remove_ope_item");
+		var countApiConfigs = $('#add_api_2_testcase_form  .new_added_apis').size();
+		
+		
+		
+		var obj = new Object();
+		obj.index = countApiConfigs;
+		obj.params = "{}";
+		obj.apiId = e.target.id.split("id_")[1];
+		obj.id = e.target.id.split("id_")[1].split('/').join('_');
+		
+		$("#apiConfigs_template").tmpl(obj).appendTo("#add_api_2_testcase_form dl");
+		
 	},
 	
 
@@ -78,14 +80,14 @@ var TestCaseMain = Spine.Controller.sub({
 //		
 		var formData = form2js("add_api_2_testcase_form", '.', true);
 		var json = JSON.stringify(formData, null, '\t');
-		alert(json);
+		
 //
-//		postJson("/add_api_to_testcase", json, function(res) {
+		postJson("/add_api_to_testcase", json, function(res) {
 //			$("#testcase_list #resources").append(res.responseText);
-//		});
+		});
 //		
 		
-		$('#add_api_2_testcase_form').html("");
+		$('#add_api_2_testcase_form dl').empty();
 		$("#TB_closeWindowButton").trigger('click');
 	}
 	
@@ -96,7 +98,8 @@ var TestCase = Spine.Controller.sub({
 
 	elements : {
 		".endpoints" : "endpoints",
-		"#add_api_2_testcase_form" : "add_api_2_testcase_form"
+		"#add_api_2_testcase_form" : "add_api_2_testcase_form",
+		"#add_api_2_testcase_form #resources_list" : "resources_list"
 	},
 	
 	
@@ -109,8 +112,11 @@ var TestCase = Spine.Controller.sub({
 
 	
 	openPopup : function(){
+		this.resources_list.empty();
 		$('.thickbox').trigger('click');
-		$("#add_api_2_testcase_form").append("<dd><input type='text' name='id' value='"+ this.id+ "'/></dd>");
+		$('#add_api_2_testcase_form #testcase_id').val(this.id);
+		Main.getAPI();
+//		$("#add_api_2_testcase_form").append("<dd><input type='text' name='id' value='"+ this.id+ "'/></dd>");
 	},
 	deleteTestCase : function() {
 		var controller = this;
@@ -121,10 +127,25 @@ var TestCase = Spine.Controller.sub({
 	},
 	
 	getDetails : function() {
-		var controller = this;
-		$.get("/api_in_testcase/" + this.id, null, function(res){
-			controller.endpoints.append(res);
-		});
+		if($(".endpoints .endpoint").size() == 0){
+			var controller = this;
+			$.get("/api_in_testcase/" + this.id, null, function(res){
+				controller.endpoints.empty();
+				controller.endpoints.append(res);
+				controller.toggleEndpoints();
+				
+			});
+		}else{
+			this.toggleEndpoints();
+		}
+	},
+	
+	toggleEndpoints : function(){
+		if(this.endpoints.is(":visible")){
+			this.endpoints.hide();
+		}else{
+			this.endpoints.show();
+		}
 	}
 
 });

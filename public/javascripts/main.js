@@ -30,6 +30,10 @@ var Main = Spine.Controller.sub({
 //			this.getTestcase();
 
 		}
+		
+		$('#explore').click(function(){
+			Main.getAPI();
+		});
 	},
 
 	elements : {
@@ -39,10 +43,8 @@ var Main = Spine.Controller.sub({
 	},
 
 	events : {
-		"click #explore" : "getAPI",
+//		"click #explore" : "getAPI",
 		"click #api_bt" : "show_api",
-		"dblclick #api_bt" : "getAPI",
-
 		"click #testcase_bt" : "show_testcase",
 
 	},
@@ -72,22 +74,7 @@ var Main = Spine.Controller.sub({
 	//
 	// },
 
-	getAPI : function() {
-		var url = $("#input_baseUrl").val().trim();
-		$("#content_message").html("Loading...");
-		$("#resources_list").slideUp();
-		$("#content_message").slideDown();
-
-		var controller = this;
-		$('#resources_list').load('/getapi?url=' + encodeURIComponent(url),
-				null, function() {
-					$("#content_message").slideUp();
-					$("#resources_list").slideDown();
-					if (supportsLocalStorage()) {
-						localStorage.setItem("com.mobion.url", url);
-					}
-				});
-	},
+	
 
 });
 
@@ -108,7 +95,24 @@ Main.extend({
 			}
 		});
 		return o;
-	}
+	},
+
+	getAPI : function() {
+		var url = $("#input_baseUrl").val().trim();
+		$("#content_message").html("Loading...");
+		$("#resources_list").slideUp();
+		$("#content_message").slideDown();
+	
+		var controller = this;
+		$('#resources_list').load('/getapi?url=' + encodeURIComponent(url),
+				null, function() {
+					$("#content_message").slideUp();
+					$("#resources_list").slideDown();
+					if (supportsLocalStorage()) {
+						localStorage.setItem("com.mobion.url", url);
+					}
+				});
+	},
 });
 
 var Resource = Spine.Controller.sub({

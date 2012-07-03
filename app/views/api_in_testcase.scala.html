@@ -1,7 +1,7 @@
 @(op : models.APIOperation)
 <li class='endpoint'>
 	<ul class='operations' id="&#95endpoint&#95operations">
-		@operation("s","s",op)
+		@operation(op.nickname,op.path,op)
 	</ul>
 	
 </li>

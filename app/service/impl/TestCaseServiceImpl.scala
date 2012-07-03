@@ -114,6 +114,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     	}
  
     	case TestCaseOperation.ADD_APICONFIG => {
+    	  println("enter here with testCase id = " + testCaseId + "apiConfig Id : + " + apiConfig.id + "=" + apiConfig.apiId)
     		testCaseDAO.pushToField(testCaseId, "apiConfigIds", apiConfig.id)
     		apiConfigDAO.save(apiConfig)
     	}
