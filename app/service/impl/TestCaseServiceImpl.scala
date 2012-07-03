@@ -34,7 +34,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     
     if(testCase.apiConfigs != null && !testCase.apiConfigs.isEmpty){
     	testCase.apiConfigs.foreach(apiConfig => {
-    	  saveAPIConfig(testCase.id, apiConfig, TestCaseOperation.NEW);
+    	  apiConfigDAO.save(apiConfig)
     	  apiConfigIds += apiConfig.id;
     	})
     }
@@ -50,13 +50,23 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     var list = new ListBuffer[APIOperation]();
     if(testCase.apiConfigs != null && !testCase.apiConfigs.isEmpty){
     	testCase.apiConfigs.foreach(apiConfig => {
-    	  saveAPIConfig(testCase.id, apiConfig, TestCaseOperation.ADD_APICONFIG);
+    	testCaseDAO.pushToField(testCase.id, "apiConfigIds", apiConfig.id)
+    	apiConfigDAO.save(apiConfig)
     	  
-    	  list += getAPIfromConfig(apiConfig)
+    	list += getAPIfromConfig(apiConfig)
     	})
     }
    
     return list.toList
+  }
+  
+  def removeAPIfromTestCase(testCaseId : String, apiConfigIds : List[String]) {
+
+    apiConfigIds.foreach(id => {
+      testCaseDAO.pullFromField(testCaseId, "apiConfigIds", id)
+      apiConfigDAO.deleteById(id)
+    })
+
   }
 
   def deleteTestCase(id: String) {
@@ -87,6 +97,7 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
   private def getAPIfromConfig(apiConfig : APIConfig) : APIOperation = {
     var api = apiOperationDAO.findById(apiConfig.apiId)
     if (api != null) {
+      api.apiConfigId = apiConfig.id;
       var map = apiConfig.parseParamToMap()
       var keySet = map.keySet
       var parameters = apiParameterDAO.getByAPIId(api.id);
@@ -103,54 +114,6 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
       api.parameters = parameters
     }
     return api;
-  }
-  
-  private def saveAPIConfig(testCaseId: String, apiConfig: APIConfig, operartion: Int) = {
-    var api = apiOperationDAO.findById(apiConfig.apiId)
-    if (api != null) {
-    	operartion match {
-    	case TestCaseOperation.NEW => {
-    		apiConfigDAO.save(apiConfig)
-    	}
- 
-    	case TestCaseOperation.ADD_APICONFIG => {
-    	  println("enter here with testCase id = " + testCaseId + "apiConfig Id : + " + apiConfig.id + "=" + apiConfig.apiId)
-    		testCaseDAO.pushToField(testCaseId, "apiConfigIds", apiConfig.id)
-    		apiConfigDAO.save(apiConfig)
-    	}
-    	
-    	case TestCaseOperation.REMOVE_APICONFIGS => {
-    		testCaseDAO.pullFromField(testCaseId, "apiConfigIds", apiConfig.id)
-    	}
-    }
-    }
-    
-    
-  }
-  
-   def removeFunctionInTestCase(testCase: TestCase) {
-    if (testCase.apiConfigIds != null && testCase.apiConfigIds.length > 0) {
-      testCase.apiConfigIds.foreach(apiConfigId => {
-        var function = apiConfigDAO.findById(apiConfigId)
-        saveAPIConfig(testCase.id, function, StringUtil.TestCaseOperation.REMOVE)
-      })
-    }
-  }
-
-  def addFunctionInTestCase(testCase: TestCase) {
-    if (testCase.apiConfigIds != null && testCase.apiConfigIds.length > 0) {
-      testCase.apiConfigs.foreach(apiConfig => {
-        saveAPIConfig(testCase.id, apiConfig, StringUtil.TestCaseOperation.ADD)
-      })
-    }
-  }
-  
-  def editFunctionInTestCase(testCase: TestCase) {
-    if (testCase.apiConfigIds != null && testCase.apiConfigIds.length > 0) {
-      testCase.apiConfigs.foreach(apiConfig => {
-        apiConfigDAO.save(apiConfig)
-      })
-    }
   }
   
   def getListMobionTestCase(start: String, size: String):List[TestCase] = {

@@ -47,12 +47,22 @@ object TestCaseApplication extends AbstractController {
 
   def addAPI2TestCase = Action(parse.json) { request =>
 
-    println("add api to test case : " + request.body.toString())
     var testCase = SJSON.in[TestCase](Js(request.body.toString()))
 
     Ok(views.html.apis_list_in_testcase(testCase.id, testCaseService.addAPI2TestCase(testCase)))
 
   }
+  
+   def removeAPIfromTestCase = Action(parse.json) { request =>
+
+    println("remove from test case : " + request.body.toString())
+    var testCase = SJSON.in[TestCase](Js(request.body.toString()))
+
+    testCaseService.removeAPIfromTestCase(testCase.id, testCase.apiConfigIds)
+    
+    Ok("OK")
+  }
+
 
   def deleteTestCase(id: String) = Action {
     testCaseService.deleteTestCase(id);
@@ -103,19 +113,5 @@ object TestCaseApplication extends AbstractController {
     var value = testCaseService.getListMobionTestCase(start, size)
     filterResponse(Ok("OK"))
   }
-  
-  def getResources(start:String,size:String,rest:String) = Action {
-    var iStart = 0
-    var iSize = 10
-    if(StringUtil.isNotBlank(start)){
-      iStart = start.toInt
-    }
-    if(StringUtil.isNotBlank(size)){
-      iSize = size.toInt
-    }
-    var result = apiResourceService.getAPIResources(iStart,iSize,rest)
-    filterResponse(Ok(SJSON.toJSON(result)))
-  }
-
 }
 

@@ -5,7 +5,6 @@
 # Home page
 
 GET    /                                      controllers.Application.index
-GET    /getapi                                controllers.Application.getapi(url : String)
 
 GET    /get_apis_list                         controllers.Application.getListAPI
 GET    /get_apis_from                         controllers.Application.getListAPIInRest(rest:String)
@@ -20,12 +19,14 @@ GET		/api_in_testcase/:id					controllers.TestCaseApplication.getAPIsinTestCase(
 POST	/add_test_case                         	controllers.TestCaseApplication.addTestCase
 POST	/delete_test_case/:id                   controllers.TestCaseApplication.deleteTestCase(id : String)
 POST	/add_api_to_testcase                    controllers.TestCaseApplication.addAPI2TestCase()
-GET    /get_resources                           controllers.TestCaseApplication.getResources(start:String,size:String,rest:String)
+POST	/remove_api_from_testcase               controllers.TestCaseApplication.removeAPIfromTestCase()
+
 
 
 #API Controller
+GET    /getapi                                controllers.APIApplication.getapi(url : String)
 GET   /build_database_for_testcase			  controllers.TestCaseApplication.buildAPIDatabase
-
+#GET    /get_resources                           controllers.APIApplication.getResources(start:String,size:String,rest:String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -36,6 +36,7 @@ object Application extends AbstractController {
       list ::= SJSON.in[APIResource](Js(res2))
     })
 
+    
     Ok(views.html.resources_list(list))
   }
 

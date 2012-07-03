@@ -18,7 +18,7 @@ var TestCaseMain = Spine.Controller.sub({
 		"click .add_ope_item" : "addOpeItem",
 		"click #add_testcase_bt" : "addTestCase",
 		"click .remove_ope_item" : "removeOpeItem",
-		"click .remove_api_item" : "removeApiItem"
+	
 
 	},
 
@@ -98,8 +98,11 @@ var TestCaseMain = Spine.Controller.sub({
 		$('#resources_list').empty();
 		$('#add_api_2_testcase_form dl').empty();
 		$("#TB_closeWindowButton").trigger('click');
-	}
 
+	},
+	
+
+	
 });
 
 var TestCase = Spine.Controller.sub({
@@ -114,9 +117,20 @@ var TestCase = Spine.Controller.sub({
 		"click #delete_testcase_bt" : "deleteTestCase",
 		"click #get_detail_bt" : "getDetails",
 		"click .add_ops" : "openPopup",
+		"click .remove_api_item" : "removeAPIfromTestCase"
 
 	},
 
+	removeAPIfromTestCase : function() {
+		var testCaseId = this.id;
+		alert(testCaseId);
+		var json = {"id" : "1341286226123", "apiConfigIds" : ["1341286496342"]}
+		postJson("/remove_api_from_testcase", JSON.stringify(json), function(res) {
+
+		});
+		
+		
+	},
 	openPopup : function() {
 		this.resources_list.empty();
 		$('.thickbox').trigger('click');

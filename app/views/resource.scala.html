@@ -1,6 +1,7 @@
 @(res : models.APIResource)
 @defining(res.resourcePath.replaceAllLiterally("/","_")) { pathId =>
 <li class='resource' id='resource_@pathId'>
+
 	<div class='heading'>
 		<h2>
 			<a href='#!/@pathId'>@res.resourcePath</a>
