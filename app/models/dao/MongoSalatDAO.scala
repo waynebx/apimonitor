@@ -18,7 +18,11 @@ class MongoSalatDAO[ObjectType <: AnyRef, ID <: AnyRef](collectionName: String)(
     c.toList
   }
   def findById(id:String) = {
-    findOne(MongoDBObject("_id" -> id)).get
+    var result = findOne(MongoDBObject("_id" -> id))
+    if(result == None){
+      null
+    }
+    result.get
   }
   def findLimit(start:Int,size:Int) : List[ObjectType] = {
     var c = find(MongoDBObject()).skip(start).limit(size)
