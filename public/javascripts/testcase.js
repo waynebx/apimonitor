@@ -9,7 +9,6 @@ var TestCaseMain = Spine.Controller.sub({
 		"#add_testcase_bt" : "add_testcase_bt",
 		"#add_testcase_form" : "add_testcase_form",
 		"#add_api_2_testcase_form" : "add_api_2_testcase_form"
-	// "#testcase_list #resources" : "testcase_list",
 
 	},
 
@@ -18,13 +17,13 @@ var TestCaseMain = Spine.Controller.sub({
 		"click .add_ope_item" : "addOpeItem",
 		"click #add_testcase_bt" : "addTestCase",
 		"click .remove_ope_item" : "removeOpeItem",
-	
+		"click .run_testcase"         : "runTestcase"
 
 	},
 
-	removeApiItem : function(e) {
-		$(e.target).parents(".endpoint").slideUp(function(){
-			$(this).remove();
+	runTestcase : function(e){
+		$(e.target).parents(".resource").find(".endpoint").each(function(){
+			$(this).find("form input[name=commit]").trigger("click");
 		});
 	},
 
@@ -121,12 +120,13 @@ var TestCase = Spine.Controller.sub({
 
 	},
 
-	removeAPIfromTestCase : function() {
-		var testCaseId = this.id;
-		alert(testCaseId);
-		var json = {"id" : "1341286226123", "apiConfigIds" : ["1341286496342"]}
+	removeAPIfromTestCase : function(e) {
+		var target = e.target;
+		var testcaseId = this.id;
+		var apiId = $(target).parents(".heading").find("input[name=apiConfigId]").val();
+		var json = {"id" : testcaseId, "apiConfigIds" : [apiId]};
 		postJson("/remove_api_from_testcase", JSON.stringify(json), function(res) {
-
+			$(target).parents(".endpoint").remove();
 		});
 		
 		

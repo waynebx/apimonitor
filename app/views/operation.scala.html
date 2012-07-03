@@ -1,4 +1,4 @@
-@(apiName: String, apiPath : String, operation : models.APIOperation, isAdd : Boolean)
+@(apiName: String, apiPath : String, operation : models.APIOperation, isAdd : Boolean, idTestcase : String ="")
 
 <li class="@operation.httpMethod.toLowerCase() operation"
 	id="@apiName&#95@operation.nickname&#95@operation.httpMethod">
@@ -6,10 +6,10 @@
 	<div class='heading'>
 		<h3>
 			<span class='http_method'> <a
-				href="#!/@apiName/@operation.nickname&#95@operation.httpMethod"
+				href="javascript:void(0)"
 				>@operation.httpMethod</a>
 			</span> <span class='path'> <a
-				href="#!/@apiName/@operation.nickname&#95@operation.httpMethod"
+				href="javascript:void(0)"
 				>@apiPath</a>
 			</span>
 		</h3>
@@ -28,8 +28,9 @@
 		var id = '@apiName' + '_' + '@operation.nickname' + '_' + '@operation.httpMethod';
 		 new Operation({
 			
-			el: $('#' + id),
+			el: $("#testcase_@idTestcase #" + id),
 			id : id,
+			testcase_id : "@idTestcase",
 			path : "@apiPath",
 			http_method: "@operation.httpMethod.toLowerCase()"
 			

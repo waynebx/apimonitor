@@ -137,14 +137,18 @@ var Resource = Spine.Controller.sub({
 
 var Operation = Spine.Controller.sub({
 	tag : "li",
-
+	proxied : "click",
 	events : {
 		"click h3" : "click",
 		"click .sandbox_header input.submit" : "call_api"
 	},
 
 	click : function() {
-		Docs.toggleOperationContent(this.id + '_content');
+//		var test = this.el.attr("id");
+//		alert(test);
+//		var id = this.el[1, this.el.length -1];
+//		alert(id);
+		Docs.toggleOperationContent(id + '_content');
 	},
 
 	call_api : function() {

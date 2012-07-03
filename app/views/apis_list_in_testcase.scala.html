@@ -1,6 +1,6 @@
 @(id : String, apis : List[models.APIOperation])
 @for(api <- apis){ 
-	@api_in_testcase(api) 
+	@api_in_testcase(api, id) 
 }
 	
 

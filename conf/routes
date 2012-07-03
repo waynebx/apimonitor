@@ -24,9 +24,9 @@ POST	/remove_api_from_testcase               controllers.TestCaseApplication.rem
 
 
 #API Controller
-GET    /getapi                                controllers.APIApplication.getapi(url : String)
+GET    /getapi                                controllers.Application.getapi(url : String)
 GET   /build_database_for_testcase			  controllers.TestCaseApplication.buildAPIDatabase
-#GET    /get_resources                           controllers.APIApplication.getResources(start:String,size:String,rest:String)
+#GET    /get_resources                           controllers.Application.getResources(start:String,size:String,rest:String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
