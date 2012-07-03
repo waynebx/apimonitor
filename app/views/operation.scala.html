@@ -1,4 +1,4 @@
-@(apiName: String, apiPath : String, operation : models.APIOperation)
+@(apiName: String, apiPath : String, operation : models.APIOperation, isAdd : Boolean)
 
 <li class="@operation.httpMethod.toLowerCase() operation"
 	id="@apiName&#95@operation.nickname&#95@operation.httpMethod">
@@ -14,7 +14,11 @@
 		</h3>
 		<ul class='options'>
 			<li>@operation.summary</li>
-			<li><a href="javascript:void(0)" class="add_ope_item" id="id_@operation.id">Add</a></li>
+			@if(isAdd){
+				<li><a href="javascript:void(0)" class="add_ope_item" id="id_@operation.id">Add</a></li>	
+			}else{
+				<li><a href="javascript:void(0)" class="remove_api_item" id="id_@operation.id">Remove</a></li>
+			}
 		</ul>
 	</div> 
 	
