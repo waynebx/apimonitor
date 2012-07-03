@@ -2,6 +2,7 @@
 
 <li class="@operation.httpMethod.toLowerCase() operation"
 	id="@apiName&#95@operation.nickname&#95@operation.httpMethod">
+	
 	<div class='heading'>
 		<h3>
 			<span class='http_method'> <a
@@ -16,6 +17,7 @@
 			<li>@operation.summary</li>
 			<li><a href="javascript:void(0)" class="add_ope_item" id="id_@operation.id">Add</a></li>
 		</ul>
+		<input type="hidden" name="apiConfigId" value="@operation.apiConfigId"/>
 	</div> 
 	
 	<script type="text/javascript">

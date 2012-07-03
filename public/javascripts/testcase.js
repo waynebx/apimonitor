@@ -89,8 +89,16 @@ var TestCaseMain = Spine.Controller.sub({
 		
 		$('#add_api_2_testcase_form dl').empty();
 		$("#TB_closeWindowButton").trigger('click');
-	}
+	},
 	
+	removeAPIfromTestCase : function() {
+		var json = {"id" : "1341286226123", "apiConfigIds" : ["1341286496342"]}
+		postJson("/remove_api_from_testcase", JSON.stringify(json), function(res) {
+
+		});
+		
+		
+	},
 	
 });
 

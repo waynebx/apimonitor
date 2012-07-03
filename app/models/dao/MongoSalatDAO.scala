@@ -4,6 +4,7 @@ import com.mongodb.casbah.query.FluidQueryBarewordOps
 import com.mongodb.casbah.MongoConnection
 import com.novus.salat.dao.SalatDAO
 import com.novus.salat.Context
+import com.mongodb.casbah.WriteConcern
 
 class MongoSalatDAO[ObjectType <: AnyRef, ID <: AnyRef](collectionName: String)(implicit mot: Manifest[ObjectType], mid: Manifest[ID], ctx: Context) extends 
 	SalatDAO[ObjectType, ID](collection = MongoConnection("mongo01b",27017)("mobion")(collectionName))(mot, mid, ctx) with FluidQueryBarewordOps{
@@ -23,6 +24,10 @@ class MongoSalatDAO[ObjectType <: AnyRef, ID <: AnyRef](collectionName: String)(
       null
     }
     result.get
+  }
+  
+  def deleteById(id :ID){
+    removeById(id, WriteConcern.Safe)
   }
   def findLimit(start:Int,size:Int) : List[ObjectType] = {
     var c = find(MongoDBObject()).skip(start).limit(size)

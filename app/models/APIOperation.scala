@@ -17,10 +17,11 @@ import com.novus.salat.annotations._
   responseTypeInternal: String = null,
   responseClass: String = null,
   apiName: String = null,
-  resPath: String = null) extends BaseBean(id) {
+  resPath: String = null,
+  @Ignore var apiConfigId:String="") extends BaseBean(id) {
 
   def this() = {
-    this("", null, null, "", "", "", "", "", "", "", "", "");
+    this("", null, null, "", "", "", "", "", "", "", "", "","");
   }
 }
 

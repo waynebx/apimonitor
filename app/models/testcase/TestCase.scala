@@ -8,7 +8,7 @@ import com.novus.salat.annotations._
 case class TestCase(
     @Key("_id") id:String,
     var name:String="", 
-    var apiConfigIds:List[String]=null, 
+    @(JSONTypeHint @field)(value = classOf[String]) var apiConfigIds:List[String]=null, 
     @Ignore @(JSONTypeHint @field)(value = classOf[APIConfig]) var apiConfigs:List[APIConfig] = null) extends BaseBean(id){
 
   

@@ -13,6 +13,8 @@ trait TestCaseService {
 	def getAPIsinTestCase(testCaseId: String): List[APIOperation]
 	
 	def addAPI2TestCase(testCase : TestCase): List[APIOperation]
+	
+	def removeAPIfromTestCase(testCaseId : String, apiConfigIds : List[String])
 
 /*	def removeFunctionInTestCase(testCase: TestCase)
 	
