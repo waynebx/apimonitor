@@ -73,6 +73,10 @@ var TestCaseMain = Spine.Controller.sub({
 	},
 
 	addTestCase : function() {
+		if($("#add_testcase_form input[name=name]").val() == ""){
+			$("#add_testcase_form input[name=name]").focus();
+			return;
+		};
 		var formData = form2js("add_testcase_form", '.', true);
 		var json = JSON.stringify(formData, null, '\t');
 
