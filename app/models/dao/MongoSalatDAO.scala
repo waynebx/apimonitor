@@ -50,7 +50,7 @@ class MongoSalatDAO[ObjectType <: AnyRef, ID <: AnyRef](collectionName: String)(
     update(MongoDBObject("_id" -> id),pull)
   }
   
-  def findOneByKey(id:BaseKey) = {
+  def findById(id:BaseKey) = {
 	var result = findOne(MongoDBObject("_id.path" -> id.path , "_id.version" -> id.version))
     if(result == None){
       null

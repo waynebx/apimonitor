@@ -27,7 +27,7 @@ object APIApplication extends AbstractController {
 //      val res2 = APIRequestUtils.getWS(newUrl + path + "/list_api?api_key=a3633f30bb4a11e18887005056a70023", Map())
 //
 //      list ::= SJSON.in[APIResource](Js(res2))
-      val id = "1.0__/v2" + path;
+      val id = path;
     	println(id);
     	list ::= apiResourceService.getAPIResource(id);
     })
@@ -45,7 +45,7 @@ object APIApplication extends AbstractController {
       iSize = size.toInt
     }
     
-    apiResourceService.getAPIResources(iStart, iSize, rest)
+    apiResourceService.getAPIResources(iStart, iSize, rest,"")
     
   }
 }

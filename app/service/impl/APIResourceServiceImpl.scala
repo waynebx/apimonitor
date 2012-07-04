@@ -8,17 +8,21 @@ import sjson.json.Serializer.SJSON
 import models.APISpec
 import models.APIOperation
 import models.APIParameter
+import models.BaseKey
 class APIResourceServiceImpl extends APIResourceService with AbstractService {
 
-  def getAPIResources(start: Int, end: Int, path: String): List[APIResource] = {
+  def getAPIResources(start: Int, end: Int, path: String,currentVersion:String): List[APIResource] = {
     val id = StringUtil.basePath + path
     var resources = List[APIResource]()
-    val listVersion = apiVersionTrackingDAO.findAndOrder(StringUtil.Order.DESC, 0, StringUtil.MAXINT)
-    if (listVersion == null) {
-      resources
+    var lastestVersion =  currentVersion
+    if(StringUtil.isNotBlank(currentVersion)){
+      val listVersion = apiVersionTrackingDAO.findAndOrder(StringUtil.Order.DESC, 0, StringUtil.MAXINT)
+      if (listVersion == null) {
+        resources
+      }
+      lastestVersion = listVersion(0).id
     }
-    val lastestVersion = listVersion(0)
-    val result = apiResourceDAO.findbyProperty("_id.version", lastestVersion.id, start, end)
+    val result = apiResourceDAO.findbyProperty("_id.version",lastestVersion, start, end)
     if (result != null) {
       result.foreach(item => {
         var resource = getAPIResource(item) // will modify
@@ -36,19 +40,19 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
       null
     }
     apiResource.specIds.foreach(specId => {
-      val spec = apiSpecDAO.findOneByKey(specId)
+      val spec = apiSpecDAO.findById(specId)
       var listOpertation = List[APIOperation]()
       if (spec == null || spec.operationsId.isEmpty) {
         null
       }
       spec.operationsId.foreach(operationId => {
-        val operation = apiOperationDAO.findOneByKey(operationId)
+        val operation = apiOperationDAO.findById(operationId)
         if (operation == null || operation.apiParameterIds.isEmpty) {
           null
         }
         var listParameter = List[APIParameter]()
         operation.apiParameterIds.foreach(parameterId => {
-          val parameter = apiParameterDAO.findOneByKey(parameterId)
+          val parameter = apiParameterDAO.findById(parameterId)
           listParameter ::= parameter
         })
         operation.parameters = listParameter
@@ -62,9 +66,13 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
   }
 
   def getAPIResource(id: String): APIResource = {
-
+    val listVersion = apiVersionTrackingDAO.findAndOrder(StringUtil.Order.DESC, 0, StringUtil.MAXINT)
+      if (listVersion == null) {
+        null
+      }
+    val lastestVersion = listVersion(0).id
+    val key  = new BaseKey(id,lastestVersion)
     val apiRes = apiResourceDAO.findById(id)
-    println(apiRes)
     if (apiRes != null) {
       return getAPIResource(apiRes)
     } else {
