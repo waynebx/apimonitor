@@ -60,7 +60,16 @@ class MongoSalatDAO[ObjectType <: AnyRef, ID <: AnyRef](collectionName: String)(
   
   def findAndOrder(order:Int,start:Int,size:Int) = {
     var result = find(MongoDBObject()).sort(orderBy = MongoDBObject("_id" -> -1)).skip(start).limit(size)
+    println(result)
     if (result == None) {
+      null
+    }
+    result.toList
+  }
+  
+  def findById(id:String,start:Int,size:Int) = {
+    var result = find(MongoDBObject("_id" -> id)).skip(start).limit(size)
+    if(result == None){
       null
     }
     result.toList

@@ -17,12 +17,12 @@ import models.VersionTracking
 
 
 class VersionTrackingServiceImpl extends VersionTrackingService with AbstractService {
-  def getLastedVersion() = {
+  def getLastedVersion():String = {
     var lastItem = apiVersionTrackingDAO.findAndOrder(StringUtil.Order.DESC, 0, StringUtil.MAXINT)
     if (lastItem != null) {
-      lastItem(0).id
+      return lastItem(0).id
     }
-    null
+    return null
   }
 
   def buildAPIAndParameter(apiResource: APIResource,now:String) {
@@ -73,6 +73,11 @@ class VersionTrackingServiceImpl extends VersionTrackingService with AbstractSer
     })
     version.paths = pathList
     apiVersionTrackingDAO.save(version)
+  }
+  
+  def getPathListOfVersion(version:String):List[String] = {
+    val versionTracking = apiVersionTrackingDAO.findById(version)
+    return versionTracking.paths
   }
 
 }

@@ -11,32 +11,23 @@ import util.StringUtil
 object APIApplication extends AbstractController {
   
   def getapi(url: String) = Action {
-    var newUrl = url
+    val latestVersion = versionTrackingService.getLastedVersion()
     
-    if (!newUrl.startsWith("http://")) {
-      newUrl += "http://"
-    }
-    newUrl = "http://api.sgcharo.com/mobion"
-    println(newUrl + "/resources.json")
-    val res = APIRequestUtils.getWS(newUrl + "/resources.json", Map())
-    val apis: List[Res] = SJSON.in[ResList](Js(res)).apis
-
+    val apis = versionTrackingService.getPathListOfVersion(latestVersion)
+    println("=====================")
+    println(apis)
+    println("=====================")
     var list = List[APIResource]()
-
     apis.foreach(api => {
-      val path = "/v2" + api.path
-//      val res2 = APIRequestUtils.getWS(newUrl + path + "/list_api?api_key=a3633f30bb4a11e18887005056a70023", Map())
-//
-//      list ::= SJSON.in[APIResource](Js(res2))
-      val id = path;
-    	println(id);
-    	list ::= apiResourceService.getAPIResource(id);
+      val id = api;
+      println(id);
+      list ::= apiResourceService.getAPIResource(id);
     })
 
     Ok(views.html.resources_list(list))
   }
   
-  def getResources(start: String, size: String, rest: String) {
+  def getResources(start: String, size: String, rest: String,version:String) = Action {
     var iStart = 0
     var iSize = 10
     if (StringUtil.isNotBlank(start)) {
@@ -46,7 +37,7 @@ object APIApplication extends AbstractController {
       iSize = size.toInt
     }
     
-    apiResourceService.getAPIResources(iStart, iSize, rest,"")
-    
+    val list = apiResourceService.getAPIResources(iStart, iSize, rest,version)
+    Ok(SJSON.toJSON(list))
   }
 }

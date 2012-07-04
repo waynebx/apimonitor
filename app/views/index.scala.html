@@ -1,3 +1,4 @@
+@(tab : String = "api")
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -55,30 +56,11 @@
 			<li id="testcase_bt"><a href="/testcase">Test Case</a></li>
 		</ul>
 	</div>
-	<div id="testcase_tab" style="display: none">
-		<form id='add_testcase_form'>
-			
-			<input id="name" name="name" type="text" />
-			<input id="id" name="id" value="" type="hidden" />
-			<a id="add_testcase_bt"	href="javascript:void(0)">Add</a>			
-		</form>
-		
-		<div id="testcase_list"></div>
-		<!-- <input class="thickbox" type="button" id="add_testcase_bt" value="Add" alt="#TB_inline?height=600&width=1040&inlineId=resources_list" /> -->
-		
-	</div>
-	<div id="api_tab">	
-		<div id="content_message"></div>
 
-
-		<div id="resources_list" style="display: none" />
-
-	<script type="text/javascript">
-		 new Main({
-			el: $('body'),
-		});
-		 
-	
-	</script>
+	@if(tab == "api"){
+		@api_index()
+	}else{
+		@testcase_index()
+	}
 </body>
 </html>

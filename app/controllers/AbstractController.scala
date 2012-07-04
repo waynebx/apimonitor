@@ -12,6 +12,7 @@ import service.ParameterService
 import service.APIConfigService
 import service.APIResourceService
 import service.VersionTrackingService
+import util.ConfigUtils
 
 class AbstractController extends Controller {
   val myService = Spring.getBeanOfType(classOf[MyService])
@@ -20,6 +21,8 @@ class AbstractController extends Controller {
   val apiConfigService = Spring.getBeanOfType(classOf[APIConfigService])
   val apiResourceService = Spring.getBeanOfType(classOf[APIResourceService])
   val versionTrackingService = Spring.getBeanOfType(classOf[VersionTrackingService])
+  
+  ConfigUtils.CURRENT_VERSION = versionTrackingService.getLastedVersion()
   
   def filterResponse[T](ret: SimpleResult[T]): Result = {
     ret.withHeaders("Access-Control-Allow-Origin" -> "*")

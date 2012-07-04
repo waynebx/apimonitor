@@ -1,5 +1,8 @@
 var TestCaseMain = Spine.Controller.sub({
 	init : function() {
+		
+		loadConfig();
+		
 		this.getListTestCase();
 
 	},
