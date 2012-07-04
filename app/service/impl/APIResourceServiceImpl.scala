@@ -15,13 +15,16 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
     val id = StringUtil.basePath + path
     var resources = List[APIResource]()
     var lastestVersion =  currentVersion
-    if(StringUtil.isNotBlank(currentVersion)){
+    if(StringUtil.isBlank(currentVersion)){
       val listVersion = apiVersionTrackingDAO.findAndOrder(StringUtil.Order.DESC, 0, StringUtil.MAXINT)
+      print(listVersion)
       if (listVersion == null) {
         resources
       }
       lastestVersion = listVersion(0).id
     }
+    println("version" + lastestVersion)
+    println("start" + start)
     val result = apiResourceDAO.findbyProperty("_id.version",lastestVersion, start, end)
     if (result != null) {
       result.foreach(item => {
