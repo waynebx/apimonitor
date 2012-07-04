@@ -20,10 +20,17 @@ class MongoSalatDAO[ObjectType <: AnyRef, ID <: AnyRef](collectionName: String)(
     result.toList
   }
   
-  def findbyProperty(key : String, value : AnyRef,start:Int,size:Int) = {
-    var c = find(MongoDBObject(key -> value));
-    c.toList
+  def findbyProperty(key : String, value : String) = {
+	  find(MongoDBObject(key -> value)).toList;
   }
+  
+  def findbyProperty(key : String, id:BaseKey) = {
+    var tmp = MongoDBObject(key + ".path" -> id.path , key + ".version" -> id.version)
+    println(tmp)
+	find(tmp).toList
+    
+  }
+  
   def findById(id:String) = {
     var result = findOne(MongoDBObject("_id" -> id))
     if(result == None){

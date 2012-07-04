@@ -96,17 +96,23 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
   }
   private def getAPIfromConfig(apiConfig : APIConfig) : APIOperation = {
     var api = apiOperationDAO.findById(apiConfig.apiId)
+    
     if (api != null) {
       api.apiConfigId = apiConfig.id;
       var map = apiConfig.parseParamToMap()
       var keySet = map.keySet
       var parameters = apiParameterDAO.getByAPIId(api.id);
+      println("===============")
+    println(map)
+    println("===============")
       if (parameters != null) {
         parameters.foreach(param => {
          
         	var key = param.name
+        	println("param: " + key)
             if (map.get(key) != None) {
               param.value = map.get(key).get
+              println("value: " + param.value)
             }
           }
         )
