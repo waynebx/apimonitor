@@ -1,29 +1,23 @@
 package service.impl
 
 import scala.reflect.BeanInfo
-import com.mongodb.casbah.commons.MongoDBObject
-import dispatch.json.Js
+
 import models.testcase.API
 import models.testcase.APIConfig
 import models.testcase.TestCase
-import models.FunctionJSON
-import models.TestCaseJSON
+import models.APIOperation
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 import play.api.libs.json.Json
 import service.AbstractService
 import service.MyService
-import sjson.json.Serializer.SJSON
 import util.APIRequestUtils
 import util.ConfigUtils
 import util.JSONUtil
 import util.StringUtil
-import models.APIResource
-import models.APIOperation
 
 class MyServiceImpl extends MyService with AbstractService {
-	
-  def parameterService = new ParameterServiceImpl
+
   def go {
     var op : APIOperation = null;
     

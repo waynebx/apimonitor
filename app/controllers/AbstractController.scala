@@ -11,6 +11,7 @@ import play.api.mvc.SimpleResult
 import service.ParameterService
 import service.APIConfigService
 import service.APIResourceService
+import service.VersionTrackingService
 
 class AbstractController extends Controller {
   val myService = Spring.getBeanOfType(classOf[MyService])
@@ -18,7 +19,8 @@ class AbstractController extends Controller {
   val parameterService = Spring.getBeanOfType(classOf[ParameterService])
   val apiConfigService = Spring.getBeanOfType(classOf[APIConfigService])
   val apiResourceService = Spring.getBeanOfType(classOf[APIResourceService])
-
+  val versionTrackingService = Spring.getBeanOfType(classOf[VersionTrackingService])
+  
   def filterResponse[T](ret: SimpleResult[T]): Result = {
     ret.withHeaders("Access-Control-Allow-Origin" -> "*")
   }

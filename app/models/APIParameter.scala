@@ -4,7 +4,7 @@ import models.testcase.BaseBean
 import util.StringUtil
 import com.novus.salat.annotations._
 
-@BeanInfo case class APIParameter(@Key("_id") var id:String,
+@BeanInfo case class APIParameter(@Key("_id") var id:BaseKey,
     name: String = "",
     description : String = "",
     required : Boolean = false,
@@ -12,11 +12,11 @@ import com.novus.salat.annotations._
     allowMultiple : Boolean = false,
     paramType : String = "",
     readOnly: Boolean = false,
-    var apiId:String = "",
+    var apiId:BaseKey = new BaseKey("",""),
     var value:String = ""){
   
   def this() = {
-    this(StringUtil.generateStringTimeStamp(),"","",false,"",false,"", false,"","");
+    this(new BaseKey(),"","",false,"",false,"", false,new BaseKey("",""),"");
   }
 }
 object APIParameter{

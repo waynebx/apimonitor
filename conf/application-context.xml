@@ -15,6 +15,7 @@
     <bean id="parameterService" class="service.impl.ParameterServiceImpl"/>
     <bean id="apiConfigService" class="service.impl.APIConfigServiceImpl"/>
     <bean id="apiResourceService" class="service.impl.APIResourceServiceImpl"/>
+    <bean id="versionTrackingService" class="service.impl.VersionTrackingServiceImpl"/>
     
     
     <bean id="testCaseDAO" class="models.dao.TestCaseDAO"/>
@@ -23,4 +24,5 @@
     <bean id="apiOperationDAO" class="models.dao.APIOperationDAO"/>
     <bean id="apiResourceDAO" class="models.dao.APIResourceDAO"/>
     <bean id="apiSpecDAO" class="models.dao.APISpecDAO"/>
+    <bean id="apiVersionTrackingDAO" class="models.dao.VersionTrackingDAO"/>
 </beans>
