@@ -20,19 +20,22 @@ function supportsLocalStorage() {
 	}
 }
 
+function loadConfig(){
+	if (supportsLocalStorage()) {
+		var url = localStorage.getItem("com.mobion.url", url);
+		$("#input_baseUrl").val(url);
+		var token = localStorage.getItem("com.mobion.token", url);
+		$("#input_apiKey").val(token);
+		
+		Main.base_url = url;
+		Main.token = token;
+	}
+}
 
 var Main = Spine.Controller.sub({
 	init : function() {
-		if (supportsLocalStorage()) {
-			var url = localStorage.getItem("com.mobion.url", url);
-			$("#input_baseUrl").val(url);
-			var token = localStorage.getItem("com.mobion.token", url);
-			$("#input_apiKey").val(token);
-			
-			Main.base_url = url;
-			Main.token = token;
-		}
 		
+		loadConfig();
 		Main.getAPI();
 		
 		$('#explore').click(Main.getAPI);
