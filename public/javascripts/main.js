@@ -30,7 +30,7 @@ var Main = Spine.Controller.sub({
 		}
 		
 		$('#explore').click(function(){
-			Main.getAPI();
+			this.show_api();
 		});
 	},
 
@@ -38,23 +38,23 @@ var Main = Spine.Controller.sub({
 		"#testcase_tab" : "testcase_tab",
 		"#testcase_tab #testcase_list" : "testcase_list",
 		"#api_tab" : "api_tab",
+		"#api_tab #resources_list" : "resources_list",
 	},
 
 	events : {
-//		"click #explore" : "getAPI",
 		"click #api_bt" : "show_api",
 		"click #testcase_bt" : "show_testcase",
 
 	},
 
 	show_api : function() {
-		/*this.api_tab.empty();
+		this.resources_list.empty();
 		this.testcase_tab.empty();
-		this.api_tab.load("/");*/
+		Main.getAPI();
 	},
 
 	show_testcase : function() {
-		this.api_tab.empty();
+		this.resources_list.empty();
 		this.testcase_tab.empty();
 		this.testcase_tab.load("/testcase");
 
