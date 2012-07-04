@@ -66,12 +66,13 @@ class VersionTrackingServiceImpl extends VersionTrackingService with AbstractSer
     val apis: List[Res] = SJSON.in[ResList](Js(res)).apis
     var pathList = List[String]()
     apis.foreach(api => {
-      val path = api.path
+      val path = "/v2" + api.path
       val res2 = APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH  + path + "/list_api?api_key=a3633f30bb4a11e18887005056a70023", Map())
       this.buildAPIAndParameter(SJSON.in[APIResource](Js(res2)),now)
       pathList::=path
     })
     version.paths = pathList
+    apiVersionTrackingDAO.save(version)
   }
 
 }

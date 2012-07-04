@@ -72,7 +72,7 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
       }
     val lastestVersion = listVersion(0).id
     val key  = new BaseKey(id,lastestVersion)
-    val apiRes = apiResourceDAO.findById(id)
+    val apiRes = apiResourceDAO.findById(key)
     if (apiRes != null) {
       return getAPIResource(apiRes)
     } else {
