@@ -22,9 +22,15 @@ var TestCaseMain = Spine.Controller.sub({
 	},
 
 	runTestcase : function(e){
-		$(e.target).parents(".resource").find(".endpoint").each(function(){
-			$(this).find("form input[name=commit]").trigger("click");
-		});
+		if(!$(e.target).parents('.resource').find(".endpoints").is(":visible")){
+			$(e.target).parents('.resource').find("#get_detail_bt").trigger("click");
+		}
+		setTimeout(function(){
+			$(e.target).parents(".resource").find(".endpoint").each(function(){
+				$(this).find("form input[name=commit]").trigger("click");
+			});	
+		}, 100);
+		
 	},
 
 	removeOpeItem : function(e) {
@@ -42,9 +48,13 @@ var TestCaseMain = Spine.Controller.sub({
 		var countApiConfigs = $('#add_api_2_testcase_form  .new_added_apis')
 				.size();
 
+		var idform = $(e.target).parents(".endpoint").find(".content form").attr("id");
+		var formData = form2js(idform, '.', true);
+		var json = JSON.stringify(formData, null, '\t');
 		var obj = new Object();
 		obj.index = countApiConfigs;
-		obj.params = "{}";
+		
+		obj.params =json;
 		obj.apiId = e.target.id.split("id_")[1];
 		obj.id = e.target.id.split("id_")[1].split('/').join('_');
 
