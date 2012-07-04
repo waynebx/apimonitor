@@ -26,9 +26,6 @@ var Main = Spine.Controller.sub({
 			var url = localStorage.getItem("com.mobion.url", url);
 			$("#input_baseUrl").val(url);
 			Main.base_url = url;
-			// this.getAPI();
-//			this.getTestcase();
-
 		}
 		
 		$('#explore').click(function(){
@@ -112,7 +109,7 @@ Main.extend({
 						localStorage.setItem("com.mobion.url", url);
 					}
 				});
-	},
+	}
 });
 
 var Resource = Spine.Controller.sub({
@@ -140,21 +137,33 @@ var Resource = Spine.Controller.sub({
 
 var Operation = Spine.Controller.sub({
 	tag : "li",
-
+	target : "",
+	init : function(){
+		if(this.testcase_id == ""){
+			this.target = "#" + this.id;
+		}else{
+			this.target = "#testcase_" + this.testcase_id + " #" + this.id;
+		}
+	},
 	events : {
 		"click h3" : "click",
 		"click .sandbox_header input.submit" : "call_api"
 	},
 
 	click : function() {
-		Docs.toggleOperationContent(this.id + '_content');
+		if(this.testcase_id == ""){
+			Docs.toggleOperationContent(this.id + '_content');	
+		}else{
+			Docs.toggleOperationContent("testcase_" + this.testcase_id + " #" + this.id + '_content');
+		}
+		
 	},
 
 	call_api : function() {
 		var form = $("#" + this.id + "_form");
 		var error_free = true;
 		var missing_input = null;
-
+		var controller = this;
 		// Cycle through the form's required inputs
 		form.find("input.required").each(function() {
 
@@ -166,7 +175,8 @@ var Operation = Spine.Controller.sub({
 				if (missing_input == null)
 					missing_input = $(this);
 				$(this).addClass('error');
-				$(this).wiggle();
+//				$(this).wiggle();
+				 $(controller.target + " .options .run_status").html("Require").css("color", "red");
 				error_free = false;
 			}
 
@@ -174,7 +184,7 @@ var Operation = Spine.Controller.sub({
 
 		if (error_free) {
 			var invocationUrl = this.invocationUrl(form.serializeArray());
-			$(".request_url", "#" + this.id + "_content_sandbox_response")
+			$(".request_url", this.target + "_content_sandbox_response")
 					.html("<pre>" + invocationUrl + "</pre>");
 
 			if (this.http_method == "get") {
@@ -198,16 +208,16 @@ var Operation = Spine.Controller.sub({
 		var prettyJson = JSON.stringify(response, null, "\t").replace(/\n/g,
 				"<br>");
 		// log(prettyJson);
-		$(".response_body", "#" + this.id + "_content_sandbox_response").html(
+		$(".response_body",this.target + "_content_sandbox_response").html(
 				prettyJson);
 
-		$("#" + this.id + "_content_sandbox_response").slideDown();
+		$("#testcase_" + this.target + "_content_sandbox_response").slideDown();
 	},
 
 	showErrorStatus : function(data, elementScope) {
 		// log("error " + data.status);
 		this.showStatus(data, elementScope);
-		$("#" + this.id + "_content_sandbox_response").slideDown();
+		$(this.target + "_content_sandbox_response").slideDown();
 	},
 
 	showCompleteStatus : function(data, elementScope) {
@@ -223,16 +233,19 @@ var Operation = Spine.Controller.sub({
 				+ JSON.stringify(jsonData, null, 2).replace(/\n/g, "<br>")
 				+ "</pre>";
 		if (jsonData.status == "success") {
-			$(".response_code", "#" + this.id + "_content_sandbox_response")
+			 $(this.target + " .options .run_status").html("Success").css("color", "blue");
+			$(".response_code", this.target + "_content_sandbox_response")
 					.html("<pre>" + "OK" + "</pre>");
 		} else {
-			$(".response_code", "#" + this.id + "_content_sandbox_response")
+			$(this.target + " .options .run_status").html("Fail").css("color","red");
+			$(".response_code", this.target + "_content_sandbox_response")
 					.html("<pre>" + jsonData.error_code + "</pre>");
 		}
-		$(".response_body", "#" + this.id + "_content_sandbox_response").html(
+		$(".response_body", this.target + "_content_sandbox_response").html(
 				response_body);
-		$(".response_headers", "#" + this.id + "_content_sandbox_response")
+		$(".response_headers", this.target + "_content_sandbox_response")
 				.html("<pre>" + data.getAllResponseHeaders() + "</pre>");
+		$(this.target + "_content_sandbox_response").slideDown();
 	},
 
 	invocationUrl : function(formValues) {

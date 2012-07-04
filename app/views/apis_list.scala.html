@@ -1,5 +1,5 @@
 @(id : String, apis : List[models.APISpec])
-<ul class='endpoints' id="@id&#95endpoint_list'" style='display: none'>
+<ul class='endpoints' id="@id&#95endpoint_list" style='display: none'>
 	@for(apiSpec <- apis){ @api(apiSpec) }
 
 </ul>
