@@ -91,7 +91,7 @@ var TestCaseMain = Spine.Controller.sub({
 					.attr("id").split("_")[1];
 			$("#add_api_2_testcase_form #testcase_id").val(testcaseId);
 		});
-
+		$("#add_testcase_form input[name=name]").val("");
 		$('.thickbox').trigger('click');
 		Main.getAPI();
 	},
