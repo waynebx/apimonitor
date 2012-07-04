@@ -26,6 +26,7 @@ var Main = Spine.Controller.sub({
 			var url = localStorage.getItem("com.mobion.url", url);
 			$("#input_baseUrl").val(url);
 			Main.base_url = url;
+			Main.getAPI();
 		}
 		
 		$('#explore').click(function(){
@@ -47,16 +48,15 @@ var Main = Spine.Controller.sub({
 	},
 
 	show_api : function() {
-		this.api_tab.show();
-		this.testcase_tab.hide();
-		// this.getAPI();
-
+		/*this.api_tab.empty();
+		this.testcase_tab.empty();
+		this.api_tab.load("/");*/
 	},
 
 	show_testcase : function() {
-		this.api_tab.hide();
-		this.testcase_tab.show();
-		// this.getTestcase();
+		this.api_tab.empty();
+		this.testcase_tab.empty();
+		this.testcase_tab.load("/testcase");
 
 	},
 
