@@ -23,7 +23,7 @@ object APIApplication extends AbstractController {
     Ok(views.html.resources_list(list))
   }
   
-  def getResources(start: String, size: String, rest: String) {
+  def getResources(start: String, size: String, rest: String,version:String) = Action {
     var iStart = 0
     var iSize = 10
     if (StringUtil.isNotBlank(start)) {
@@ -33,7 +33,7 @@ object APIApplication extends AbstractController {
       iSize = size.toInt
     }
     
-    apiResourceService.getAPIResources(iStart, iSize, rest,"")
-    
+    val list = apiResourceService.getAPIResources(iStart, iSize, rest,version)
+    Ok(SJSON.toJSON(list))
   }
 }
