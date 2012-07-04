@@ -1,5 +1,12 @@
 var TestCaseMain = Spine.Controller.sub({
 	init : function() {
+		
+		if (supportsLocalStorage()) {
+			var url = localStorage.getItem("com.mobion.url", url);
+			$("#input_baseUrl").val(url);
+			Main.base_url = url;
+		}
+		
 		this.getListTestCase();
 
 	},

@@ -12,7 +12,7 @@ object Application extends AbstractController {
 
   def index = Action {
 	  
-    filterResponse(Ok(views.html.index()))
+    Ok(views.html.index("api"))
     
   }
   

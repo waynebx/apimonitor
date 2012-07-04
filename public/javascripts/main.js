@@ -20,59 +20,33 @@ function supportsLocalStorage() {
 	}
 }
 
+
 var Main = Spine.Controller.sub({
 	init : function() {
 		if (supportsLocalStorage()) {
 			var url = localStorage.getItem("com.mobion.url", url);
 			$("#input_baseUrl").val(url);
+			var token = localStorage.getItem("com.mobion.token", url);
+			$("#input_apiKey").val(token);
+			
 			Main.base_url = url;
-			Main.getAPI();
+			Main.token = token;
 		}
 		
-		$('#explore').click(function(){
-			this.show_api();
-		});
+		Main.getAPI();
+		
+		$('#explore').click(Main.getAPI);
 	},
 
 	elements : {
-		"#testcase_tab" : "testcase_tab",
-		"#testcase_tab #testcase_list" : "testcase_list",
 		"#api_tab" : "api_tab",
 		"#api_tab #resources_list" : "resources_list",
 	},
 
 	events : {
-		"click #api_bt" : "show_api",
-		"click #testcase_bt" : "show_testcase",
-
 	},
-
-	show_api : function() {
-		this.resources_list.empty();
-		this.testcase_tab.empty();
-		Main.getAPI();
-	},
-
-	show_testcase : function() {
-		this.resources_list.empty();
-		this.testcase_tab.empty();
-		this.testcase_tab.load("/testcase");
-
-	},
-
-	// getTestcase : function() {
-	// var url = $("#input_baseUrl").val().trim();
-	//
-	// var controller = this;
-	// this.testcase_list.empty();
-	// this.testcase_list.load("/testcases", null, function() {
-	//
-	// });
-	//
-	// },
 
 	
-
 });
 
 Main.extend({
@@ -93,9 +67,11 @@ Main.extend({
 		});
 		return o;
 	},
-
+	
 	getAPI : function() {
 		var url = $("#input_baseUrl").val().trim();
+		var token = $("#input_apiKey").val().trim();
+		
 		$("#content_message").html("Loading...");
 		$("#resources_list").slideUp();
 		$("#content_message").slideDown();
@@ -107,6 +83,7 @@ Main.extend({
 					$("#resources_list").slideDown();
 					if (supportsLocalStorage()) {
 						localStorage.setItem("com.mobion.url", url);
+						localStorage.setItem("com.mobion.token", token);
 					}
 				});
 	}
@@ -164,18 +141,14 @@ var Operation = Spine.Controller.sub({
 		var error_free = true;
 		var missing_input = null;
 		var controller = this;
-		// Cycle through the form's required inputs
 		form.find("input.required").each(function() {
 
-			// Remove any existing error styles from the input
 			$(this).removeClass('error');
 
-			// Tack the error style on if the input is empty..
 			if ($(this).val() == '') {
 				if (missing_input == null)
 					missing_input = $(this);
 				$(this).addClass('error');
-//				$(this).wiggle();
 				 $(controller.target + " .options .run_status").html("Require").css("color", "red");
 				error_free = false;
 			}
@@ -204,10 +177,8 @@ var Operation = Spine.Controller.sub({
 	},
 
 	showResponse : function(response, elementScope) {
-		// log(response);
 		var prettyJson = JSON.stringify(response, null, "\t").replace(/\n/g,
 				"<br>");
-		// log(prettyJson);
 		$(".response_body",this.target + "_content_sandbox_response").html(
 				prettyJson);
 
@@ -215,19 +186,15 @@ var Operation = Spine.Controller.sub({
 	},
 
 	showErrorStatus : function(data, elementScope) {
-		// log("error " + data.status);
 		this.showStatus(data, elementScope);
 		$(this.target + "_content_sandbox_response").slideDown();
 	},
 
 	showCompleteStatus : function(data, elementScope) {
-		// log("complete " + data.status);
 		this.showStatus(data, elementScope);
 	},
 
 	showStatus : function(data, elementScope) {
-		// log(data);
-		// log(data.getAllResponseHeaders());
 		var jsonData = JSON.parse(data.responseText);
 		var response_body = "<pre>"
 				+ JSON.stringify(jsonData, null, 2).replace(/\n/g, "<br>")
@@ -263,7 +230,7 @@ var Operation = Spine.Controller.sub({
 		// log("url with path params = " + url);
 
 		var queryParams = "";
-		var apiKey = $("#input_apiKey").val();
+		var apiKey = Main.token;
 		if (apiKey) {
 			apiKey = jQuery.trim(apiKey);
 			if (apiKey.length > 0)
@@ -283,7 +250,6 @@ var Operation = Spine.Controller.sub({
 		;
 
 		url = Main.base_url + url + queryParams;
-		// log("final url with query params and base url = " + url);
 
 		return url;
 	},
