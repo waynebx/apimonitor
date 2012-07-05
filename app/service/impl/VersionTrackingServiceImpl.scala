@@ -28,7 +28,6 @@ class VersionTrackingServiceImpl extends VersionTrackingService with AbstractSer
   def buildAPIAndParameter(apiResource: APIResource,now:String) {
     if (apiResource.apis != None) {
       var listAPI = List[BaseKey]()
-      println("---------------" + apiResource)
       apiResource.id = new BaseKey(apiResource.resourcePath, now)
       apiResource.apis.foreach(api => {
         api.id = new BaseKey(apiResource.id + api.path, now)
@@ -63,13 +62,12 @@ class VersionTrackingServiceImpl extends VersionTrackingService with AbstractSer
     val now = DateUtil.getNow()
     var version = new VersionTracking
     version.id = now
-    val res = APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH + "/resources.json", Map())
+    val res = APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + ":" + ConfigUtils.API_DEFAULT_PORT + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH + "/resources.json", Map())
     val apis: List[Res] = SJSON.in[ResList](Js(res)).apis
     var pathList = List[String]()
     apis.foreach(api => {
-      val path = "/v2" + api.path
-      println(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH  + path + "/list_api?api_key=a3633f30bb4a11e18887005056a70023")
-      val res2 = APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH  + path + "/list_api?api_key=a3633f30bb4a11e18887005056a70023", Map())
+      val path = api.path
+      val res2 = APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + ":" + ConfigUtils.API_DEFAULT_PORT + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH  + "/api_by_rest_path?rest_path="  + path, Map())
       this.buildAPIAndParameter(SJSON.in[APIResource](Js(res2)),now)
       pathList::=path
     })
