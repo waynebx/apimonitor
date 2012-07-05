@@ -20,8 +20,10 @@ object APIApplication extends AbstractController {
     var list = List[APIResource]()
     apis.foreach(api => {
       val id = api;
-      println(id);
-      list ::= apiResourceService.getAPIResource(id,keyword);
+      val resource = apiResourceService.getAPIResource(id,keyword)
+      if(!resource.apis.isEmpty){
+        list ::= resource
+      }
     })
 
     Ok(views.html.resources_list(list))

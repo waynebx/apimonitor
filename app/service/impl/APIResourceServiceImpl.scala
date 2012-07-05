@@ -65,11 +65,11 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
         }
       })
       spec.operations = listOpertation
-      listSpec ::= spec
+      if(!spec.operations.isEmpty){
+          listSpec ::= spec
+      }
     })
     apiResource.apis = listSpec
-    println("-----------------------------"  +apiResource.apis)
-
     apiResource
   }
 
