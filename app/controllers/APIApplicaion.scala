@@ -12,13 +12,13 @@ object APIApplication extends AbstractController {
   
   def getapi(keyword: String, version: String) = Action {
     val latestVersion = versionTrackingService.getLastedVersion()
-    
+
     val apis = versionTrackingService.getPathListOfVersion(latestVersion)
     var list = List[APIResource]()
     apis.foreach(api => {
       val id = api;
-      val resource = apiResourceService.getAPIResource(id,keyword,version)
-      if(!resource.apis.isEmpty){
+      val resource = apiResourceService.getAPIResource(id, keyword, version)
+      if (!resource.apis.isEmpty) {
         list ::= resource
       }
     })
@@ -50,6 +50,11 @@ object APIApplication extends AbstractController {
       iSize = size.toInt
     }
     val list = versionTrackingService.getListVersion(iStart,iSize)
+    Ok(SJSON.toJSON(list))
+  }
+  
+   def getResource(rest: String,keyword:String,version:String) = Action {
+    val list = apiResourceService.getAPIResource(rest,keyword,version)
     Ok(SJSON.toJSON(list))
   }
 }
