@@ -28,7 +28,7 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
     val result = apiResourceDAO.findbyProperty("_id.version",lastestVersion, start, end)
     if (result != null) {
       result.foreach(item => {
-        var resource = getAPIResource(item) // will modify
+        var resource = getAPIResource(item,"") 
         if (resource != null) {
           resources ::= resource
         }
@@ -37,7 +37,7 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
     return resources
   }
 
-  private def getAPIResource(apiResource: APIResource) = {
+  private def getAPIResource(apiResource: APIResource,keyword: String) = {
     var listSpec = List[APISpec]()
     if (apiResource == null || apiResource.specIds.isEmpty) {
       null
@@ -53,13 +53,15 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
         if (operation == null || operation.apiParameterIds.isEmpty) {
           null
         }
-        var listParameter = List[APIParameter]()
-        operation.apiParameterIds.foreach(parameterId => {
-          val parameter = apiParameterDAO.findById(parameterId)
-          listParameter ::= parameter
-        })
-        operation.parameters = listParameter
-        listOpertation ::= operation
+        if(StringUtil.isBlank(keyword) || (StringUtil.isNotBlank(operation.apiName) && operation.apiName.contains(keyword))){
+          var listParameter = List[APIParameter]()
+          operation.apiParameterIds.foreach(parameterId => {
+            val parameter = apiParameterDAO.findById(parameterId)
+            listParameter ::= parameter
+          })
+          operation.parameters = listParameter
+          listOpertation ::= operation
+        }
       })
       spec.operations = listOpertation
       listSpec ::= spec
@@ -68,7 +70,7 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
     apiResource
   }
 
-  def getAPIResource(id: String): APIResource = {
+  def getAPIResource(id: String,keyword: String): APIResource = {
     val listVersion = apiVersionTrackingDAO.findAndOrder(StringUtil.Order.DESC, 0, StringUtil.MAXINT)
       if (listVersion == null) {
         null
@@ -77,7 +79,7 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
     val key  = new BaseKey(id,lastestVersion)
     val apiRes = apiResourceDAO.findById(key)
     if (apiRes != null) {
-      return getAPIResource(apiRes)
+      return getAPIResource(apiRes,keyword)
     } else {
       return null
     }
