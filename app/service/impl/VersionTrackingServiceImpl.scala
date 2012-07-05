@@ -28,6 +28,7 @@ class VersionTrackingServiceImpl extends VersionTrackingService with AbstractSer
   def buildAPIAndParameter(apiResource: APIResource,now:String) {
     if (apiResource.apis != None) {
       var listAPI = List[BaseKey]()
+      println("---------------" + apiResource)
       apiResource.id = new BaseKey(apiResource.resourcePath, now)
       apiResource.apis.foreach(api => {
         api.id = new BaseKey(apiResource.id + api.path, now)
@@ -67,6 +68,7 @@ class VersionTrackingServiceImpl extends VersionTrackingService with AbstractSer
     var pathList = List[String]()
     apis.foreach(api => {
       val path = "/v2" + api.path
+      println(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH  + path + "/list_api?api_key=a3633f30bb4a11e18887005056a70023")
       val res2 = APIRequestUtils.getWS(StringUtil.http + ConfigUtils.API_DEFAULT_HOST + StringUtil.slash + ConfigUtils.API_DEFAULT_PATH  + path + "/list_api?api_key=a3633f30bb4a11e18887005056a70023", Map())
       this.buildAPIAndParameter(SJSON.in[APIResource](Js(res2)),now)
       pathList::=path
@@ -78,6 +80,10 @@ class VersionTrackingServiceImpl extends VersionTrackingService with AbstractSer
   def getPathListOfVersion(version:String):List[String] = {
     val versionTracking = apiVersionTrackingDAO.findById(version)
     return versionTracking.paths
+  }
+  
+  def getListVersion(start:Int,size:Int):List[VersionTracking] = {
+    apiVersionTrackingDAO.findLimit(start,size)
   }
 
 }

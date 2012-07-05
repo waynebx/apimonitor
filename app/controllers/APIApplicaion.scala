@@ -42,4 +42,17 @@ object APIApplication extends AbstractController {
     val list = apiResourceService.getAPIResources(iStart, iSize, rest,version)
     Ok(SJSON.toJSON(list))
   }
+
+  def getListVersion(start: String, size: String) = Action {
+    var iStart = 0
+    var iSize = 10
+    if (StringUtil.isNotBlank(start)) {
+      iStart = start.toInt
+    }
+    if (StringUtil.isNotBlank(size)) {
+      iSize = size.toInt
+    }
+    val list = versionTrackingService.getListVersion(iStart,iSize)
+    Ok(SJSON.toJSON(list))
+  }
 }
