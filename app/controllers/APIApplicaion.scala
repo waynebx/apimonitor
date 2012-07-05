@@ -10,7 +10,7 @@ import util.StringUtil
 
 object APIApplication extends AbstractController {
   
-  def getapi(url: String,keyword: String) = Action {
+  def getapi(keyword: String, version: String) = Action {
     val latestVersion = versionTrackingService.getLastedVersion()
     
     val apis = versionTrackingService.getPathListOfVersion(latestVersion)
@@ -20,7 +20,7 @@ object APIApplication extends AbstractController {
     var list = List[APIResource]()
     apis.foreach(api => {
       val id = api;
-      val resource = apiResourceService.getAPIResource(id,keyword)
+      val resource = apiResourceService.getAPIResource(id,keyword,version)
       if(!resource.apis.isEmpty){
         list ::= resource
       }
