@@ -52,7 +52,6 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
         if (operation == null || operation.apiParameterIds.isEmpty) {
           null
         }
-
         if(StringUtil.isBlank(keyword) || (StringUtil.isNotBlank(operation.nickname) && operation.nickname.contains(keyword))){
           var listParameter = List[APIParameter]()
           operation.apiParameterIds.foreach(parameterId => {
