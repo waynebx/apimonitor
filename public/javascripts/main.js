@@ -74,13 +74,13 @@ Main.extend({
 	getAPI : function() {
 		var url = $("#input_baseUrl").val().trim();
 		var token = $("#input_apiKey").val().trim();
-		
+		var keyword = $('#filter').val();
 		$("#content_message").html("Loading...");
 		$("#resources_list").slideUp();
 		$("#content_message").slideDown();
 	
 		var controller = this;
-		$('#resources_list').load('/getapi?url=' + encodeURIComponent(url),
+		$('#resources_list').load('/getapi?url=' + encodeURIComponent(url) + '&keyword=' + keyword,
 				null, function() {
 					$("#content_message").slideUp();
 					$("#resources_list").slideDown();
