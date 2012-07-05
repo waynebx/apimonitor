@@ -25,7 +25,7 @@ POST	/remove_api_from_testcase               controllers.TestCaseApplication.rem
 
 
 #API Controller
-GET    /getapi                                controllers.APIApplication.getapi(url : String)
+GET    /getapi                                controllers.APIApplication.getapi(url : String,keyword: String)
 GET   /build_database_for_testcase			  controllers.TestCaseApplication.buildAPIDatabase
 GET    /get_resources                         controllers.APIApplication.getResources(start:String,size:String,rest:String,version:String)
 
