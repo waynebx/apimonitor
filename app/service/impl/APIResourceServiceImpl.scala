@@ -23,8 +23,7 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
       }
       lastestVersion = listVersion(0).id
     }
-    println("version" + lastestVersion)
-    println("start" + start)
+
     val result = apiResourceDAO.findbyProperty("_id.version",lastestVersion)
     if (result != null) {
       result.foreach(item => {
