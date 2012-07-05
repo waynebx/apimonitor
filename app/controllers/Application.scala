@@ -12,11 +12,12 @@ object Application extends AbstractController {
 
   def index = Action {
 	  
-    filterResponse(Ok(views.html.index()))
+    Ok(views.html.index("api"))
     
   }
   
-  def getapi(url: String) = Action {
+/*
+   def getapi(url: String) = Action {
     var newUrl = url
 
     if (!newUrl.startsWith("http://")) {
@@ -39,7 +40,7 @@ object Application extends AbstractController {
     
     Ok(views.html.resources_list(list))
   }
-
+*/
   def getListAPI = Action {
 
     filterResponse(Ok(myService.getListApi).as("text/plain"))

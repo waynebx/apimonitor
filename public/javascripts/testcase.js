@@ -1,5 +1,8 @@
 var TestCaseMain = Spine.Controller.sub({
 	init : function() {
+		
+		loadConfig();
+		
 		this.getListTestCase();
 
 	},
@@ -73,6 +76,10 @@ var TestCaseMain = Spine.Controller.sub({
 	},
 
 	addTestCase : function() {
+		if($("#add_testcase_form input[name=name]").val() == ""){
+			$("#add_testcase_form input[name=name]").focus();
+			return;
+		};
 		var formData = form2js("add_testcase_form", '.', true);
 		var json = JSON.stringify(formData, null, '\t');
 
@@ -84,7 +91,7 @@ var TestCaseMain = Spine.Controller.sub({
 					.attr("id").split("_")[1];
 			$("#add_api_2_testcase_form #testcase_id").val(testcaseId);
 		});
-
+		$("#add_testcase_form input[name=name]").val("");
 		$('.thickbox').trigger('click');
 		Main.getAPI();
 	},

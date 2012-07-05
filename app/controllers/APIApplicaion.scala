@@ -12,7 +12,11 @@ object APIApplication extends AbstractController {
   
   def getapi(url: String,keyword: String) = Action {
     val latestVersion = versionTrackingService.getLastedVersion()
+    
     val apis = versionTrackingService.getPathListOfVersion(latestVersion)
+    println("=====================")
+    println(apis)
+    println("=====================")
     var list = List[APIResource]()
     apis.foreach(api => {
       val id = api;

@@ -9,7 +9,7 @@ import models.APIParameter
 import models.BaseKey
 class APIParameterDAO extends MongoSalatDAO[APIParameter,String](APIParameter.getTableName){
   def getByAPIId(apiId : String) = {
-    findbyProperty("apiId", apiId,0,StringUtil.MAXINT)
+    findbyProperty("apiId", new BaseKey(apiId,ConfigUtils.CURRENT_VERSION))
   }
   
   override def findById(id: String) = {

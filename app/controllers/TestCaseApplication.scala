@@ -18,7 +18,7 @@ object TestCaseApplication extends AbstractController {
 
   def index = Action {
 	  
-    filterResponse(Ok(views.html.testcase_index()))
+    Ok(views.html.index("testcase"))
     
   }
   
