@@ -28,6 +28,7 @@
 <script src="@routes.Assets.at("javascripts/main.js")"></script>
 <script src="@routes.Assets.at("javascripts/testcase.js")"></script>
 <script src="@routes.Assets.at("javascripts/thickbox.js")"></script>
+<script src="@routes.Assets.at("javascripts/api_version.js")"></script>
 <link  
 	href="@routes.Assets.at("stylesheets/compare.css")"
 	rel="stylesheet" media="screen"/>
@@ -37,7 +38,7 @@
 
 </head>
 <body>
-<form id='api_selector'>
+<form id='api_selector' style="display :none;">
 		<div class='input'>
 			<input placeholder="http://api.sgcharo.com/mobion" id="input_baseUrl"
 				name="baseUrl" type="text" value= />
@@ -53,20 +54,20 @@
 			<a id="explore" href="javascript:void(0)">Explore</a>
 		</div>
 	</form>
+	<h3 style="text-align: center;color : blue;">API Version Management</h3>
 <div id="framecontent">
-	<div class="innercontent">
-	www.dynamicdrive.com/style/layouts/category/C11/ - Dịch trang này
-10+ mục – CSS Frames Layouts. New (Dec 26th ... Page 1 of 2 pages 1 2 >
-CSS Left Frame Layout	This is a two columns liquid layout with the left column ...
-CSS Right Frame Layout	This is a two columns liquid layout with the right ...
-	</div>
+	<div class="innercontent"></div>
 </div>
 
 <div id="maincontent">
 	<div class="innercontent">
-		@api_index
+		@api_index()
 	</div>
 </div>
-
+<script type="text/javascript">
+	new ApiVersionMain({
+		el : $('#framecontent')
+	});
+</script>
 </body>
 </html>

@@ -52,7 +52,11 @@ object APIApplication extends AbstractController {
     if (StringUtil.isNotBlank(size)) {
       iSize = size.toInt
     }
+    
+    
     val list = versionTrackingService.getListVersion(iStart,iSize)
-    Ok(SJSON.toJSON(list))
+    println("============VERSI")
+    println(SJSON.toJSON(list))
+    Ok(views.html.api_version_list(list))
   }
 }

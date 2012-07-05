@@ -1,0 +1,8 @@
+@(apiVer : models.VersionTracking)
+<li id="@apiVer.id"><input class="ckbox"  type="checkbox" /><a href='javascript:void(0)'>@apiVer.id</a></li>
+
+<script>
+new ApiVersion({
+	el : $("li#@apiVer.id")
+})
+</script>

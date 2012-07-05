@@ -1,3 +1,6 @@
+
+
+
 var TestCaseMain = Spine.Controller.sub({
 	init : function() {
 		
@@ -16,6 +19,7 @@ var TestCaseMain = Spine.Controller.sub({
 	},
 
 	events : {
+		
 		"click  .save_list_function" : "addAPI2TestCase",
 		"click .add_ope_item" : "addOpeItem",
 		"click #add_testcase_bt" : "addTestCase",

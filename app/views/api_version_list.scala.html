@@ -1,0 +1,7 @@
+@(apiVerList : List[models.VersionTracking])
+
+<ul style="list-style-type: square;">
+	@for(apiVer <- apiVerList){
+		@api_version(apiVer)
+	}
+</ul>
