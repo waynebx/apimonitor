@@ -3,6 +3,7 @@
 # ~~~~
 
 # Home page
+GET 	/compare								controllers.Application.compare
 
 GET    /                                      controllers.Application.index
 
