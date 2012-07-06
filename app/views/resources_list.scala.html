@@ -1,7 +1,7 @@
-@(resources : List[models.APIResource])
+@(resources : List[models.APIResource], ver : String ="")
 <ul id="resources">
 	@for(res <- resources) { 
-		@resource(res)
+		@resource(res, ver)
 		
 	}
 	

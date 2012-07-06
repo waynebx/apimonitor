@@ -10,8 +10,22 @@ import util.StringUtil
 
 object APIApplication extends AbstractController {
   
-  def getapi(keyword: String, version: String) = Action {
-    val latestVersion = versionTrackingService.getLastedVersion()
+  
+   def version_index() = Action {
+     
+	  Ok(views.html.version_index())
+  }
+  
+  
+  def version_compare(ver1 : String, ver2 : String) = Action {
+    var list1 = getAPIFunc("", "")
+    var list2 = getAPIFunc("", ver2)
+    Ok(views.html.version_compare(list1, list2))
+  }
+  
+  
+  def getAPIFunc(keyword: String, version: String): List[APIResource]={
+       val latestVersion = versionTrackingService.getLastedVersion()
     
     val apis = versionTrackingService.getPathListOfVersion(latestVersion)
     println("=====================")
@@ -25,7 +39,24 @@ object APIApplication extends AbstractController {
         list ::= resource
       }
     })
-
+    return list
+  }
+  
+  def getapi(keyword: String, version: String) = Action {
+     val latestVersion = versionTrackingService.getLastedVersion()
+    var list = getAPIFunc(keyword, version)
+//    val apis = versionTrackingService.getPathListOfVersion(latestVersion)
+//    println("=====================")
+//    println(apis)
+//    println("=====================")
+//    var list = List[APIResource]()
+//    apis.foreach(api => {
+//      val id = api;
+//      val resource = apiResourceService.getAPIResource(id,keyword,version)
+//      if(!resource.apis.isEmpty){
+//        list ::= resource
+//      }
+//    })
     Ok(views.html.resources_list(list))
   }
   

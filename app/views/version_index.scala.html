@@ -55,18 +55,19 @@
 		</div>
 	</form>
 	<h3 style="text-align: center;color : blue;">API Version Management</h3>
+<input type="button" value="Compare"  id="compare" />
 <div id="framecontent">
 	<div class="innercontent"></div>
 </div>
 
 <div id="maincontent">
 	<div class="innercontent">
-		@api_index()
+<!-- 		@api_index() -->
 	</div>
 </div>
 <script type="text/javascript">
 	new ApiVersionMain({
-		el : $('#framecontent')
+		el : $('body')
 	});
 </script>
 </body>

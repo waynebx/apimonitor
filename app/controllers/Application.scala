@@ -11,9 +11,7 @@ import util.APIRequestUtils
 object Application extends AbstractController {
 
   
-  def compare = Action {
-	  Ok(views.html.compare())
-  }
+
   
   def index = Action {
 	  

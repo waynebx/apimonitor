@@ -1,6 +1,6 @@
-@(id : String, apis : List[models.APISpec])
+@(id : String, apis : List[models.APISpec], ver : String = "")
 <ul class='endpoints' id="@id&#95endpoint_list" style='display: none'>
-	@for(apiSpec <- apis){ @api(apiSpec) }
+	@for(apiSpec <- apis){ @api(apiSpec, ver) }
 
 </ul>
 

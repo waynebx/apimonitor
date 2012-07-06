@@ -80,7 +80,7 @@ Main.extend({
 		$("#content_message").slideDown();
 	
 		var controller = this;
-		$('#resources_list').load('/getapi?url=' + encodeURIComponent(url) + '&keyword=' + keyword,
+		$('#resources_list').load('/getapi?url=' + encodeURIComponent(url),
 				null, function() {
 					$("#content_message").slideUp();
 					$("#resources_list").slideDown();
@@ -88,6 +88,7 @@ Main.extend({
 						localStorage.setItem("com.mobion.url", url);
 						localStorage.setItem("com.mobion.token", token);
 					}
+				
 				});
 	}
 });

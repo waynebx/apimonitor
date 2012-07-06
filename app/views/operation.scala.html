@@ -1,7 +1,7 @@
-@(apiName: String, apiPath : String, operation : models.APIOperation, isAdd : Boolean, idTestcase : String ="")
+@(apiName: String, apiPath : String, operation : models.APIOperation, isAdd : Boolean, idTestcase : String ="", ver : String ="")
 
 <li class="@operation.httpMethod.toLowerCase() operation"
-	id="@apiName&#95@operation.nickname&#95@operation.httpMethod">
+	id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver">
 	
 	<div class='heading'>
 		<h3>
@@ -15,18 +15,20 @@
 		</h3>
 		<ul class='options'>
 			<li>@operation.summary</li>
-			@if(isAdd){
-				<li><a href="javascript:void(0)" class="add_ope_item" id="id_@operation.id">Add</a></li>	
-			}else{
-				<li><a href="javascript:void(0)" class="remove_api_item" id="id_@operation.id">Remove</a></li>
-				<li><a href="javascript:void(0)" class="run_status" id="id_@operation.id"></a></li>
+			@if(ver == ""){
+				if(isAdd){
+					<li><a href="javascript:void(0)" class="add_ope_item" id="id_@operation.id">Add</a></li>	
+				}else{
+					<li><a href="javascript:void(0)" class="remove_api_item" id="id_@operation.id">Remove</a></li>
+					<li><a href="javascript:void(0)" class="run_status" id="id_@operation.id"></a></li>
+				}
 			}
 		</ul>
 		<input type="hidden" name="apiConfigId" value="@operation.apiConfigId"/>
 	</div> 
 	
 	<script type="text/javascript">
-		var id = '@apiName' + '_' + '@operation.nickname' + '_' + '@operation.httpMethod';
+		var id = '@apiName' + '_' + '@operation.nickname' + '_' + '@operation.httpMethod' + '@ver';
 		var el = $("#" + id);
 		@if(idTestcase != ""){
 			el = $("#testcase_@idTestcase  #" + id);
@@ -41,5 +43,5 @@
 			
 		}); 
 	</script>
-	@params_list(apiName, operation)
+	@params_list(apiName, operation, ver)
 </li>

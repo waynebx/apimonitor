@@ -1,7 +1,7 @@
-@(apiSpec : models.APISpec)
+@(apiSpec : models.APISpec, ver : String = "")
 <li class='endpoint'>
 	@defining(apiSpec.path.replaceAllLiterally("/","_")) { name =>
-		@operations_list(name, apiSpec.resPath + apiSpec.path, apiSpec.operations)
+		@operations_list(name, apiSpec.resPath + apiSpec.path , apiSpec.operations, ver)
 		
 	}
 </li>
