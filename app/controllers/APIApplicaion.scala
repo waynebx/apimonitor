@@ -10,6 +10,7 @@ import util.StringUtil
 
 object APIApplication extends AbstractController {
   
+
   
    def version_index() = Action {
      
@@ -25,22 +26,22 @@ object APIApplication extends AbstractController {
   
   
   def getAPIFunc(keyword: String, version: String): List[APIResource]={
-       val latestVersion = versionTrackingService.getLastedVersion()
-    
+      val latestVersion = versionTrackingService.getLastedVersion()
+
+
     val apis = versionTrackingService.getPathListOfVersion(latestVersion)
-    println("=====================")
-    println(apis)
-    println("=====================")
     var list = List[APIResource]()
     apis.foreach(api => {
       val id = api;
-      val resource = apiResourceService.getAPIResource(id,keyword,version)
-      if(!resource.apis.isEmpty){
+      val resource = apiResourceService.getAPIResource(id, keyword, version)
+      if (!resource.apis.isEmpty) {
         list ::= resource
       }
     })
     return list
   }
+    
+
   
   def getapi(keyword: String, version: String) = Action {
      val latestVersion = versionTrackingService.getLastedVersion()
@@ -89,5 +90,10 @@ object APIApplication extends AbstractController {
     println("============VERSI")
     println(SJSON.toJSON(list))
     Ok(views.html.api_version_list(list))
+  }
+  
+   def getResource(rest: String,keyword:String,version:String) = Action {
+    val list = apiResourceService.getAPIResource(rest,keyword,version)
+    Ok(SJSON.toJSON(list))
   }
 }

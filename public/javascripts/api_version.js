@@ -14,14 +14,15 @@ var ApiVersionMain = Spine.Controller.sub({
 		"click #compare" : "compareVersion",
 	},
 	
-	compareVersion : function(){
-		
-	},
-	
 	loadListVersion : function(){
 		this.version_content.load("/get_list_version");
 	},
 	
+	
+	compareVersion : function(){
+	
+		
+	}
 	
 	
 	
