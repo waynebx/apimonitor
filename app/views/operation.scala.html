@@ -1,5 +1,5 @@
 @(parentId : String, id: String, apiPath : String, operation : models.APIOperation, isAdd : Boolean, idTestcase : String ="", ver : String ="")
-@defining(parentId + "_" + id + "_" + operation.nickname + "_" + operation.httpMethod + ver) { op_id =>
+@defining(util.StringUtil.formatId(parentId + "_" + id + "_" + operation.nickname + "_" + operation.httpMethod + ver)) { op_id =>
 <li class="@operation.httpMethod.toLowerCase() operation"
 	id="@op_id">
 	
