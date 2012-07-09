@@ -9,16 +9,16 @@
 <link 
 	href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700'
 	rel='stylesheet' type='text/css' />
-<link
-	href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/smoothness/jquery-ui.css'
-	media='screen' rel='stylesheet' type='text/css' />
+
 <link  
 	href="@routes.Assets.at("stylesheets/screen.css")"
 	rel="stylesheet" media="screen"/>
 <link  
 	href="@routes.Assets.at("stylesheets/thickbox.css")"
 	rel="stylesheet" media="screen"/>
-		
+<link  
+	href="@routes.Assets.at("stylesheets/ui-jquery.css")"
+	rel="stylesheet" media="screen"/>
 
 <script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
 <script src="@routes.Assets.at("javascripts/jquery.tmpl.js")"></script>
@@ -53,14 +53,20 @@
 	<div class="menu">
 		<ul>
 			<li id="api_bt"><a href="/">APIs</a></li>
-			<li id="testcase_bt"><a href="/testcase">Test Case</a></li>
+			<li id="testcase_bt"><a href="/version">Test Case</a></li>
+			<li id="version_bt"><a href="/version">Version</a></li>
 		</ul>
 	</div>
 
 	@if(tab == "api"){
 		@api_index()
 	}else{
+	 @if(tab == "version"){
+		@version_index()
+	 }else{
 		@testcase_index()
+	 }
 	}
+	
 </body>
 </html>

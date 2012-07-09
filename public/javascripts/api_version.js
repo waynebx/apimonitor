@@ -3,6 +3,7 @@ var ApiVersionMain = Spine.Controller.sub({
 	
 	
 	init : function(){
+		loadConfig();
 		this.loadListVersion();
 	}, 
 	

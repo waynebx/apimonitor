@@ -14,7 +14,7 @@ object APIApplication extends AbstractController {
   
    def version_index() = Action {
      
-	  Ok(views.html.version_index())
+	  Ok(views.html.version_index("version"))
   }
   
   
