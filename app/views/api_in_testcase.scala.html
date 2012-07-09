@@ -1,7 +1,7 @@
-@(op : models.APIOperation, id : String)
+@(parentId: String, op : models.APIOperation, id : String)
 <li class='endpoint'>
 	<ul class='operations' id="&#95endpoint&#95operations">
-		@operation(op.nickname,op.resPath + op.path,op, false, id)
+		@operation(parentId,op.nickname,op.resPath + op.path,op, false, id)
 	</ul>
 	
 </li>

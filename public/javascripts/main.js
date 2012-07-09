@@ -117,7 +117,6 @@ var Resource = Spine.Controller.sub({
 });
 
 var Operation = Spine.Controller.sub({
-	tag : "li",
 	target : "",
 	init : function(){
 		if(this.testcase_id == ""){

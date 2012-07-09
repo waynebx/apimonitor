@@ -1,25 +1,24 @@
 @(res : models.APIResource, ver : String="")
-@defining(res.resourcePath.replaceAllLiterally("/","_")) { pathId =>
-<li class='resource' id='resource_@pathId@ver'>
+@defining(util.StringUtil.formatId(res.resourcePath) + ver) { id =>
+<li class='resource' id='resource_@id'>
 
 	<div class='heading'>
 		<h2>
-			<a href='#!/@pathId'>@res.resourcePath</a>
+			<a href='#'>@res.resourcePath</a>
 		</h2>
 		<ul class='options'>
-			<li class="show_hide"><a href='#!/@pathId' id='endpointListTogger_@pathId@ver'>Show/Hide</a></li>
+			<li class="show_hide"><a href='#' id='endpointListTogger_@id'>Show/Hide</a></li>
 			<li class="list_ops"><a href='#'>List Operations </a></li>
 			<li class="expand_ops"><a href='#'>Expand Operations </a></li>
-			<li class="raw"><a href='${fetch_url}'>Raw</a></li>
 		</ul>
 	</div>
 		<script type="text/javascript">
 			 new Resource({ 
-			el : $('#resource_' + '@pathId@ver'),
-			id : "@pathId@ver"
+			el : $('#resource_' + '@id'),
+			id : "@id"
 		}); 
 	</script>
 
-	@apis_list(pathId + ver, res.apis, ver)
+	@apis_list("resource_" + id, id,res.apis, ver)
 </li>
 }

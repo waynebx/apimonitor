@@ -46,4 +46,15 @@ object StringUtil{
   def isNotBlank(str:String):Boolean = {
 	return !isBlank(str)
   }
+  
+  def formatId(id : String) : String = {
+    var ret = id
+    if(ret != null){
+      ret = ret.replaceAllLiterally("/","_")
+      ret = ret.replaceAllLiterally("{","_")
+      ret = ret.replaceAllLiterally("}","_")
+    }
+    
+    return ret
+  }
 }

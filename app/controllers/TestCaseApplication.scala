@@ -32,7 +32,7 @@ object TestCaseApplication extends AbstractController {
 
   def getAPIsinTestCase(id: String) = Action { request =>
 
-    Ok(views.html.apis_list_in_testcase(id, testCaseService.getAPIsinTestCase(id)))
+    Ok(views.html.apis_list_in_testcase("testcase_" + id, id, testCaseService.getAPIsinTestCase(id)))
 
   }
 
@@ -49,7 +49,7 @@ object TestCaseApplication extends AbstractController {
 
     var testCase = SJSON.in[TestCase](Js(request.body.toString()))
 
-    Ok(views.html.apis_list_in_testcase(testCase.id, testCaseService.addAPI2TestCase(testCase)))
+    Ok(views.html.apis_list_in_testcase("testcase_" + testCase.id, testCase.id, testCaseService.addAPI2TestCase(testCase)))
 
   }
   
