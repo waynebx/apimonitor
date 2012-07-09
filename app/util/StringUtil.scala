@@ -53,6 +53,7 @@ object StringUtil{
       ret = ret.replaceAllLiterally("/","_")
       ret = ret.replaceAllLiterally("{","_")
       ret = ret.replaceAllLiterally("}","_")
+      ret = ret.replaceAllLiterally(" ","")
     }
     
     return ret
