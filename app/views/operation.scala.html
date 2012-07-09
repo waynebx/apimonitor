@@ -16,7 +16,7 @@
 		<ul class='options'>
 			<li>@operation.summary</li>
 			@if(ver == ""){
-				if(isAdd){
+				@if(isAdd){
 					<li><a href="javascript:void(0)" class="add_ope_item" id="id_@operation.id">Add</a></li>	
 				}else{
 					<li><a href="javascript:void(0)" class="remove_api_item" id="id_@operation.id">Remove</a></li>

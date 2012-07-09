@@ -19,6 +19,24 @@
             	}
             </tbody>
           </table>
+          
+                  
+        <div >
+        	<h4>Expert Params</h4>
+        	 <table class='fullwidth'>
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+                
+              </tr>
+            </thead>
+            <tbody class="expert_params">
+        
+            </tbody>
+          </table>
+          <input type="button" value="Add" class="add_expert"/>
+        </div>
           <div class='sandbox_header' id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95content_sandbox_response_header">
           @if(ver == ""){
             <input class='submit' id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95content_sandbox_response_button" name='commit' type='button' value='Try it out!' />
@@ -28,6 +46,7 @@
             <img alt='Throbber' id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95content_sandbox_response_throbber" src='http://swagger.wordnik.com/images/throbber.gif' style='display:none' />
           </div>
         </form>
+
         <div class='response' id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95content_sandbox_response" style='display:none'>
           <h4>Request URL</h4>
           <div class='block request_url'></div>
@@ -39,3 +58,12 @@
           <div class='block response_headers'></div>
         </div>
       </div>
+      
+      
+   
+    <script type="text/x-jquery-template" id="expert_param_tmpl">
+	<tr>
+      	<td><input type="text" name="name" /></td>
+      	<td><input type="text" name="value" /></td>
+    </tr>
+	</script>

@@ -9,6 +9,7 @@ var ApiVersionMain = Spine.Controller.sub({
 	
 	elements : {
 		"#framecontent .innercontent" : "version_content",
+		"#framecontent" 			  : "frame_content"
 	},
 	
 	events : {
@@ -21,12 +22,12 @@ var ApiVersionMain = Spine.Controller.sub({
 	
 	
 	compareVersion : function(){
-		if($('#framecontent').find('.ckbox:checked').size() <2){
+		if(this.frame_content.find('.ckbox:checked').size() <2){
 			alert("Please choose 2 versions to compare !");
 			return;
 		}
-		var ver1 = $('#framecontent').find('.ckbox:checked:eq(0)').parent().attr("id");
-		var ver2 = $('#framecontent').find('.ckbox:checked:eq(1)').parent().attr("id");
+		var ver1 = this.frame_content.find('.ckbox:checked:eq(0)').parent().attr("id");
+		var ver2 = this.frame_content.find('.ckbox:checked:eq(1)').parent().attr("id");
 
 		var link = "/compare?ver1=" + ver1 + "&ver2=" + ver2;
 		window.open(link);
@@ -108,9 +109,9 @@ var VersionCompare = Spine.Controller.sub({
 	compareParams : function(id, idCompare){
 		var idContent = id + "_content";
 		var idCompareContent = idCompare + "_content";
-		$('#' + idContent + " table tbody input").each(function(){
+		$('#' + idContent + " tbody input").each(function(){
 			name = $(this).attr("name");
-			if($("#" + idCompareContent + " table tbody input[name=" + name + "]").length == 0){
+			if($("#" + idCompareContent + " tbody input[name=" + name + "]").length == 0){
 				$(this).parents(".resource").find("div.heading:first").addClass("diff_item");
 				$(this).parents(".operation").find('div.heading:first').addClass("diff_item");
 				$(this).parents("tr").addClass("diff_item");

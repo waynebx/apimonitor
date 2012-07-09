@@ -102,6 +102,8 @@ var Resource = Spine.Controller.sub({
 		"click .list_ops" : "collapseOperations"
 
 	},
+	
+	
 
 	toggleEndpoint : function() {
 		Docs.toggleEndpointListForResource(this.id)
@@ -119,6 +121,8 @@ var Resource = Spine.Controller.sub({
 var Operation = Spine.Controller.sub({
 	tag : "li",
 	target : "",
+	
+	
 	init : function(){
 		if(this.testcase_id == ""){
 			this.target = "#" + this.id;
@@ -126,11 +130,25 @@ var Operation = Spine.Controller.sub({
 			this.target = "#testcase_" + this.testcase_id + " #" + this.id;
 		}
 	},
+	
+	
 	events : {
+		"click .add_expert" : "add_expert_input",
 		"click h3" : "click",
 		"click .sandbox_header input.submit" : "call_api"
 	},
+	
+	elements : {
+		".expert_params" : "expert_container",
+	},
 
+	get_controller : function(){
+		return this;
+	},
+	add_expert_input : function(){
+		this.expert_container.append($('#expert_param_tmpl').tmpl()).slideDown("slow");
+	},
+	
 	click : function() {
 		if(this.testcase_id == ""){
 			Docs.toggleOperationContent(this.id + '_content');	
@@ -199,19 +217,31 @@ var Operation = Spine.Controller.sub({
 	},
 
 	showStatus : function(data, elementScope) {
+		console.log("data=" + JSON.stringify(data.responseText, null, "\t"));
 		var jsonData = JSON.parse(data.responseText);
 		var response_body = "<pre>"
 				+ JSON.stringify(jsonData, null, 2).replace(/\n/g, "<br>")
 				+ "</pre>";
+		
+		
+		controller.expert_container.find("tbody tr").each(function(){
+			var name = $(this).find("input[name=name]").val();
+			var value = $(this).find("input[name=value]").val();
+			var strSearch = name + ": " + value;
+			alert(strSearch);
+		});
 		if (jsonData.status == "success") {
 			 $(this.target + " .options .run_status").html("Success").css("color", "blue");
 			$(".response_code", this.target + "_content_sandbox_response")
 					.html("<pre>" + "OK" + "</pre>");
+			
+		
 		} else {
 			$(this.target + " .options .run_status").html("Fail").css("color","red");
 			$(".response_code", this.target + "_content_sandbox_response")
 					.html("<pre>" + jsonData.error_code + "</pre>");
 		}
+		
 		$(".response_body", this.target + "_content_sandbox_response").html(
 				response_body);
 		$(".response_headers", this.target + "_content_sandbox_response")
