@@ -2,7 +2,7 @@
   border : 1px solid black;
 position :absolute;
 background : #e3e3e3;
-top : 80px;
+top : 150px;
 left : 10px;
 width : 230px;
 height : 100%;
@@ -18,7 +18,7 @@ position : fixed;
 height : 100%;
 overflow: auto;
 left : 240px;
-top : 80px;
+top : 150px;
 width : 100%;
 
 
