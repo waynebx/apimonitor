@@ -1,19 +1,19 @@
-@(apiName : String, operation : models.APIOperation, ver : String ="") 
-<div class='content' id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95content" style='display:none'>
+@(id : String, operation : models.APIOperation, ver : String ="") 
+<div class='content' id="@id&#95content" style='display:none'>
         <h4>Implementation Notes</h4>
         <p>@operation.notes</p>
-        <form accept-charset='UTF-8' action='#' class='sandbox' id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95form" method='post'>
+        <form accept-charset='UTF-8' action='#' class='sandbox' id="@id&#95form" method='post'>
           <div style='margin:0;padding:0;display:inline'></div>
           <h4>Parameters</h4>
           <table class='fullwidth'>
             <thead>
               <tr>
                 <th>Parameter</th>
-                <th id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95value&#95header">Value</th>
+                <th id="@id&#95value&#95header">Value</th>
                 <th>Description</th>
               </tr>
             </thead>
-            <tbody id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95params">
+            <tbody id="@id&#95params">
             	@for(p <- operation.parameters){
             		@param(p)
             	}
@@ -37,17 +37,16 @@
           </table>
           <input type="button" value="Add" class="add_expert"/>
         </div>
-          <div class='sandbox_header' id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95content_sandbox_response_header">
+          <div class='sandbox_header' id="@id&#95content_sandbox_response_header">
           @if(ver == ""){
-            <input class='submit' id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95content_sandbox_response_button" name='commit' type='button' value='Try it out!' />
+            <input class='submit' id="@id&#95content_sandbox_response_button" name='commit' type='button' value='Try it out!' />
            }
-            <a href='#' id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95content_sandbox_response_hider" 
-            onclick="$("#@apiName&#95@operation.nickname&#95@operation.httpMethod&#95content_sandbox_response").slideUp();$(this).fadeOut(); return false;" style='display:none'>Hide Response</a>
-            <img alt='Throbber' id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95content_sandbox_response_throbber" src='http://swagger.wordnik.com/images/throbber.gif' style='display:none' />
+            <a href='#' id="@id&#95content_sandbox_response_hider" 
+            onclick="$("#@id&#95content_sandbox_response").slideUp();$(this).fadeOut(); return false;" style='display:none'>Hide Response</a>
+            <img alt='Throbber' id="@id&#95content_sandbox_response_throbber" src='http://swagger.wordnik.com/images/throbber.gif' style='display:none' />
           </div>
         </form>
-
-        <div class='response' id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver&#95content_sandbox_response" style='display:none'>
+        <div class='response' id="@id&#95content_sandbox_response" style='display:none'>
           <h4>Request URL</h4>
           <div class='block request_url'></div>
           <h4>Response Body</h4>

@@ -1,6 +1,6 @@
-@(id : String, apis : List[models.APIOperation])
+@(parentId : String, id : String, apis : List[models.APIOperation])
 @for(api <- apis){ 
-	@api_in_testcase(api, id) 
+	@api_in_testcase(parentId, api, id) 
 }
 	
 

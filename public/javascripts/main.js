@@ -129,9 +129,8 @@ var Operation = Spine.Controller.sub({
 		}else{
 			this.target = "#testcase_" + this.testcase_id + " #" + this.id;
 		}
+		
 	},
-	
-	
 	events : {
 		"click .add_expert" : "add_expert_input",
 		"click h3" : "click",
@@ -142,9 +141,6 @@ var Operation = Spine.Controller.sub({
 		".expert_params" : "expert_container",
 	},
 
-	get_controller : function(){
-		return this;
-	},
 	add_expert_input : function(){
 		this.expert_container.append($('#expert_param_tmpl').tmpl()).slideDown("slow");
 	},

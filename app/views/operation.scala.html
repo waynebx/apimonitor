@@ -1,17 +1,12 @@
-@(apiName: String, apiPath : String, operation : models.APIOperation, isAdd : Boolean, idTestcase : String ="", ver : String ="")
-
+@(parentId : String, id: String, apiPath : String, operation : models.APIOperation, isAdd : Boolean, idTestcase : String ="", ver : String ="")
+@defining(parentId + "_" + id + "_" + operation.nickname + "_" + operation.httpMethod + ver) { op_id =>
 <li class="@operation.httpMethod.toLowerCase() operation"
-	id="@apiName&#95@operation.nickname&#95@operation.httpMethod@ver">
+	id="@op_id">
 	
 	<div class='heading'>
 		<h3>
-			<span class='http_method'> <a
-				href="javascript:void(0)"
-				>@operation.httpMethod</a>
-			</span> <span class='path'> <a
-				href="javascript:void(0)"
-				>@apiPath</a>
-			</span>
+			<span class='http_method'> <a href="javascript:void(0)">@operation.httpMethod</a></span>
+			<span class='path'> <a href="javascript:void(0)">@apiPath</a></span>
 		</h3>
 		<ul class='options'>
 			<li>@operation.summary</li>
@@ -28,8 +23,9 @@
 	</div> 
 	
 	<script type="text/javascript">
-		var id = '@apiName' + '_' + '@operation.nickname' + '_' + '@operation.httpMethod' + '@ver';
+		var id = '@op_id';
 		var el = $("#" + id);
+		
 		@if(idTestcase != ""){
 			el = $("#testcase_@idTestcase  #" + id);
 		}
@@ -43,5 +39,6 @@
 			
 		}); 
 	</script>
-	@params_list(apiName, operation, ver)
+	@params_list(op_id, operation, ver)
 </li>
+}
