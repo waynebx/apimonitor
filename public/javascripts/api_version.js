@@ -20,7 +20,15 @@ var ApiVersionMain = Spine.Controller.sub({
 	
 	
 	compareVersion : function(){
-	
+		if($('#framecontent').find('.ckbox:checked').size() <2){
+			alert("Please choose 2 versions to compare !");
+			return;
+		}
+		var ver1 = $('#framecontent').find('.ckbox:checked:eq(0)').parent().attr("id");
+		var ver2 = $('#framecontent').find('.ckbox:checked:eq(1)').parent().attr("id");
+
+		var link = "/compare?ver1=" + ver1 + "&ver2=" + ver2;
+		window.open(link);
 		
 	}
 	
@@ -83,9 +91,9 @@ var VersionCompare = Spine.Controller.sub({
 			var idCompare = id;
 			idCompare.replace("list2", "list1");
 			if($("#" + idCompare).length == 0){
-				$(this).parents(".resource").find("div.heading:first").css("background", "#093");
+				$(this).parents(".resource").find("div.heading:first").addClass("diff_item");
 				
-				$("#" + id).find('div.heading:first').css("background", "green");
+				$("#" + id).find('div.heading:first').addClass("diff_item");
 			}else{
 				//compare params
 				controller.compareParams(id, idCompare);
@@ -102,9 +110,9 @@ var VersionCompare = Spine.Controller.sub({
 		$('#' + idContent + " table tbody input").each(function(){
 			name = $(this).attr("name");
 			if($("#" + idCompareContent + " table tbody input[name=" + name + "]").length == 0){
-				$(this).parents(".resource").find(":first").css("background", "orange");
-				$(this).parents(".operation").find('div.heading:first').css("background", "green");
-				$(this).parents("tr").css("background", "green");
+				$(this).parents(".resource").find("div.heading:first").addClass("diff_item");
+				$(this).parents(".operation").find('div.heading:first').addClass("diff_item");
+				$(this).parents("tr").addClass("diff_item");
 			}
 			
 		});

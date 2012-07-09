@@ -33,7 +33,6 @@ margin : 5px;
 #right_frame{
   border : 1px solid black;
 position :fixed;
-background : #e3e3e3;
 top : 0px;
 left : 800px;
 width : 750px;
@@ -54,4 +53,15 @@ left : 50px;
 top : 0px;
 width : 750px;
 
+}
+
+
+
+.diff_item{
+	background : #C53727;
+	opacity : 0.8;
+}
+
+.heading h2 a{
+color : #86AB57 !important;
 }
