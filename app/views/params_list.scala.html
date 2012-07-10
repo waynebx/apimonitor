@@ -19,10 +19,11 @@
             	}
             </tbody>
           </table>
-          
-                  
-        <div >
+          @if(ver == ""){
+              	         
+        <div id="expert_frm_@id" class="expert_frm">
         	<h4>Expert Params</h4>
+   
         	 <table class='fullwidth'>
             <thead>
               <tr>
@@ -35,8 +36,11 @@
         
             </tbody>
           </table>
+
           <input type="button" value="Add" class="add_expert"/>
         </div>
+        }
+                
           <div class='sandbox_header' id="@id&#95content_sandbox_response_header">
           @if(ver == ""){
             <input class='submit' id="@id&#95content_sandbox_response_button" name='commit' type='button' value='Try it out!' />

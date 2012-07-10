@@ -154,7 +154,7 @@ var Operation = Spine.Controller.sub({
 		
 	},
 
-	call_api : function() {
+	call_api : function(e) {
 		var form = $("#" + this.id + "_form");
 		var error_free = true;
 		var missing_input = null;
@@ -191,7 +191,8 @@ var Operation = Spine.Controller.sub({
 			}
 
 		}
-
+		
+	
 	},
 
 	showResponse : function(response, elementScope) {
@@ -213,18 +214,28 @@ var Operation = Spine.Controller.sub({
 	},
 
 	showStatus : function(data, elementScope) {
-		console.log("data=" + JSON.stringify(data.responseText, null, "\t"));
+		var res = (JSON.stringify(data.responseText, null, "\t"));
 		var jsonData = JSON.parse(data.responseText);
 		var response_body = "<pre>"
 				+ JSON.stringify(jsonData, null, 2).replace(/\n/g, "<br>")
 				+ "</pre>";
 		
-		
-		controller.expert_container.find("tbody tr").each(function(){
+	
+		this.expert_container.find("tr").each(function(){
+			
 			var name = $(this).find("input[name=name]").val();
 			var value = $(this).find("input[name=value]").val();
-			var strSearch = name + ": " + value;
-			alert(strSearch);
+			if(value == "" && name == ""){
+				$(this).removeClass();
+			}else{
+				var strSearch = value == "" ? "\\\"" + name + "\\\":"  : "\\\"" + name + "\\\":\\\"" + value + "\\\"";
+				if(res.indexOf(strSearch) == -1){
+					$(this).addClass("not_found");
+				}else{
+					$(this).removeClass();
+				}
+			}
+	
 		});
 		if (jsonData.status == "success") {
 			 $(this.target + " .options .run_status").html("Success").css("color", "blue");

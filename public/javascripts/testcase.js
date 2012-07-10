@@ -54,9 +54,24 @@ var TestCaseMain = Spine.Controller.sub({
 		var idform = $(e.target).parents(".endpoint").find(".content form").attr("id");
 		var formData = form2js(idform, '.', true);
 		var json = JSON.stringify(formData, null, '\t');
+		
+//		var idExp = $(e.target).parents(".endpoint").find("div.expert_frm").attr("id");
+//		var formDataExp = form2js(idExp, '.', true);
+//		var js_expert = JSON.stringify(formDataExp, null, '\t');
+		var exp_params = "{";
+		$(e.target).parents(".endpoint").find("div.expert_frm tbody tr").each(function(){
+			var name = $(this).find("input[name=name]").val();
+			var value = $(this).find("input[name=value]").val();
+			exp_params += "\"" + name + "\":\"" + value + "\",";
+			
+		});
+		if($(e.target).parents(".endpoint").find("div.expert_frm tbody tr").size() >0){
+			exp_params = exp_params.substr(0, exp_params.length -2);
+		}
+		exp_params +="}";
 		var obj = new Object();
 		obj.index = countApiConfigs;
-		
+		obj.exp_params = exp_params;
 		obj.params =json;
 		obj.apiId = e.target.id.split("id_")[1];
 		obj.id = e.target.id.split("id_")[1].split('/').join('_');
@@ -97,12 +112,7 @@ var TestCaseMain = Spine.Controller.sub({
 	},
 
 	addAPI2TestCase : function() {
-		// $('#resources_list').find('.item_added').each(function(){
-		// //reset btn
-		// $(this).html("Add").removeClass().addClass("add_ope_item").css("color","#0F6AB4");
-		// });
 
-		//		
 		var formData = form2js("add_api_2_testcase_form", '.', true);
 		var json = JSON.stringify(formData, null, '\t');
 		var testcaseId = $('#add_api_2_testcase_form').find("input[name=id]").val();
@@ -154,8 +164,7 @@ var TestCase = Spine.Controller.sub({
 
 		$('#add_api_2_testcase_form #testcase_id').val(this.id);
 		Main.getAPI();
-		// $("#add_api_2_testcase_form").append("<dd><input type='text'
-		// name='id' value='"+ this.id+ "'/></dd>");
+
 	},
 	deleteTestCase : function() {
 		var controller = this;
