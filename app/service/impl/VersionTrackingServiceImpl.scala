@@ -76,7 +76,11 @@ class VersionTrackingServiceImpl extends VersionTrackingService with AbstractSer
   }
   
   def getPathListOfVersion(version:String):List[String] = {
-    val versionTracking = apiVersionTrackingDAO.findById(version)
+    var versionString = version
+    if(StringUtil.isBlank(versionString)){
+      versionString = getLastedVersion()
+    }
+    val versionTracking = apiVersionTrackingDAO.findById(versionString)
     return versionTracking.paths
   }
   

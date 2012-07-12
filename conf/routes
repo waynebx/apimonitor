@@ -25,13 +25,14 @@ POST	/remove_api_from_testcase               controllers.TestCaseApplication.rem
 
 
 #API Controller
-GET 	/version								controllers.APIApplication.version_index
-GET 	/compare								controllers.APIApplication.version_compare(ver1: String ="20120704", ver2 : String="20120705")
+GET 	/version						      controllers.APIApplication.version_index
+GET 	/compare							  controllers.APIApplication.version_compare(ver1: String ="20120704", ver2 : String="20120705")
 GET    /getapi                                controllers.APIApplication.getapi(keyword: String ?= "", version: String ?= "")
 GET   /build_database_for_testcase			  controllers.TestCaseApplication.buildAPIDatabase
 GET    /get_resources                         controllers.APIApplication.getResources(start:String,size:String,rest:String,version:String)
 GET    /get_list_version                      controllers.APIApplication.getListVersion(start: String="0", size: String="10")
 GET    /get_resource                          controllers.APIApplication.getResource(rest: String?= "",keyword:String?= "",version:String?= "")
+GET    /get_list_name_resource                controllers.APIApplication.getResourceNameInVersion(version:String?= "")
 
 
 POST	/remove_api_from_testcase               controllers.APIApplication.deleteVersion(version:String ?="")

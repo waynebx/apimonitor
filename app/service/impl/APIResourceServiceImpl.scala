@@ -136,5 +136,30 @@ class APIResourceServiceImpl extends APIResourceService with AbstractService {
     })
     listSpec
   }
+  
+  def getNameAPIResources(start: Int, end: Int, path: String,currentVersion:String): List[String] = {
+    val id = StringUtil.basePath + path
+    var resources = List[String]()
+    var lastestVersion =  currentVersion
+    if(StringUtil.isBlank(currentVersion)){
+      val listVersion = apiVersionTrackingDAO.findAndOrder(StringUtil.Order.DESC, 0, StringUtil.MAXINT)
+      print(listVersion)
+      if (listVersion == null) {
+        resources
+      }
+      lastestVersion = listVersion(0).id
+    }
+
+    val result = apiResourceDAO.findbyProperty("_id.version",lastestVersion)
+    if (result != null) {
+      result.foreach(item => {
+        var resource = getAPIResource(item,"") 
+        if (resource != null) {
+          resources ::= resource.resourcePath
+        }
+      })
+    }
+    return resources
+  }
 
 }
