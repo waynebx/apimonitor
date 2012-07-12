@@ -96,4 +96,12 @@ object APIApplication extends AbstractController {
     val apiResource = apiResourceService.getAPIResource(rest,keyword,version)
     Ok(views.html.apis_list("resource_" + id, id, apiResource.apis))
   }
+   
+   def deleteVersion(version:String) = Action{
+     if(StringUtil.isNotBlank(version)){
+       versionTrackingService.deleteVersion(version)
+       Ok("OK")
+     }
+     Ok("Failed")
+   }
 }

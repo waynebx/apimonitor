@@ -84,6 +84,10 @@ class MongoSalatDAO[ObjectType <: AnyRef, ID <: AnyRef](collectionName: String)(
     }
     result.toList
   }
+  
+  def removeByCondition(field:String, value:String){
+    this.remove(MongoDBObject(field->value))
+  }
 }
 
 
