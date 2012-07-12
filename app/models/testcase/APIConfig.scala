@@ -10,6 +10,7 @@ case class APIConfig(
   var status: String = "",
   var response: String = "",
   var params: String = "",
+  var expert_params: String = "",
   @Ignore var api: API = null) extends BaseBean(id) {
 
   def this() = {

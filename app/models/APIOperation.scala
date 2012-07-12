@@ -19,6 +19,7 @@ import com.novus.salat.annotations._
   responseClass: String = null,
   apiName: String = null,
   resPath: String = null,
+  var expert_params:String = null,
   @Ignore var apiConfigId:String="") extends BaseBean(id) {
 
 

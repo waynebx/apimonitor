@@ -96,4 +96,12 @@ object APIApplication extends AbstractController {
     val list = apiResourceService.getAPIResource(rest,keyword,version)
     Ok(SJSON.toJSON(list))
   }
+   
+   def deleteVersion(version:String) = Action{
+     if(StringUtil.isNotBlank(version)){
+       versionTrackingService.deleteVersion(version)
+       Ok("OK")
+     }
+     Ok("Failed")
+   }
 }

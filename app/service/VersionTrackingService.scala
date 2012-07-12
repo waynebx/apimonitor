@@ -7,4 +7,5 @@ trait VersionTrackingService {
     def getLastedVersion():String
     def getPathListOfVersion(version:String):List[String]
     def getListVersion(start:Int,size:Int):List[VersionTracking]
+    def deleteVersion(version:String)
 }

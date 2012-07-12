@@ -83,5 +83,12 @@ class VersionTrackingServiceImpl extends VersionTrackingService with AbstractSer
   def getListVersion(start:Int,size:Int):List[VersionTracking] = {
     apiVersionTrackingDAO.findLimit(start,size)
   }
-
+  
+  def deleteVersion(version:String){
+    apiVersionTrackingDAO.removeByCondition("_id.version",version)
+    apiResourceDAO.removeByCondition("_id.version",version)
+    apiSpecDAO.removeByCondition("_id.version",version)
+    apiOperationDAO.removeByCondition("_id.version",version)
+    apiParameterDAO.removeByCondition("_id.version",version)
+  }
 }
