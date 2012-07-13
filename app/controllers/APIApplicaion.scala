@@ -85,16 +85,16 @@ object APIApplication extends AbstractController {
       iSize = size.toInt
     }
     
-    
+    	
     val list = versionTrackingService.getListVersion(iStart,iSize)
     println("============VERSI")
     println(SJSON.toJSON(list))
     Ok(views.html.api_version_list(list))
   }
   
-   def getResource(rest: String,keyword:String,version:String) = Action {
-    val list = apiResourceService.getAPIResource(rest,keyword,version)
-    Ok(SJSON.toJSON(list))
+   def getResource(rest: String, id : String, keyword:String,version:String) = Action {
+    val apiResource = apiResourceService.getAPIResource(rest,keyword,version)
+    Ok(views.html.apis_list("resource_" + id, id, apiResource.apis))
   }
    
    def deleteVersion(version:String) = Action{

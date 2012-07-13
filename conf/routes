@@ -31,8 +31,8 @@ GET    /getapi                                controllers.APIApplication.getapi(
 GET   /build_database_for_testcase			  controllers.TestCaseApplication.buildAPIDatabase
 GET    /get_resources                         controllers.APIApplication.getResources(start:String,size:String,rest:String,version:String)
 GET    /get_list_version                      controllers.APIApplication.getListVersion(start: String="0", size: String="10")
-GET    /get_resource                          controllers.APIApplication.getResource(rest: String?= "",keyword:String?= "",version:String?= "")
 GET    /get_list_name_resource                controllers.APIApplication.getResourceNameInVersion(version:String?= "")
+GET    /get_resource                          controllers.APIApplication.getResource(rest: String?= "",id : String?= "", keyword:String?= "",version:String?= "")
 
 
 POST	/remove_api_from_testcase               controllers.APIApplication.deleteVersion(version:String ?="")

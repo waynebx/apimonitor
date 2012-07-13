@@ -104,9 +104,21 @@ var Resource = Spine.Controller.sub({
 	},
 	
 	
-
+		
+	
 	toggleEndpoint : function() {
-		Docs.toggleEndpointListForResource(this.id)
+		
+		if($("#" + this.id + "_endpoint_list .endpoint").size() < 1){
+			var id = this.id;
+			$("#" + this.id + "_endpoint_list").load("/get_resource?rest=" + this.path + "&id=" + id, null, function(){
+				Docs.toggleEndpointListForResource(id)		
+			});	
+		}else{
+			Docs.toggleEndpointListForResource(id)		
+		}
+		
+		
+		
 	},
 
 	collapseOperations : function() {
