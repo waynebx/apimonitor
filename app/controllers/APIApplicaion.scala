@@ -26,9 +26,10 @@ object APIApplication extends AbstractController {
   
   
   def getAPIFunc(keyword: String, version: String): List[APIResource]={
-      val latestVersion = versionTrackingService.getLastedVersion()
-
-
+    var latestVersion = version
+    if(StringUtil.isBlank(latestVersion)){
+       latestVersion = versionTrackingService.getLastedVersion()
+    }
     val apis = versionTrackingService.getPathListOfVersion(latestVersion)
     var list = List[APIResource]()
     apis.foreach(api => {
@@ -44,7 +45,6 @@ object APIApplication extends AbstractController {
 
   
   def getapi(keyword: String, version: String) = Action {
-     val latestVersion = versionTrackingService.getLastedVersion()
     var list = getAPIFunc(keyword, version)
 //    val apis = versionTrackingService.getPathListOfVersion(latestVersion)
 //    println("=====================")
