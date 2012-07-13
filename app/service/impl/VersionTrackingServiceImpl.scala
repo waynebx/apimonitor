@@ -95,4 +95,23 @@ class VersionTrackingServiceImpl extends VersionTrackingService with AbstractSer
     apiOperationDAO.removeByCondition("_id.version",version)
     apiParameterDAO.removeByCondition("_id.version",version)
   }
+  
+  def getAPIREsourceListOfVersion(version:String):List[APIResource] = {
+    var versionString = version
+    var listResource = List[APIResource]()
+    if(StringUtil.isBlank(versionString)){
+      versionString = getLastedVersion()
+    }
+    val versionTracking = apiVersionTrackingDAO.findById(versionString)
+    if(versionTracking != null && versionTracking.paths != null && versionTracking.paths.length > 0){
+      versionTracking.paths.foreach( path =>{
+        var resource = new APIResource
+        resource.id.path = path
+        resource.id.version = version
+        resource.resourcePath = path
+        listResource::=resource
+      })
+    }
+    return listResource
+  }
 }

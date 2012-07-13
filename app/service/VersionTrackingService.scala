@@ -8,4 +8,5 @@ trait VersionTrackingService {
     def getPathListOfVersion(version:String):List[String]
     def getListVersion(start:Int,size:Int):List[VersionTracking]
     def deleteVersion(version:String)
+    def getAPIREsourceListOfVersion(version:String):List[APIResource]
 }

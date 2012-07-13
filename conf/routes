@@ -34,8 +34,7 @@ GET    /get_list_version                      controllers.APIApplication.getList
 GET    /get_list_name_resource                controllers.APIApplication.getResourceNameInVersion(version:String?= "")
 GET    /get_resource                          controllers.APIApplication.getResource(rest: String?= "",id : String?= "", keyword:String?= "",version:String?= "")
 
-
-POST	/remove_api_from_testcase               controllers.APIApplication.deleteVersion(version:String ?="")
+POST	/remove_api_from_testcase              controllers.APIApplication.deleteVersion(version:String ?="")
 
 
 # Map static resources from the /public folder to the /assets URL path
