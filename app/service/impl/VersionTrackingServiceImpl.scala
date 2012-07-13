@@ -14,6 +14,7 @@ import sjson.json.Serializer.SJSON
 import models.ResList
 import dispatch.json.Js
 import models.VersionTracking
+import models.BaseKey
 
 
 class VersionTrackingServiceImpl extends VersionTrackingService with AbstractService {
@@ -106,8 +107,10 @@ class VersionTrackingServiceImpl extends VersionTrackingService with AbstractSer
     if(versionTracking != null && versionTracking.paths != null && versionTracking.paths.length > 0){
       versionTracking.paths.foreach( path =>{
         var resource = new APIResource
-        resource.id.path = path
-        resource.id.version = version
+        var baseKey = new BaseKey  
+        baseKey.path = path
+        baseKey.version = version
+        resource.id = baseKey
         resource.resourcePath = path
         listResource::=resource
       })
