@@ -101,8 +101,9 @@ object APIApplication extends AbstractController {
      if(StringUtil.isNotBlank(version)){
        versionTrackingService.deleteVersion(version)
        Ok("OK")
+     }else{
+       Ok("Failed")
      }
-     Ok("Failed")
    }
    
    def getResourceNameInVersion(version:String) = Action {

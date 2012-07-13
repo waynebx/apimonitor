@@ -90,7 +90,7 @@ class VersionTrackingServiceImpl extends VersionTrackingService with AbstractSer
   }
   
   def deleteVersion(version:String){
-    apiVersionTrackingDAO.removeByCondition("_id.version",version)
+    apiVersionTrackingDAO.removeByCondition("_id",version)
     apiResourceDAO.removeByCondition("_id.version",version)
     apiSpecDAO.removeByCondition("_id.version",version)
     apiOperationDAO.removeByCondition("_id.version",version)
