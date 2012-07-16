@@ -19,6 +19,9 @@ case class APIConfig(
   def parseParamToMap() = {
     JSONUtil.parseParamInApiConfig(this.params)
   }
+  def parseExpertParamToMap() = {
+    JSONUtil.parseParamInApiConfig(this.expert_params)
+  }
 }
 
 object APIConfig {
