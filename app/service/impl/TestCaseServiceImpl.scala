@@ -99,12 +99,11 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
     
     if (api != null) {
       api.apiConfigId = apiConfig.id;
-      var map = apiConfig.parseParamToMap()
-      var keySet = map.keySet
+      val map = apiConfig.parseParamToMap()
       var parameters = apiParameterDAO.getByAPIId(api.id);
       if (parameters != null) {
         parameters.foreach(param => {
-        	var key = param.name
+        	val key = param.name
             if (map.get(key) != None) {
               param.value = map.get(key).get
             }
@@ -112,8 +111,20 @@ class TestCaseServiceImpl extends TestCaseService with AbstractService {
         )
       }
       
+      val expectedMap = apiConfig.parseExpertParamToMap();
+      var expectedParamList = List[APIParameter]()
+      if(expectedMap != null && expectedMap.keySet != null){
+        expectedMap.keySet.foreach(expectedParamName => {
+          var expectedParam = new APIParameter
+          expectedParam.name = expectedParamName
+          if(expectedMap.get(expectedParamName) != None){
+            expectedParam.value = expectedMap.get(expectedParamName).get
+            expectedParamList::=expectedParam
+          }
+        })
+      }
       
-      
+      api.expectedParameters = expectedParamList
       api.parameters = parameters
       api.expert_params = apiConfig.expert_params
     }

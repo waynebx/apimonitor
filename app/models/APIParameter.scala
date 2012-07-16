@@ -5,7 +5,7 @@ import util.StringUtil
 import com.novus.salat.annotations._
 
 @BeanInfo case class APIParameter(@Key("_id") var id:BaseKey,
-    name: String = "",
+    var name: String = "",
     description : String = "",
     required : Boolean = false,
     dataType: String = "", 
